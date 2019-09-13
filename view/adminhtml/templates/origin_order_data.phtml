@@ -1,0 +1,14 @@
+<?php
+/**
+ * @var $block \Macopedia\Allegro\Block\OriginOrderData
+ */
+?>
+<?php if ($block->getExternalId()) : ?>
+    <div class="admin__page-section-title">
+        <span class="title">
+        <?= $block->escapeHtml(__('Origin of the order')) ?>
+        </span>
+    </div>
+    <p><strong><?= $block->escapeHtml(__('External service')) ?></strong>: <?= $block->escapeHtml($block->getOrderOrigin()) ?></p>
+    <p><strong><?= $block->escapeHtml(__('External ID')) ?></strong>: <?= $block->escapeHtml($block->getExternalId()) ?></p>
+<?php endif ?>

@@ -1,0 +1,10 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Quote\Api\Data\CartInterface">
+        <attribute code="order_from" type="string" />
+        <attribute code="external_id" type="string" />
+    </extension_attributes>
+    <extension_attributes for="Magento\Sales\Api\Data\OrderInterface">
+        <attribute code="order_from" type="string" />
+        <attribute code="external_id" type="string" />
+    </extension_attributes>
+</config>

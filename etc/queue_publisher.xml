@@ -1,0 +1,8 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/publisher.xsd">
+    <publisher topic="allegro.change.stock">
+        <connection name="amqp" exchange="allegro.queue" />
+    </publisher>
+    <publisher topic="allegro.change.stock.db">
+        <connection name="db" exchange="allegro.api" />
+    </publisher>
+</config>

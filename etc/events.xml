@@ -1,0 +1,8 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="macopedia_allegro_copy_fields_from_quote_to_order" instance="Macopedia\Allegro\Observer\CopyFieldsFromQuoteToOrderObserver" />
+    </event>
+    <event name="sales_model_service_quote_submit_success">
+        <observer name="macopedia_allegro_place_order_after" instance="Macopedia\Allegro\Observer\OrderObserver"/>
+    </event>
+</config>

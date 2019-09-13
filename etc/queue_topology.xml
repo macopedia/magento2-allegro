@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="allegro.queue" type="topic" connection="amqp">
+        <binding id="AllegroApiQueue" topic="allegro.change.stock" destinationType="queue" destination="allegro.api.queue"/>
+    </exchange>
+    <exchange name="allegro.api" type="topic" connection="db">
+        <binding id="AllegroApiQueueDb" topic="allegro.change.stock.db" destinationType="queue" destination="allegro.api"/>
+    </exchange>
+</config>

@@ -1,0 +1,27 @@
+{
+  "name": "macopedia/magento2-allegro",
+  "description": "Magento2 module responsible for integration with Allegro API, developed by Macopedia.com",
+  "type": "magento2-module",
+  "keywords": [
+    "Magento2",
+    "Allegro"
+  ],
+  "license": [
+    "MIT"
+  ],
+  "authors": [
+    {
+      "name": "Macopedia team",
+      "role": "Developer",
+      "email": "extensions@macopedia.pl"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Macopedia\\Allegro\\": ""
+    }
+  }
+}

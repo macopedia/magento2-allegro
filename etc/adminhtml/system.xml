@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="allegro" sortOrder="900" translate="label">
+            <label>Allegro</label>
+        </tab>
+        <section id="allegro" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+            <label>Configuration</label>
+            <tab>allegro</tab>
+            <resource>Macopedia_Allegro::config_macopedia_allegro</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="authenticate" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Macopedia\Allegro\Block\Adminhtml\System\Authenticate</frontend_model>
+                </field>
+                <field id="sandbox" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Is sandox account</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="authentication_url" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Authentication Url</label>
+                    <depends>
+                        <field id="sandbox">0</field>
+                    </depends>
+                </field>
+                <field id="sandbox_authentication_url" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Sandbox Authentication Url</label>
+                    <depends>
+                        <field id="sandbox">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="credentials" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">
+                <label>Credentials</label>
+                <field id="client_id" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+                    <label>Client Id</label>
+                    <comment/>
+                </field>
+                <field id="client_secret" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="obscure">
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <label>Client Secret</label>
+                    <comment/>
+                </field>
+                <field id="token_data" showInDefault="0" showInStore="0" showInWebsite="0" sortOrder="0" translate="label" type="obscure">
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment/>
+                </field>
+            </group>
+            <group id="order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Order import</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order import enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="store" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Store to create new orders</label>
+                    <source_model>Magento\Store\Model\System\Store</source_model>
+                </field>
+                <field id="overpayment_status" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Status for orders with overpayment</label>
+                    <source_model>Macopedia\Allegro\Model\Config\Source\State</source_model>
+                </field>
+                <field id="underpayment_status" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Status for orders with underpayment</label>
+                    <source_model>Macopedia\Allegro\Model\Config\Source\State</source_model>
+                </field>
+            </group>
+            <group id="delivery" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Delivery</label>
+                <field id="mapping" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Delivery methods - methods guid mapping</label>
+                    <frontend_model>Macopedia\Allegro\Block\Adminhtml\Config\Form\Field\DeliveryMethods</frontend_model>
+                    <backend_model>Macopedia\Allegro\Model\Config\Backend\DeliveryMethods</backend_model>
+                    <comment>As an Allegro method name please provide name of shipping option used in your offers on Allegro - i.e. "Allegro Paczkomaty 24/7 InPost" or "Paczka pocztowa ekonomiczna".</comment>
+                </field>
+                <field id="default_method" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default shipping method</label>
+                    <source_model>Macopedia\Allegro\Model\Config\Source\ActiveSippingMethods</source_model>
+                </field>
+            </group>
+            <group id="payment" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Payment</label>
+                <field id="method_online" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment method for online payments</label>
+                    <source_model>Macopedia\Allegro\Model\Config\Source\ActivePaymentMethods</source_model>
+                </field>
+                <field id="method_cash_on_delivery" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment method for cash on delivery</label>
+                    <source_model>Macopedia\Allegro\Model\Config\Source\ActivePaymentMethods</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+

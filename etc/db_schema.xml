@@ -1,0 +1,18 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order">
+        <column xsi:type="text" name="order_from" nullable="true" comment="Where the order comes from"/>
+        <column xsi:type="text" name="external_id" nullable="true" comment="External order ID"/>
+    </table>
+    <table name="sales_order_grid">
+        <column xsi:type="text" name="order_from" nullable="true" comment="Where the order comes from"/>
+        <column xsi:type="text" name="external_id" nullable="true" comment="External order ID"/>
+    </table>
+    <table name="quote">
+        <column xsi:type="text" name="order_from" nullable="true" comment="Where the order comes from"/>
+        <column xsi:type="text" name="external_id" nullable="true" comment="External order ID"/>
+    </table>
+    <table name="sales_order_item">
+        <column xsi:type="text" name="allegro_line_item_id" nullable="true" comment="Allegro line item ID"/>
+    </table>
+</schema>

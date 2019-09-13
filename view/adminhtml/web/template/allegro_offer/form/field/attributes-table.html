@@ -1,0 +1,42 @@
+<div>
+
+    <!-- ko if: loading -->
+
+        <div data-role="spinner">
+            <div class="spinner">
+                <span/><span/><span/><span/><span/><span/><span/><span/>
+            </div>
+        </div>
+
+    <!-- /ko -->
+    <!-- ko ifnot: loading -->
+
+        <!-- ko if: attributesLoaded -->
+            <!-- ko if: attributes().length <= 0 -->
+                <p>Selected category does not contain additional parameters.</p>
+            <!-- /ko -->
+            <!-- ko if: attributes().length > 0 -->
+                <!-- ko foreach: attributes -->
+                    <div data-bind="css: { required: definition.required }">
+                        <div>
+                            <label data-bind="attr: { for: $parent.uid + definition.id }">
+                                <span data-bind="text: definition.name"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <!-- ko template: template --><!-- /ko -->
+                        </div>
+                    </div>
+                <!-- /ko -->
+            <!-- /ko -->
+
+        <!-- /ko -->
+        <!-- ko ifnot: attributesLoaded -->
+            <div>
+                <span>Please select category to load allowed attributes.</span>
+            </div>
+        <!-- /ko -->
+
+    <!-- /ko -->
+
+</div>

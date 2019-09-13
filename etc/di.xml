@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Macopedia\Allegro\Api\Data\TokenInterface" type="Macopedia\Allegro\Model\Api\Auth\Data\Token" />
+    <preference for="Macopedia\Allegro\Api\ConsumerInterface" type="Macopedia\Allegro\Model\Consumer" />
+    <preference for="Macopedia\Allegro\Api\Consumer\MessageInterface" type="Macopedia\Allegro\Model\Consumer\Message" />
+    <preference for="Macopedia\Allegro\Api\ProductRepositoryInterface" type="Macopedia\Allegro\Model\ProductRepository" />
+    <preference for="Macopedia\Allegro\Api\OrderRepositoryInterface" type="Macopedia\Allegro\Model\OrderRepository" />
+    <preference for="Macopedia\Allegro\Api\OfferRepositoryInterface" type="Macopedia\Allegro\Model\OfferRepository" />
+    <preference for="Macopedia\Allegro\Api\CategoryRepositoryInterface" type="Macopedia\Allegro\Model\CategoryRepository" />
+    <preference for="Macopedia\Allegro\Api\ParameterDefinitionRepositoryInterface" type="Macopedia\Allegro\Model\ParameterDefinitionRepository" />
+    <preference for="Macopedia\Allegro\Api\PublicationCommandRepositoryInterface" type="Macopedia\Allegro\Model\PublicationCommandRepository" />
+    <preference for="Macopedia\Allegro\Api\ImageRepositoryInterface" type="Macopedia\Allegro\Model\ImageRepository" />
+    <preference for="Macopedia\Allegro\Api\EventRepositoryInterface" type="Macopedia\Allegro\Model\EventRepository" />
+    <preference for="Macopedia\Allegro\Api\CheckoutFormRepositoryInterface" type="Macopedia\Allegro\Model\CheckoutFormRepository" />
+    <preference for="Macopedia\Allegro\Api\DeliveryMethodRepositoryInterface" type="Macopedia\Allegro\Model\DeliveryMethodRepository" />
+    <preference for="Macopedia\Allegro\Api\Data\OfferInterface" type="Macopedia\Allegro\Model\Data\Offer" />
+    <preference for="Macopedia\Allegro\Api\Data\CategoryInterface" type="Macopedia\Allegro\Model\Data\Category" />
+    <preference for="Macopedia\Allegro\Api\Data\ParameterDefinitionInterface" type="Macopedia\Allegro\Model\Data\ParameterDefinition" />
+    <preference for="Macopedia\Allegro\Api\Data\DictionaryItemInterface" type="Macopedia\Allegro\Model\Data\DictionaryItem" />
+    <preference for="Macopedia\Allegro\Api\Data\ParameterInterface" type="Macopedia\Allegro\Model\Data\Parameter" />
+    <preference for="Macopedia\Allegro\Api\Data\ParameterInterfaceFactoryInterface" type="Macopedia\Allegro\Model\Data\ParameterFactory" />
+    <preference for="Macopedia\Allegro\Api\Data\Parameter\RangeInterface" type="Macopedia\Allegro\Model\Data\Parameter\Range" />
+    <preference for="Macopedia\Allegro\Api\Data\Parameter\ValuesIdsInterface" type="Macopedia\Allegro\Model\Data\Parameter\ValuesIds" />
+    <preference for="Macopedia\Allegro\Api\Data\Parameter\ValuesInterface" type="Macopedia\Allegro\Model\Data\Parameter\Values" />
+    <preference for="Macopedia\Allegro\Api\Data\PublicationCommandInterface" type="Macopedia\Allegro\Model\Data\PublicationCommand" />
+    <preference for="Macopedia\Allegro\Api\Data\ImageInterface" type="Macopedia\Allegro\Model\Data\Image" />
+    <preference for="Macopedia\Allegro\Api\Data\EventInterface" type="Macopedia\Allegro\Model\Data\Event" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutFormInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\BuyerInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Buyer" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\DeliveryInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Delivery" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\MethodInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Delivery\Method" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\CostInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Delivery\Cost" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\AddressInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Delivery\Address" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\InvoiceInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Invoice" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Invoice\AddressInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Invoice\Address" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Invoice\Address\CompanyInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Invoice\Address\Company" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Invoice\Address\NaturalPersonInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Invoice\Address\NaturalPerson" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\PaymentInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Payment" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\LineItemInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\LineItem" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\SummaryInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Summary" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\AmountInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Amount" />
+    <preference for="Macopedia\Allegro\Api\Data\DeliveryMethodInterface" type="Macopedia\Allegro\Model\Data\DeliveryMethod" />
+
+    <preference for="Magento\Sales\Block\Adminhtml\Order\View\Info" type="Macopedia\Allegro\Block\Adminhtml\HideAddressInformation" />
+
+    <type name="Macopedia\Allegro\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">importLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="exception" xsi:type="object">Macopedia\Allegro\Logger\ExceptionHandler</item>
+                <item name="api" xsi:type="object">Macopedia\Allegro\Logger\ApiHandler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="OrderImport" xsi:type="object">Macopedia\Allegro\Console\Command\ImportOrders</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="external_id" xsi:type="string">sales_order.external_id</item>
+                <item name="order_from" xsi:type="string">sales_order.order_from</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+</config>

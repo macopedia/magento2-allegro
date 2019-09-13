@@ -1,0 +1,49 @@
+<div>
+
+    <!-- ko if: loading -->
+
+        <div data-role="spinner">
+            <div class="spinner">
+                <span/><span/><span/><span/><span/><span/><span/><span/>
+            </div>
+        </div>
+
+    <!-- /ko -->
+    <!-- ko ifnot: loading -->
+
+        <select
+                class="admin__control-select"
+                data-bind="
+                    options: rootCategories,
+                    value: valuesStack()[0],
+                    optionsText: $data._getCategoryName.bind($data),
+                    optionsCaption: 'Choose root category...',
+                "
+        ></select>
+        <br />
+        <!-- ko foreach: valuesStack -->
+            <!-- ko if:
+                $data
+                && $parent.categories()[$data]
+                && $parent.valuesStack()[$index()+1]
+                && $parent.categories()[$data].children
+                && $parent.categories()[$data].children.length > 0
+                && $parent.categories()[$data].leaf == false
+            -->
+                <select
+                    class="admin__control-select"
+                    data-bind="
+                        disabled: $parent.valuesStack()[$index()+1],
+                        options: $parent.categories()[$data].children,
+                        value: $parent.valuesStack()[$index()+1],
+                        optionsText: $parent._getCategoryName.bind($parent),
+                        optionsCaption: 'Choose category...',
+                    "
+                ></select>
+                <br />
+            <!-- /ko -->
+        <!-- /ko -->
+
+    <!-- /ko -->
+
+</div>

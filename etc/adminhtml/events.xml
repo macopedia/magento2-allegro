@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="admin_system_config_changed_section_allegro">
+        <observer name="macopedia_allegro_system_config_changed_credentials" instance="Macopedia\Allegro\Observer\ConfigCredentialsChangeObserver"/>
+    </event>
+    <event name="cataloginventory_stock_item_save_commit_after">
+        <observer name="macopedia_allegro_qty_change" instance="Macopedia\Allegro\Observer\QtyChangeObserver"/>
+    </event>
+    <event name="sales_order_shipment_save_after">
+        <observer name="macopedia_allegro_shipping_save_after" instance="Macopedia\Allegro\Observer\SaveShippingAfterObserver" />
+    </event>
+    <event name="sales_order_shipment_save_before">
+        <observer name="macopedia_allegro_shipping_save_before" instance="Macopedia\Allegro\Observer\SaveShippingBeforeObserver" />
+    </event>
+</config>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <route url="/V1/allegro/offer/get-parameters/:categoryId"  method="GET">
+        <service class="Macopedia\Allegro\Api\ParameterDefinitionRepositoryInterface" method="getListByCategoryId" />
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/allegro/categories/root-list/"  method="GET">
+        <service class="Macopedia\Allegro\Api\CategoryRepositoryInterface" method="getRootList" />
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/allegro/categories/list/:parentCategoryId"  method="GET">
+        <service class="Macopedia\Allegro\Api\CategoryRepositoryInterface" method="getList" />
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/allegro/categories/all-parents/:categoryId"  method="GET">
+        <service class="Macopedia\Allegro\Api\CategoryRepositoryInterface" method="getAllParents" />
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+</routes>
