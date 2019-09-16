@@ -14,6 +14,7 @@
     <preference for="Macopedia\Allegro\Api\EventRepositoryInterface" type="Macopedia\Allegro\Model\EventRepository" />
     <preference for="Macopedia\Allegro\Api\CheckoutFormRepositoryInterface" type="Macopedia\Allegro\Model\CheckoutFormRepository" />
     <preference for="Macopedia\Allegro\Api\DeliveryMethodRepositoryInterface" type="Macopedia\Allegro\Model\DeliveryMethodRepository" />
+
     <preference for="Macopedia\Allegro\Api\Data\OfferInterface" type="Macopedia\Allegro\Model\Data\Offer" />
     <preference for="Macopedia\Allegro\Api\Data\CategoryInterface" type="Macopedia\Allegro\Model\Data\Category" />
     <preference for="Macopedia\Allegro\Api\Data\ParameterDefinitionInterface" type="Macopedia\Allegro\Model\Data\ParameterDefinition" />
@@ -32,6 +33,8 @@
     <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\MethodInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Delivery\Method" />
     <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\CostInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Delivery\Cost" />
     <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\AddressInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Delivery\Address" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\PickupPointInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Delivery\PickupPoint" />
+    <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\PickupPoint\AddressInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Delivery\PickupPoint\Address" />
     <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\InvoiceInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Invoice" />
     <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Invoice\AddressInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Invoice\Address" />
     <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\Invoice\Address\CompanyInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Invoice\Address\Company" />
@@ -41,6 +44,7 @@
     <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\SummaryInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Summary" />
     <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\AmountInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Amount" />
     <preference for="Macopedia\Allegro\Api\Data\DeliveryMethodInterface" type="Macopedia\Allegro\Model\Data\DeliveryMethod" />
+    <preference for="Macopedia\Allegro\Api\Data\Sales\Order\PickupPointExtensionAttributesInterface" type="Macopedia\Allegro\Model\Data\Sales\Order\PickupPointExtensionAttributes" />
 
     <preference for="Magento\Sales\Block\Adminhtml\Order\View\Info" type="Macopedia\Allegro\Block\Adminhtml\HideAddressInformation" />
 
@@ -70,5 +74,10 @@
             </argument>
         </arguments>
     </virtualType>
+
+    <type name="Magento\Sales\Api\OrderRepositoryInterface">
+        <plugin name="save_pickup_location" type="Macopedia\Allegro\Plugin\OrderSave"/>
+        <plugin name="get_pickup_location" type="Macopedia\Allegro\Plugin\OrderGet"/>
+    </type>
 
 </config>

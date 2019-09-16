@@ -2,17 +2,20 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+
         <referenceBlock name="content">
-            <block template="origin_order_data.phtml"
-                   class="Macopedia\Allegro\Block\OriginOrderData"
-                   name="origin_order_data"
-                   after="order_history"
-            />
+            <block template="origin_order_data.phtml" class="Macopedia\Allegro\Block\OriginOrderData" name="origin_order_data" after="order_history" />
         </referenceBlock>
+
         <referenceBlock name="order_info">
             <action method="setTemplate">
                 <argument name="template" xsi:type="string">Macopedia_Allegro::info.phtml</argument>
             </action>
         </referenceBlock>
+
+        <referenceBlock name="order_additional_info">
+            <block class="Magento\Sales\Block\Adminhtml\Order\AbstractOrder" name="order_allgero_pickup_point_view" template="Macopedia_Allegro::order/view/allegro_pickup_point_info.phtml"/>
+        </referenceBlock>
+
     </body>
 </page>

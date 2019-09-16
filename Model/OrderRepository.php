@@ -10,22 +10,22 @@ use Magento\Payment\Api\Data\PaymentAdditionalInfoInterfaceFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderSearchResultInterfaceFactory as SearchResultFactory;
 use Magento\Sales\Model\ResourceModel\Metadata;
-use Magento\Sales\Model\ResourceModel\Order\Collection;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Tax\Api\OrderTaxManagementInterface;
 use Magento\Sales\Api\Data\OrderExtensionFactory;
+use Macopedia\Allegro\Model\ResourceModel\Order as ResourceModel;
 
 class OrderRepository extends \Magento\Sales\Model\OrderRepository implements OrderRepositoryInterface
 {
 
-    /** @var CollectionFactory */
-    private $orderCollectionFactory;
+    /** @var ResourceModel */
+    private $resourceModel;
 
     /**
      * OrderRepository constructor.
      * @param Metadata $metadata
      * @param SearchResultFactory $searchResultFactory
-     * @param CollectionFactory $orderCollectionFactory
+     * @param ResourceModel $resourceModel
      * @param CollectionProcessorInterface|null $collectionProcessor
      * @param OrderExtensionFactory|null $orderExtensionFactory
      * @param OrderTaxManagementInterface|null $orderTaxManagement
@@ -35,7 +35,7 @@ class OrderRepository extends \Magento\Sales\Model\OrderRepository implements Or
     public function __construct(
         Metadata $metadata,
         SearchResultFactory $searchResultFactory,
-        CollectionFactory $orderCollectionFactory,
+        ResourceModel $resourceModel,
         CollectionProcessorInterface $collectionProcessor = null,
         OrderExtensionFactory $orderExtensionFactory = null,
         OrderTaxManagementInterface $orderTaxManagement = null,
@@ -51,28 +51,23 @@ class OrderRepository extends \Magento\Sales\Model\OrderRepository implements Or
             $paymentAdditionalInfoFactory,
             $serializer
         );
-
-        $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->resourceModel = $resourceModel;
     }
 
     /**
      * @param string $externalId
      * @return OrderInterface
      * @throws NoSuchEntityException
+     * @throws \Magento\Framework\Exception\InputException
      */
     public function getByExternalId(string $externalId): OrderInterface
     {
-        // TODO change collection use to getList method call in parent
-
-        /** @var Collection $collection */
-        $collection = $this->orderCollectionFactory->create();
-        $collection->addFieldToFilter('external_id', ['eq' => $externalId]);
-        $collection->load();
-
-        if ($collection->count() != 1) {
-            throw new NoSuchEntityException(__('Requested order with external id "%1" does not exist', $externalId));
+        $orderId = $this->resourceModel->getIdByAllegroCheckoutFormId($externalId);
+        if (!$orderId) {
+            throw new NoSuchEntityException(
+                __("The order that was requested doesn't exist. Verify the product and try again.")
+            );
         }
-
-        return $collection->getFirstItem();
+        return $this->get($orderId);
     }
 }

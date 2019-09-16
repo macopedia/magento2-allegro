@@ -8,6 +8,8 @@ use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\CostInterface;
 use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\CostInterfaceFactory;
 use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\AddressInterface;
 use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\AddressInterfaceFactory;
+use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\PickupPointInterface;
+use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\PickupPointInterfaceFactory;
 use Macopedia\Allegro\Api\Data\CheckoutForm\DeliveryInterface;
 use Magento\Framework\DataObject;
 
@@ -17,6 +19,7 @@ class Delivery extends DataObject implements DeliveryInterface
     const METHOD_FIELD_NAME = 'method';
     const ADDRESS_FIELD_NAME = 'address';
     const COST_FIELD_NAME = 'cost';
+    const PICKUP_POINT_FIELD_NAME = 'pickup_point';
 
     /** @var MethodInterfaceFactory */
     private $methodFactory;
@@ -27,6 +30,9 @@ class Delivery extends DataObject implements DeliveryInterface
     /** @var CostInterfaceFactory */
     private $costFactory;
 
+    /** @var PickupPointInterfaceFactory */
+    private $pickupPointFactory;
+
     /**
      * Delivery constructor.
      * @param MethodInterfaceFactory $methodFactory
@@ -36,11 +42,13 @@ class Delivery extends DataObject implements DeliveryInterface
     public function __construct(
         MethodInterfaceFactory $methodFactory,
         AddressInterfaceFactory $addressFactory,
-        CostInterfaceFactory $costFactory
+        CostInterfaceFactory $costFactory,
+        PickupPointInterfaceFactory $pickupPointFactory
     ) {
         $this->methodFactory = $methodFactory;
         $this->addressFactory = $addressFactory;
         $this->costFactory = $costFactory;
+        $this->pickupPointFactory = $pickupPointFactory;
     }
 
     /**
@@ -70,6 +78,14 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
+     * @param PickupPointInterface $pickupPoint
+     */
+    public function setPickupPoint(PickupPointInterface $pickupPoint)
+    {
+        $this->setData(self::PICKUP_POINT_FIELD_NAME, $pickupPoint);
+    }
+
+    /**
      * @return MethodInterface
      */
     public function getMethod(): MethodInterface
@@ -94,6 +110,14 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
+     * @return PickupPointInterface
+     */
+    public function getPickupPoint(): PickupPointInterface
+    {
+        return $this->getData(self::PICKUP_POINT_FIELD_NAME);
+    }
+
+    /**
      * @param array $rawData
      * @return void
      */
@@ -102,6 +126,7 @@ class Delivery extends DataObject implements DeliveryInterface
         $this->setMethod($this->mapMethodData($rawData['method'] ?? []));
         $this->setAddress($this->mapAddressData($rawData['address'] ?? []));
         $this->setCost($this->mapCostData($rawData['cost'] ?? []));
+        $this->setPickupPoint($this->mapPickupPointData($rawData['pickupPoint'] ?? []));
     }
 
     /**
@@ -138,5 +163,17 @@ class Delivery extends DataObject implements DeliveryInterface
         $cost = $this->costFactory->create();
         $cost->setRawData($data);
         return $cost;
+    }
+
+    /**
+     * @param array $data
+     * @return PickupPointInterface
+     */
+    private function mapPickupPointData(array $data): PickupPointInterface
+    {
+        /** @var PickupPointInterface $pickupPoint */
+        $pickupPoint = $this->pickupPointFactory->create();
+        $pickupPoint->setRawData($data);
+        return $pickupPoint;
     }
 }

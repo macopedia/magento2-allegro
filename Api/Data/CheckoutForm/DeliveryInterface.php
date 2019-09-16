@@ -5,6 +5,7 @@ namespace Macopedia\Allegro\Api\Data\CheckoutForm;
 use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\AddressInterface;
 use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\CostInterface;
 use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\MethodInterface;
+use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\PickupPointInterface;
 
 interface DeliveryInterface
 {
@@ -28,6 +29,12 @@ interface DeliveryInterface
     public function setCost(CostInterface $cost);
 
     /**
+     * @param PickupPointInterface $pickupPoint
+     * @return mixed
+     */
+    public function setPickupPoint(PickupPointInterface $pickupPoint);
+
+    /**
      * @return MethodInterface
      */
     public function getMethod(): MethodInterface;
@@ -41,6 +48,11 @@ interface DeliveryInterface
      * @return CostInterface
      */
     public function getCost(): CostInterface;
+
+    /**
+     * @return PickupPointInterface
+     */
+    public function getPickupPoint(): PickupPointInterface;
 
     /**
      * @param array $rawData

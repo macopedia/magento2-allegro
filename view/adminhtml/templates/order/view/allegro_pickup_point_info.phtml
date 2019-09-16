@@ -1,0 +1,45 @@
+<?php
+/**
+ * @var $block \Magento\Shipping\Block\Adminhtml\View
+ * @var \Magento\Sales\Api\Data\OrderInterface $order
+ */
+
+$order = $block->getOrder();
+$extensionAttributes = $order->getExtensionAttributes();
+$pickupPoint = $extensionAttributes->getPickupPoint();
+ ?>
+
+<?php if ($order->getIsVirtual()) : return ''; endif; ?>
+<?php if ($pickupPoint === null) : return ''; endif; ?>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Pickup Point')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <p>
+            <strong><?= $block->escapeHtml(__('ID')) ?>:</strong>
+            <span><?= $pickupPoint->getPointId() ?></span>
+        </p>
+        <p>
+            <strong><?= $block->escapeHtml(__('Name')) ?>:</strong>
+            <span><?= $pickupPoint->getName() ?></span>
+        </p>
+        <p>
+            <strong><?= $block->escapeHtml(__('Description')) ?>:</strong>
+            <span><?= $pickupPoint->getDescription() ?></span>
+        </p>
+        <p>
+            <strong><?= $block->escapeHtml(__('Street')) ?>:</strong>
+            <span><?= $pickupPoint->getStreet() ?></span>
+        </p>
+        <p>
+            <strong><?= $block->escapeHtml(__('Zip Code')) ?>:</strong>
+            <span><?= $pickupPoint->getZipCode() ?></span>
+        </p>
+        <p>
+            <strong><?= $block->escapeHtml(__('City')) ?>:</strong>
+            <span><?= $pickupPoint->getCity() ?></span>
+        </p>
+    </div>
+</section>

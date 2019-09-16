@@ -29,8 +29,8 @@ interface AddressInterface
     public function setRawData(array $rawData);
 
     /**
-     * @param OrderAddressInterface|QuoteAddressInterface $orderAddress
+     * @param OrderAddressInterface|QuoteAddressInterface $address
      * @return void
      */
-    public function fillAddress($orderAddress);
+    public function fillAddress($address);
 }
