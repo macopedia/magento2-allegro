@@ -96,7 +96,6 @@ class ProductRepository extends \Magento\Catalog\Model\ProductRepository impleme
         $cacheKey = $this->getCacheKey([$editMode, $storeId]);
         $cachedProduct = $this->getProductFromLocalCache($allegroOfferId, $cacheKey);
         if ($cachedProduct === null || $forceReload) {
-            $product = $this->productFactory->create();
 
             $productId = $this->resourceModel->getIdByAllegroOfferId($allegroOfferId);
             if (!$productId) {
@@ -104,15 +103,7 @@ class ProductRepository extends \Magento\Catalog\Model\ProductRepository impleme
                     __("The product that was requested doesn't exist. Verify the product and try again.")
                 );
             }
-            if ($editMode) {
-                $product->setData('_edit_mode', true);
-            }
-            if ($storeId !== null) {
-                $product->setData('store_id', $storeId);
-            }
-            $product->load($productId);
-            $this->cacheProduct($cacheKey, $product);
-            $cachedProduct = $product;
+            return $this->getById($productId, $editMode, $storeId, $forceReload);
         }
 
         return $cachedProduct;

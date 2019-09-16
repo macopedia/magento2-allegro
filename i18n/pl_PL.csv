@@ -74,4 +74,10 @@
 "Quantity","Ilość"
 "Select category","Wybierz kategorię"
 "Attributes","Atrybuty"
-
+"Pickup Point","Punkt Odbioru"
+"ID","ID"
+"Name","Nazwa"
+"Description","Opis"
+"Street","Ulica"
+"Zip Code","Kod Pocztowy"
+"City","Miasto"

@@ -27,6 +27,8 @@ class Updater extends AbstractAction
         $this->processStatus($order, $checkoutForm);
         $this->processComments($order, $checkoutForm);
 
+        $checkoutForm->getDelivery()->getPickupPoint()->fillOrder($order);
+
         $this->orderRepository->save($order);
     }
 
