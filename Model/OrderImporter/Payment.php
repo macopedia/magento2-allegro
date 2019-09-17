@@ -2,6 +2,7 @@
 
 namespace Macopedia\Allegro\Model\OrderImporter;
 
+use Macopedia\Allegro\Api\Data\CheckoutFormInterface;
 use Macopedia\Allegro\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Payment\Model\Config;
@@ -45,11 +46,13 @@ class Payment
     }
 
     /**
-     * @param string $paymentType
-     * @return string
+     * @param CheckoutFormInterface $checkoutForm
+     * @return mixed
      */
-    public function getPaymentMethodCode($paymentType)
+    public function getPaymentMethodCode(CheckoutFormInterface $checkoutForm)
     {
+        $paymentType = $checkoutForm->getPayment()->getType();
+
         if ($paymentType == '') {
             return $this->getDefaultMethodCode();
         }

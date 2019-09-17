@@ -2,6 +2,7 @@
 
 namespace Macopedia\Allegro\Model\OrderImporter;
 
+use Macopedia\Allegro\Api\Data\CheckoutFormInterface;
 use Macopedia\Allegro\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Shipping\Model\Config;
@@ -43,11 +44,13 @@ class Shipping
     }
 
     /**
-     * @param $methodName
+     * @param CheckoutFormInterface $checkoutForm
      * @return string
      */
-    public function getShippingMethodCode($methodName)
+    public function getShippingMethodCode(CheckoutFormInterface $checkoutForm)
     {
+        $methodName = $checkoutForm->getDelivery()->getMethod()->getId();
+
         if ($methodName == '') {
             return $this->getDefaultShippingMethodCode();
         }

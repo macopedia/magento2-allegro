@@ -45,9 +45,7 @@ class Updater extends AbstractAction
         }
 
         $checkoutForm->getDelivery()->getAddress()->fillAddress($shippingAddress);
-        $shippingMethodCode = $this->shipping->getShippingMethodCode(
-            $checkoutForm->getDelivery()->getMethod()->getId()
-        );
+        $shippingMethodCode = $this->shipping->getShippingMethodCode($checkoutForm);
 
         $shippingAddress->setShippingMethod($shippingMethodCode);
         $order->getExtensionAttributes()->setShippingAssignments(null);
@@ -73,7 +71,7 @@ class Updater extends AbstractAction
 
         $order->getPayment()->setMethod(
             $this->payment->getPaymentMethodCode(
-                $checkoutForm->getPayment()->getType()
+                $checkoutForm
             )
         );
     }

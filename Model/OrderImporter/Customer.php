@@ -55,21 +55,4 @@ class Customer
         }
         return $this->customerRepository->getById($customer->getEntityId());
     }
-
-    /**
-     * @param int $customerId
-     * @param string $email
-     * @param array $addressData
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     */
-    public function update($customerId, $email, array $addressData)
-    {
-        $customer = $this->customerRepository->getById($customerId);
-        $customer
-            ->setFirstname($addressData['firstName'] ?? 'undefined')
-            ->setLastname($addressData['lastName'] ?? 'undefined')
-            ->setEmail($email)
-            ->save();
-    }
 }

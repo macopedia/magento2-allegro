@@ -199,9 +199,7 @@ class Creator extends AbstractAction
         $checkoutForm->getDelivery()->getAddress()->fillAddress($quote->getShippingAddress());
         $quote->getShippingAddress()->setCustomerId($quote->getCustomer()->getId());
 
-        $shippingMethodCode = $this->shipping->getShippingMethodCode(
-            $checkoutForm->getDelivery()->getMethod()->getId()
-        );
+        $shippingMethodCode = $this->shipping->getShippingMethodCode($checkoutForm);
 
         $quote->getShippingAddress()
             ->setCollectShippingRates(true)
@@ -223,7 +221,7 @@ class Creator extends AbstractAction
 
         $quote->getPayment()->setMethod(
             $this->payment->getPaymentMethodCode(
-                $checkoutForm->getPayment()->getType()
+                $checkoutForm
             )
         );
     }
