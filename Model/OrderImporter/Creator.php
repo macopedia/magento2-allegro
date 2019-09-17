@@ -202,9 +202,9 @@ class Creator extends AbstractAction
         $shippingMethodCode = $this->shipping->getShippingMethodCode($checkoutForm);
 
         $quote->getShippingAddress()
+            ->setShippingMethod($shippingMethodCode)
             ->setCollectShippingRates(true)
-            ->collectShippingRates()
-            ->setShippingMethod($shippingMethodCode);
+            ->collectShippingRates();
     }
 
     /**
