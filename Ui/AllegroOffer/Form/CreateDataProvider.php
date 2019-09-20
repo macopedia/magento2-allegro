@@ -23,9 +23,9 @@ class CreateDataProvider extends DataProvider
 
     /**
      * CreateDataProvider constructor.
-     * @param $name
-     * @param $primaryFieldName
-     * @param $requestFieldName
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
      * @param GetSalableQuantityDataBySku $getSalableQuantityDataBySku
      * @param ReportingInterface $reporting
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
