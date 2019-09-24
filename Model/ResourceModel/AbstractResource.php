@@ -3,6 +3,8 @@
 namespace Macopedia\Allegro\Model\ResourceModel;
 
 use Macopedia\Allegro\Logger\Logger;
+use Macopedia\Allegro\Model\Api\Auth\Data\TokenDecoder;
+use Macopedia\Allegro\Model\Api\Auth\Data\TokenDecoderException;
 use Macopedia\Allegro\Model\Api\Client;
 use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\ClientResponseErrorException;
@@ -31,6 +33,9 @@ abstract class AbstractResource
     /** @var TokenProvider */
     private $tokenProvider;
 
+    /** @var TokenDecoder */
+    private $tokenDecoder;
+
     /** @var Logger */
     private $logger;
 
@@ -44,12 +49,30 @@ abstract class AbstractResource
         ScopeConfigInterface $scopeConfig,
         Client $client,
         TokenProvider $tokenProvider,
+        TokenDecoder $tokenDecoder,
         Logger $logger
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->client = $client;
         $this->tokenProvider = $tokenProvider;
+        $this->tokenDecoder = $tokenDecoder;
         $this->logger = $logger;
+    }
+
+    /**
+     * @return string|null
+     * @throws ClientException
+     * @throws ClientResponseErrorException
+     * @throws ClientResponseException
+     */
+    public function getCurrentUserId(): ?string
+    {
+        $token = $this->tokenProvider->getCurrent();
+        try {
+            return $this->tokenDecoder->getSellerId($token);
+        } catch (TokenDecoderException $e) {
+            throw new ClientException(__('Could not decode token'), $e);
+        }
     }
 
     /**

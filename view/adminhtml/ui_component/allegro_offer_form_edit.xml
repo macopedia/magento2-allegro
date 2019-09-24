@@ -18,6 +18,8 @@
     <settings>
         <buttons>
             <button name="save" class="Macopedia\Allegro\Block\Adminhtml\Offer\SaveButton"/>
+            <button name="publish" class="Macopedia\Allegro\Block\Adminhtml\Offer\PublishButton"/>
+            <button name="end" class="Macopedia\Allegro\Block\Adminhtml\Offer\EndButton"/>
         </buttons>
         <namespace>allegro_offer_form_edit</namespace>
         <dataScope>data</dataScope>
@@ -58,15 +60,15 @@
                 </item>
             </argument>
         </field>
-<!--        <field name="image">-->
-<!--            <argument name="data" xsi:type="array">-->
-<!--                <item name="config" xsi:type="array">-->
-<!--                    <item name="visible" xsi:type="boolean">false</item>-->
-<!--                    <item name="dataType" xsi:type="string">text</item>-->
-<!--                    <item name="formElement" xsi:type="string">input</item>-->
-<!--                </item>-->
-<!--            </argument>-->
-<!--        </field>-->
+        <field name="images">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                </item>
+            </argument>
+        </field>
         <field name="name">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -86,7 +88,7 @@
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">wysiwyg</item>
-                    <item name="label" xsi:type="string">Description</item>
+                    <item name="label" xsi:type="string" translate="true">Description</item>
                     <item name="template" xsi:type="string">ui/form/field</item>
                     <item name="wysiwyg" xsi:type="boolean">true</item>
                     <item name="rows" xsi:type="number">8</item>
@@ -116,6 +118,48 @@
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="delivery_shipping_rates_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Macopedia\Allegro\Model\Config\Source\ShippingRates</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Delivery price list</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="delivery_handling_time">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Macopedia\Allegro\Model\Config\Source\HandlingTime</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Handling time</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="payments_invoice">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Macopedia\Allegro\Model\Config\Source\PaymentsInvoice</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Invoice option</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
                     <item name="validation" xsi:type="array">
                         <item name="required-entry" xsi:type="boolean">true</item>
                     </item>

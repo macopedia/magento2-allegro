@@ -1,16 +1,19 @@
 <?php
 
-
 namespace Macopedia\Allegro\Controller\Adminhtml\Offer;
 
 use Macopedia\Allegro\Api\Data\OfferInterfaceFactory;
 use Macopedia\Allegro\Api\Data\ImageInterfaceFactory;
 use Macopedia\Allegro\Api\OfferRepositoryInterface;
+use Macopedia\Allegro\Api\PublicationCommandRepositoryInterface;
 use Macopedia\Allegro\Model\Api\Credentials;
 use \Macopedia\Allegro\Api\ProductRepositoryInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Registry;
 use Psr\Log\LoggerInterface;
 use Macopedia\Allegro\Api\ParameterDefinitionRepositoryInterface;
+use Macopedia\Allegro\Api\Data\PublicationCommandInterfaceFactory;
+use Macopedia\Allegro\Api\Data\Offer\LocationInterfaceFactory;
 
 class Context
 {
@@ -30,8 +33,20 @@ class Context
     /** @var ParameterDefinitionRepositoryInterface */
     private $parameterDefinitionRepository;
 
+    /** @var PublicationCommandInterfaceFactory */
+    private $publicationCommandFactory;
+
+    /** @var PublicationCommandRepositoryInterface */
+    private $publicationCommandRepository;
+
     /** @var ImageInterfaceFactory */
     private $imageFactory;
+
+    /** @var LocationInterfaceFactory */
+    private $locationFactory;
+
+    /** @var ScopeConfigInterface */
+    private $scopeConfig;
 
     /** @var Registry */
     private $registry;
@@ -46,6 +61,7 @@ class Context
      * @param OfferRepositoryInterface $offerRepository
      * @param OfferInterfaceFactory $offerFactory
      * @param ParameterDefinitionRepositoryInterface $parameterDefinitionRepository
+     * @param PublicationCommandInterfaceFactory $publicationCommandFactory
      * @param ImageInterfaceFactory $imageFactory
      * @param Registry $registry
      * @param LoggerInterface $logger
@@ -56,7 +72,11 @@ class Context
         OfferRepositoryInterface $offerRepository,
         OfferInterfaceFactory $offerFactory,
         ParameterDefinitionRepositoryInterface $parameterDefinitionRepository,
+        PublicationCommandInterfaceFactory $publicationCommandFactory,
+        PublicationCommandRepositoryInterface $publicationCommandRepository,
         ImageInterfaceFactory $imageFactory,
+        LocationInterfaceFactory $locationFactory,
+        ScopeConfigInterface $scopeConfig,
         Registry $registry,
         LoggerInterface $logger
     ) {
@@ -65,7 +85,11 @@ class Context
         $this->offerRepository = $offerRepository;
         $this->offerFactory = $offerFactory;
         $this->parameterDefinitionRepository = $parameterDefinitionRepository;
+        $this->publicationCommandFactory = $publicationCommandFactory;
+        $this->publicationCommandRepository = $publicationCommandRepository;
         $this->imageFactory = $imageFactory;
+        $this->locationFactory = $locationFactory;
+        $this->scopeConfig = $scopeConfig;
         $this->registry = $registry;
         $this->logger = $logger;
     }
@@ -111,11 +135,43 @@ class Context
     }
 
     /**
+     * @return PublicationCommandInterfaceFactory
+     */
+    public function getPublicationCommandFactory(): PublicationCommandInterfaceFactory
+    {
+        return $this->publicationCommandFactory;
+    }
+
+    /**
+     * @return PublicationCommandRepositoryInterface
+     */
+    public function getPublicationCommandRepository(): PublicationCommandRepositoryInterface
+    {
+        return $this->publicationCommandRepository;
+    }
+
+    /**
      * @return ImageInterfaceFactory
      */
     public function getImageFactory(): ImageInterfaceFactory
     {
         return $this->imageFactory;
+    }
+
+    /**
+     * @return LocationInterfaceFactory
+     */
+    public function getLocationFactory(): LocationInterfaceFactory
+    {
+        return $this->locationFactory;
+    }
+
+    /**
+     * @return ScopeConfigInterface
+     */
+    public function getScopeConfig(): ScopeConfigInterface
+    {
+        return $this->scopeConfig;
     }
 
     /**

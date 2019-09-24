@@ -3,6 +3,7 @@
 namespace Macopedia\Allegro\Controller\Adminhtml\Offer;
 
 use Macopedia\Allegro\Api\Data\ImageInterface;
+use Macopedia\Allegro\Api\Data\Offer\LocationInterface;
 use Macopedia\Allegro\Api\Data\OfferInterface;
 use Macopedia\Allegro\Api\Data\ParameterInterface;
 use Macopedia\Allegro\Api\Data\ParameterInterfaceFactoryInterface;
@@ -73,6 +74,22 @@ class Save extends Offer
         } else {
             /** @var OfferInterface $offer */
             $offer = $this->offerFactory->create();
+
+            /** @var LocationInterface $location */
+            $location = $this->locationFactory->create();
+            $location->setCountryCode(
+                $this->scopeConfig->getValue('allegro/origin/country_id')
+            );
+            $location->setProvince(
+                $this->scopeConfig->getValue('allegro/origin/province')
+            );
+            $location->setCity(
+                $this->scopeConfig->getValue('allegro/origin/city')
+            );
+            $location->setPostCode(
+                $this->scopeConfig->getValue('allegro/origin/post_code')
+            );
+            $offer->setLocation($location);
         }
 
         $offer->setName($data['name']);
@@ -81,9 +98,14 @@ class Save extends Offer
         $offer->setQty($data['qty']);
         $offer->setPrice($data['price']);
         $offer->setParameters($this->initializeParameters($data));
+        $offer->setDeliveryShippingRatesId($data['delivery_shipping_rates_id']);
+        $offer->setDeliveryHandlingTime($data['delivery_handling_time']);
+        $offer->setPaymentsInvoice($data['payments_invoice']);
+
         if (isset($data['images'])) {
             $offer->setImages($this->initializeImages($data['images']));
         }
+
         return $offer;
     }
 
