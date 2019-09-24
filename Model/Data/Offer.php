@@ -1,14 +1,13 @@
 <?php
 
-
 namespace Macopedia\Allegro\Model\Data;
 
 use Macopedia\Allegro\Api\Data\ImageInterface;
 use Macopedia\Allegro\Api\Data\ImageInterfaceFactory;
+use Macopedia\Allegro\Api\Data\Offer\LocationInterface;
+use Macopedia\Allegro\Api\Data\Offer\LocationInterfaceFactory;
 use Macopedia\Allegro\Api\Data\ParameterInterface;
 use Macopedia\Allegro\Api\Data\OfferInterface;
-use Macopedia\Allegro\Api\Data\PublicationCommandInterface;
-use Macopedia\Allegro\Api\Data\PublicationInterfaceFactory;
 use Macopedia\Allegro\Api\ParameterDefinitionRepositoryInterface;
 use Magento\Framework\DataObject;
 
@@ -24,8 +23,9 @@ class Offer extends DataObject implements OfferInterface
     const PARAMETERS_FIELD_NAME = 'parameters';
     const IMAGES_FIELD_NAME = 'images';
     const LOCATION_FIELD_NAME = 'location';
-    const PAYMENTS_FIELD_NAME = 'payments';
-    const DELIVERY_FIELD_NAME = 'delivery';
+    const DELIVERY_SHIPPING_RATES_ID_FIELD_NAME = 'delivery_shipping_rates_id';
+    const DELIVERY_HANDLING_TIME_FIELD_NAME = 'delivery_handling_time';
+    const PAYMENTS_INVOICE_FIELD_NAME = 'payments_invoice';
     const PUBLICATION_STATUS_FIELD_NAME = 'publication_status';
 
     /** @var ParameterDefinitionRepositoryInterface */
@@ -33,6 +33,9 @@ class Offer extends DataObject implements OfferInterface
 
     /** @var ImageInterfaceFactory */
     private $imageFactory;
+
+    /** @var LocationInterfaceFactory */
+    private $locationFactory;
 
     /**
      * Offer constructor.
@@ -42,10 +45,12 @@ class Offer extends DataObject implements OfferInterface
      */
     public function __construct(
         ParameterDefinitionRepositoryInterface $parameterDefinitionRepository,
-        ImageInterfaceFactory $imageFactory
+        ImageInterfaceFactory $imageFactory,
+        LocationInterfaceFactory $locationFactory
     ) {
         $this->parameterDefinitionRepository = $parameterDefinitionRepository;
         $this->imageFactory = $imageFactory;
+        $this->locationFactory = $locationFactory;
         $this->setRawData([]);
     }
 
@@ -122,27 +127,35 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param array $location
+     * @param LocationInterface $location
      */
-    public function setLocation(array $location)
+    public function setLocation(LocationInterface $location)
     {
         $this->setData(self::LOCATION_FIELD_NAME, $location);
     }
 
     /**
-     * @param array $payments
+     * @param string $deliveryShippingRate
      */
-    public function setPayments(array $payments)
+    public function setDeliveryShippingRatesId(string $deliveryShippingRate)
     {
-        $this->setData(self::PAYMENTS_FIELD_NAME, $payments);
+        $this->setData(self::DELIVERY_SHIPPING_RATES_ID_FIELD_NAME, $deliveryShippingRate);
     }
 
     /**
-     * @param array $delivery
+     * @param string $handlingTime
      */
-    public function setDelivery(array $delivery)
+    public function setDeliveryHandlingTime(string $handlingTime)
     {
-        $this->setData(self::DELIVERY_FIELD_NAME, $delivery);
+        $this->setData(self::DELIVERY_HANDLING_TIME_FIELD_NAME, $handlingTime);
+    }
+
+    /**
+     * @param string $paymentsInvoice
+     */
+    public function setPaymentsInvoice(string $paymentsInvoice)
+    {
+        $this->setData(self::PAYMENTS_INVOICE_FIELD_NAME, $paymentsInvoice);
     }
 
     /**
@@ -218,27 +231,35 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return array|null
+     * @return LocationInterface
      */
-    public function getLocation(): array
+    public function getLocation(): LocationInterface
     {
         return $this->getData(self::LOCATION_FIELD_NAME);
     }
 
     /**
-     * @return array|null
+     * @return string|null
      */
-    public function getPayments(): array
+    public function getDeliveryShippingRatesId(): ?string
     {
-        return $this->getData(self::PAYMENTS_FIELD_NAME);
+        return $this->getData(self::DELIVERY_SHIPPING_RATES_ID_FIELD_NAME);
     }
 
     /**
-     * @return array|null
+     * @return string|null
      */
-    public function getDelivery(): array
+    public function getDeliveryHandlingTime(): ?string
     {
-        return $this->getData(self::DELIVERY_FIELD_NAME);
+        return $this->getData(self::DELIVERY_HANDLING_TIME_FIELD_NAME);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPaymentsInvoice(): ?string
+    {
+        return $this->getData(self::PAYMENTS_INVOICE_FIELD_NAME);
     }
 
     /**
@@ -248,6 +269,29 @@ class Offer extends DataObject implements OfferInterface
     {
         return $this->getData(self::PUBLICATION_STATUS_FIELD_NAME);
     }
+
+    /**
+     * @return bool
+     */
+    public function canBePublished(): bool
+    {
+        return in_array(
+            $this->getPublicationStatus(),
+            [
+                self::PUBLICATION_STATUS_INACTIVE,
+                self::PUBLICATION_STATUS_ENDED
+            ]
+        );
+    }
+
+    /**
+     * @return bool
+     */
+    public function canBeEnded(): bool
+    {
+        return $this->getPublicationStatus() == self::PUBLICATION_STATUS_ACTIVE;
+    }
+
 
     /**
      * @param array $rawData
@@ -276,12 +320,19 @@ class Offer extends DataObject implements OfferInterface
         if (isset($rawData['publication']['status'])) {
             $this->setPublicationStatus($rawData['publication']['status']);
         }
+        if (isset($rawData['delivery']['shippingRates']['id'])) {
+            $this->setDeliveryShippingRatesId($rawData['delivery']['shippingRates']['id']);
+        }
+        if (isset($rawData['delivery']['handlingTime'])) {
+            $this->setDeliveryHandlingTime($rawData['delivery']['handlingTime']);
+        }
+        if (isset($rawData['payments']['invoice'])) {
+            $this->setPaymentsInvoice($rawData['payments']['invoice']);
+        }
 
         $this->setParameters($this->mapParametersData($rawData['parameters']?? []));
         $this->setImages($this->mapImagesData($rawData['images'] ?? []));
-        $this->setLocation($rawData['location'] ?? []);
-        $this->setPayments($rawData['payments'] ?? []);
-        $this->setDelivery($rawData['delivery'] ?? []);
+        $this->setLocation($this->mapLocationData($rawData['location'] ?? []));
     }
 
     /**
@@ -323,19 +374,19 @@ class Offer extends DataObject implements OfferInterface
                 'available' => $this->getQty(),
                 'unit' => 'UNIT'
             ],
+            'delivery' => [
+                'shippingRates' => [
+                    'id' => $this->getDeliveryShippingRatesId()
+                ],
+                'handlingTime' => $this->getDeliveryHandlingTime(),
+                'additionalInfo' => null,
+                'shipmentDate' => null
+            ],
+            'location' => $this->mapLocation($this->getLocation()),
+            'payments' => [
+                'invoice' => $this->getPaymentsInvoice()
+            ]
         ];
-
-        if (!empty($this->getLocation())) {
-            $rawData['location'] = $this->getLocation();
-        }
-
-        if (!empty($this->getPayments())) {
-            $rawData['payments'] = $this->getPayments();
-        }
-
-        if (!empty($this->getDelivery())) {
-            $rawData['delivery'] = $this->getDelivery();
-        }
 
         return $rawData;
     }
@@ -371,7 +422,7 @@ class Offer extends DataObject implements OfferInterface
      * @param ParameterInterface[] $parameters
      * @return array
      */
-    private function mapParameters(array $parameters)
+    private function mapParameters(array $parameters): array
     {
         $result = [];
         foreach ($parameters as $parameter) {
@@ -407,5 +458,26 @@ class Offer extends DataObject implements OfferInterface
             $result[] = $image->getRawData();
         }
         return $result;
+    }
+
+    /**
+     * @param array $locationData
+     * @return LocationInterface
+     */
+    private function mapLocationData(array $locationData): LocationInterface
+    {
+        /** @var LocationInterface $location */
+        $location = $this->locationFactory->create();
+        $location->setRawData($locationData);
+        return $location;
+    }
+
+    /**
+     * @param LocationInterface $location
+     * @return array
+     */
+    private function mapLocation(LocationInterface $location): array
+    {
+        return $location->getRawData();
     }
 }

@@ -2,10 +2,13 @@
 
 namespace Macopedia\Allegro\Controller\Adminhtml;
 
+use Macopedia\Allegro\Api\Data\Offer\LocationInterfaceFactory;
 use Macopedia\Allegro\Api\Data\OfferInterfaceFactory;
 use Macopedia\Allegro\Api\Data\ImageInterfaceFactory;
+use Macopedia\Allegro\Api\Data\PublicationCommandInterfaceFactory;
 use Macopedia\Allegro\Api\OfferRepositoryInterface;
 use Macopedia\Allegro\Api\ParameterDefinitionRepositoryInterface;
+use Macopedia\Allegro\Api\PublicationCommandRepositoryInterface;
 use Macopedia\Allegro\Controller\Adminhtml\Offer\Context as OfferContext;
 use Macopedia\Allegro\Model\Api\Credentials;
 use Macopedia\Allegro\Api\ProductRepositoryInterface;
@@ -17,6 +20,7 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\Page;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 abstract class Offer extends Action
 {
@@ -36,8 +40,20 @@ abstract class Offer extends Action
     /** @var ParameterDefinitionRepositoryInterface */
     protected $parameterDefinitionRepository;
 
+    /** @var PublicationCommandInterfaceFactory */
+    protected $publicationCommandFactory;
+
+    /** @var PublicationCommandRepositoryInterface */
+    protected $publicationCommandRepository;
+
     /** @var ImageInterfaceFactory */
     protected $imageFactory;
+
+    /** @var LocationInterfaceFactory */
+    protected $locationFactory;
+
+    /** @var ScopeConfigInterface */
+    protected $scopeConfig;
 
     /** @var Registry */
     protected $registry;
@@ -60,7 +76,11 @@ abstract class Offer extends Action
         $this->offerRepository = $offerContext->getOfferRepository();
         $this->offerFactory = $offerContext->getOfferFactory();
         $this->parameterDefinitionRepository = $offerContext->getParameterDefinitionRepository();
+        $this->publicationCommandFactory = $offerContext->getPublicationCommandFactory();
+        $this->publicationCommandRepository = $offerContext->getPublicationCommandRepository();
         $this->imageFactory = $offerContext->getImageFactory();
+        $this->locationFactory = $offerContext->getLocationFactory();
+        $this->scopeConfig = $offerContext->getScopeConfig();
         $this->registry = $offerContext->getRegistry();
         $this->logger = $offerContext->getLogger();
     }

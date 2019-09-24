@@ -89,6 +89,23 @@
                     <source_model>Macopedia\Allegro\Model\Config\Source\ActivePaymentMethods</source_model>
                 </field>
             </group>
+            <group id="origin" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Origin</label>
+                <field id="country_id" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Country</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                </field>
+                <field id="province" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Province</label>
+                    <source_model>Macopedia\Allegro\Model\Config\Source\Province</source_model>
+                </field>
+                <field id="post_code" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Post Code</label>
+                </field>
+                <field id="city" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>City</label>
+                </field>
+            </group>
         </section>
     </system>
 </config>

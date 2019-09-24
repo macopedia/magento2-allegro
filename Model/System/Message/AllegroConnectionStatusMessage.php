@@ -58,11 +58,14 @@ class AllegroConnectionStatusMessage implements MessageInterface
         }
 
         try {
+
             $this->credentials->getToken();
-            return true;
+
         } catch (ClientException $e) {
-            return false;
+            return true;
         }
+
+        return false;
     }
 
     /**

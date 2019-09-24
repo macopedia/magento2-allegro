@@ -45,20 +45,12 @@ class SaveButton implements ButtonProviderInterface
         return [
             'label' => __('Save'),
             'class' => 'save primary',
-            'on_click' => "location.href = '" . $this->getSubmitUrl() . "';",
+            'on_click' => "location.href = '" . $this->urlBuilder->getUrl('allegro/offer/save') . "';",
             'data_attribute' => [
                 'mage-init' => ['button' => ['event' => 'save']],
                 'form-role' => 'save',
             ],
             'sort_order' => 10,
         ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getSubmitUrl()
-    {
-        return $this->urlBuilder->getUrl('allegro/offer/save');
     }
 }

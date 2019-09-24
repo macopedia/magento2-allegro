@@ -3,6 +3,7 @@
 namespace Macopedia\Allegro\Model\ResourceModel\Sale;
 
 use Macopedia\Allegro\Logger\Logger;
+use Macopedia\Allegro\Model\Api\Auth\Data\TokenDecoder;
 use Macopedia\Allegro\Model\Api\Client;
 use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\TokenProvider;
@@ -30,10 +31,11 @@ class Offers extends AbstractResource
         ScopeConfigInterface $scopeConfig,
         Client $client,
         TokenProvider $tokenProvider,
+        TokenDecoder $tokenDecoder,
         Logger $logger,
         Guid $guid
     ) {
-        parent::__construct($scopeConfig, $client, $tokenProvider, $logger);
+        parent::__construct($scopeConfig, $client, $tokenProvider, $tokenDecoder, $logger);
         $this->guid = $guid;
     }
 
@@ -97,17 +99,5 @@ class Offers extends AbstractResource
     public function getOfferStatus($commandId)
     {
         return $this->requestGet('/sale/offer-publication-commands/' . $commandId);
-    }
-
-    /**
-     * @param string $offerId
-     * @return array
-     * @throws ClientException
-     * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
-     * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
-     */
-    public function getShippingRates($offerId)
-    {
-        return $this->requestGet('/sale/offers/' . $offerId . '/shipping-rates', [], true);
     }
 }

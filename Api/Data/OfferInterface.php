@@ -2,6 +2,8 @@
 
 namespace Macopedia\Allegro\Api\Data;
 
+use Macopedia\Allegro\Api\Data\Offer\LocationInterface;
+
 interface OfferInterface
 {
 
@@ -59,22 +61,28 @@ interface OfferInterface
     public function setImages(array $images);
 
     /**
-     * @param array $location
+     * @param LocationInterface $location
      * @return void
      */
-    public function setLocation(array $location);
+    public function setLocation(LocationInterface $location);
 
     /**
-     * @param array $payments
+     * @param string $deliveryShippingRate
      * @return void
      */
-    public function setPayments(array $payments);
+    public function setDeliveryShippingRatesId(string $deliveryShippingRate);
 
     /**
-     * @param array $delivery
+     * @param string $handlingTime
      * @return void
      */
-    public function setDelivery(array $delivery);
+    public function setDeliveryHandlingTime(string $handlingTime);
+
+    /**
+     * @param string $paymentsInvoice
+     * @return void
+     */
+    public function setPaymentsInvoice(string $paymentsInvoice);
 
     /**
      * @param string $publicationStatus
@@ -83,37 +91,42 @@ interface OfferInterface
     public function setPublicationStatus(string $publicationStatus);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string;
 
     /**
-     * @return array|null
+     * @return LocationInterface
      */
-    public function getLocation(): ?array;
+    public function getLocation(): LocationInterface;
 
     /**
-     * @return array|null
+     * @return string|null
      */
-    public function getPayments(): ?array;
+    public function getDeliveryShippingRatesId(): ?string;
 
     /**
-     * @return array|null
+     * @return string|null
      */
-    public function getDelivery(): ?array;
+    public function getDeliveryHandlingTime(): ?string;
 
     /**
-     * @return string
+     * @return string|null
+     */
+    public function getPaymentsInvoice(): ?string;
+
+    /**
+     * @return string|null
      */
     public function getName(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDescription(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCategory(): ?string;
 
@@ -123,12 +136,12 @@ interface OfferInterface
     public function getParameters(): ?array;
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getPrice(): ?float;
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getQty(): ?int;
 
@@ -141,6 +154,16 @@ interface OfferInterface
      * @return string|null
      */
     public function getPublicationStatus(): ?string;
+
+    /**
+     * @return bool
+     */
+    public function canBePublished(): bool;
+
+    /**
+     * @return bool
+     */
+    public function canBeEnded(): bool;
 
     /**
      * @param array $rawData
