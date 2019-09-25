@@ -2,11 +2,33 @@ define([
     'jquery',
     'ko',
     'Magento_Ui/js/form/element/abstract',
+    'Magento_Ui/js/lib/validation/validator',
     'Macopedia_Allegro/js/allegro_offer/form/field/attributes-table/values',
     'Macopedia_Allegro/js/allegro_offer/form/field/attributes-table/values-ids',
     'Macopedia_Allegro/js/allegro_offer/form/field/attributes-table/range',
-], function ($, ko, abstractElement, values, valuesIds, range) {
+    'mage/translate'
+], function ($, ko, abstractElement, validator, values, valuesIds, range) {
     'use strict';
+
+    validator.addRule(
+        'attributes-table-validation',
+        function (value, params, additionalParams) {
+            if (!additionalParams.self) {
+                return false;
+            }
+
+            if (!additionalParams.self.attributes()) {
+                return false;
+            }
+
+            var result = true;
+            $.each(additionalParams.self.attributes(), function (id, attribute) {
+                result = result && attribute.validate();
+            });
+            return result;
+        },
+        ''
+    );
 
     return abstractElement.extend({
 
@@ -22,12 +44,20 @@ define([
         attributesByCategoryId: {},
         loadAttributesAjax: null,
 
+        initialize: function () {
+            this._super();
+
+            this.validation = this.validation || {};
+            this.validation['attributes-table-validation'] = true;
+
+            this.validationParams = this.validationParams || {};
+            this.validationParams['self'] = this;
+
+            return this;
+        },
+
         _initializeValue: function () {
             var self = this;
-
-            console.log('_initializeValue');
-            console.log(self.attributes());
-            console.log(self.value());
 
             $.each(self.attributes(), function (key, attribute) {
                 attribute.initializeValue(self.value()[attribute.definition.id]);
@@ -54,8 +84,6 @@ define([
             $.each(this.attributes(), function (id, attribute) {
                 result[attribute.definition.id] = attribute.value();
             });
-            console.log('computing attributes result:');
-            console.log(result);
             return result;
         },
 
@@ -89,7 +117,7 @@ define([
                     self._processResponse(response);
                 },
                 error: function (response) {
-                    if (response.statusText == 'abort') {
+                    if (response.statusText === 'abort') {
                         return;
                     }
                     // TODO implement error popup
@@ -123,16 +151,11 @@ define([
                 'values_ids': valuesIds
             };
 
-            console.log(attributeDefinition['frontend_type']);
-
-            if (types[attributeDefinition['frontend_type']] == undefined) {
+            if (types[attributeDefinition['frontend_type']] === undefined) {
                 throw 'Invalid parameter type';
             }
 
-            return types[attributeDefinition['frontend_type']]({
-                definition: attributeDefinition,
-                table: this,
-            });
+            return new types[attributeDefinition['frontend_type']](attributeDefinition);
         },
 
         _showSpinner: function () {

@@ -43,7 +43,7 @@ define([
                     });
                 },
                 error: function (response) {
-                    if (response.statusText == 'abort') {
+                    if (response.statusText === 'abort') {
                         return;
                     }
                     // TODO implement error popup
@@ -82,7 +82,7 @@ define([
             }
 
             var last = this._getLastValueInValuesStack();
-            if (last == undefined) {
+            if (last === undefined) {
                 return '';
             }
 
@@ -94,9 +94,6 @@ define([
                 return '';
             }
 
-            console.log('computing category result:');
-            console.log(last);
-
             return last;
         },
 
@@ -107,13 +104,13 @@ define([
             $.each(this.valuesStack(), function (key, value) {
                 if (skipNext) return;
                 newValueStack.push(value);
-                if (newValue == value()) skipNext = true;
+                if (newValue === value()) skipNext = true;
             });
             this.valuesStack(newValueStack);
 
             var last = this._getLastValueInValuesStack();
 
-            if (last == undefined) {
+            if (last === undefined) {
                 return;
             }
 
@@ -159,7 +156,7 @@ define([
                     self._addCategories(response, categoryId)
                 },
                 error: function (response) {
-                    if (response.statusText == 'abort') {
+                    if (response.statusText === 'abort') {
                         return;
                     }
                     // TODO implement error popup
@@ -188,7 +185,7 @@ define([
                     });
                 },
                 error: function (response) {
-                    if (response.statusText == 'abort') {
+                    if (response.statusText === 'abort') {
                         return;
                     }
                     // TODO implement error popup

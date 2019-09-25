@@ -1,7 +1,42 @@
-<input
-    class="admin__control-text"
-    type="text"
-    data-bind="
-        value: inputValue
-    "
-/>
+<div>
+    <!-- ko if: inputValue().length > 0 -->
+        <!-- ko foreach: inputValue -->
+            <input
+                class="admin__control-text"
+                type="text"
+                data-bind="
+                    value: $parent.inputValue()[$index()]
+                "
+            />
+            <!-- ko if: $parent.inputValue().length > 1 -->
+                <button
+                        type="button"
+                        class="values-remove-item"
+                        data-bind="
+                            i18n: 'Remove value',
+                            click: function (data, event) { $parent.removeValue($index()); }
+                        "
+                ></button>
+            <!-- /ko -->
+        <!-- /ko -->
+    <!-- /ko -->
+
+    <!-- ko if: (getRestrictionValue('allowedNumberOfValues')) > inputValue().length -->
+        <button
+            type="button"
+            class="values-add-item"
+            data-bind="
+                i18n: 'Add next value',
+                click: function (data, event) { $data.addNextValue(); }
+            "
+        ></button>
+    <!-- /ko -->
+
+    <!-- ko ifnot: errorMessage() == '' -->
+        <label
+            class="admin__field-error"
+            data-bind="
+                text: errorMessage
+            "></label>
+    <!-- /ko -->
+</div>

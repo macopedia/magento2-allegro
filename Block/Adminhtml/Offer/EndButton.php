@@ -44,19 +44,12 @@ class EndButton implements ButtonProviderInterface
     public function getButtonData()
     {
         return [
-            'label' => $this->getLabel(),
-            'class' => implode( ' ', $this->getClasses()),
+            'label' => __('End offer'),
+            'class' => 'action-secondary',
+            'disabled' => !$this->getOffer()->canBeEnded(),
             'on_click' => $this->getOnclick(),
             'sort_order' => 10,
         ];
-    }
-
-    /**
-     * @return string
-     */
-    protected function getLabel()
-    {
-        return __('End offer');
     }
 
     /**
@@ -68,20 +61,6 @@ class EndButton implements ButtonProviderInterface
             "location.href = '%s';",
             $this->urlBuilder->getUrl('allegro/offer/end/', ['id' => $this->getOffer()->getId()])
         );
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function getClasses()
-    {
-        $classess = ['action-secondary'];
-
-        if (!$this->getOffer()->canBeEnded()) {
-            $classess[] = 'hidden';
-        }
-
-        return $classess;
     }
 
     /**

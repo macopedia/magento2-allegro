@@ -45,7 +45,8 @@ class PublishButton implements ButtonProviderInterface
     {
         return [
             'label' => $this->getLabel(),
-            'class' => implode( ' ', $this->getClasses()),
+            'disabled' => !($this->getOffer()->canBePublished() && $this->getOffer()->isValid()),
+            'class' => 'action-secondary',
             'on_click' => $this->getOnclick(),
             'sort_order' => 10,
         ];
@@ -59,10 +60,7 @@ class PublishButton implements ButtonProviderInterface
         if ($this->getOffer()->getPublicationStatus() === OfferInterface::PUBLICATION_STATUS_ENDED) {
             return __('Resume offer');
         }
-        if ($this->getOffer()->getPublicationStatus() === OfferInterface::PUBLICATION_STATUS_INACTIVE) {
-            return __('Publish offer');
-        }
-        return '';
+        return __('Publish offer');
     }
 
     /**
@@ -74,20 +72,6 @@ class PublishButton implements ButtonProviderInterface
             "location.href = '%s';",
             $this->urlBuilder->getUrl('allegro/offer/publish/', ['id' => $this->getOffer()->getId()])
         );
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function getClasses()
-    {
-        $classess = ['action-secondary'];
-
-        if (!$this->getOffer()->canBePublished()) {
-            $classess[] = 'hidden';
-        }
-
-        return $classess;
     }
 
     /**

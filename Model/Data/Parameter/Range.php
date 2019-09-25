@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Macopedia\Allegro\Model\Data\Parameter;
 
 use Macopedia\Allegro\Api\Data\Parameter\RangeInterface;
 use Macopedia\Allegro\Model\Data\Parameter;
-use Magento\Framework\Exception\LocalizedException;
 
 class Range extends Parameter implements RangeInterface
 {
@@ -34,7 +32,7 @@ class Range extends Parameter implements RangeInterface
     /**
      * @return string
      */
-    public function getMinValue(): string
+    public function getMinValue(): ?string
     {
         return $this->getData(self::MIN_VALUE_FIELD_NAME);
     }
@@ -42,26 +40,47 @@ class Range extends Parameter implements RangeInterface
     /**
      * @return string
      */
-    public function getMaxValue(): string
+    public function getMaxValue(): ?string
     {
         return (string) $this->getData(self::MAX_VALUE_FIELD_NAME);
     }
 
-    public function setValue($value)
+    /**
+     * @return bool
+     */
+    public function isValueEmpty(): bool
     {
-        // TODO: Implement setValue() method.
-        throw new LocalizedException(__('Parameter type range is not supported'));
+        return $this->getMinValue() === '' || $this->getMinValue() === null
+            || $this->getMaxValue() === '' || $this->getMaxValue() === null;
     }
 
-    public function getValue()
-    {
-        // TODO: Implement getValue() method.
-        throw new LocalizedException(__('Parameter type range is not supported'));
-    }
-
+    /**
+     * @param array $rawData
+     */
     public function setRawData(array $rawData)
     {
-        // TODO: Implement setRawData() method.
-        throw new LocalizedException(__('Parameter type range is not supported'));
+        parent::setRawData($rawData);
+        if (isset($rawData['rangeValue']['from'])) {
+            $this->setMinValue($rawData['rangeValue']['from']);
+        }
+        if (isset($rawData['rangeValue']['to'])) {
+            $this->setMaxValue($rawData['rangeValue']['to']);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getRawData(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'valuesIds' => [],
+            'values' => [],
+            'rangeValue' => [
+                'from' => $this->getMinValue(),
+                'to' => $this->getMaxValue()
+            ]
+        ];
     }
 }

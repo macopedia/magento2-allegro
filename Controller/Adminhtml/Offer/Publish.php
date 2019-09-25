@@ -19,6 +19,8 @@ class Publish extends Offer
      */
     public function execute()
     {
+        $offer = null;
+
         try {
             $offerId = $this->getRequest()->getParam('id');
             if (!$offerId) {
@@ -36,7 +38,7 @@ class Publish extends Offer
             $publicationCommand->setAction(PublicationCommandInterface::ACTION_ACTIVATE);
             $this->publicationCommandRepository->save($publicationCommand);
 
-            $this->messageManager->addSuccessMessage(__('Offer published successfully'));
+            $this->messageManager->addSuccessMessage(__('Offer publication request sent successfully'));
             return $this->createRedirectEditResult($offerId);
 
         } catch (LocalizedException $e) {
@@ -45,6 +47,10 @@ class Publish extends Offer
         } catch (\Exception $e) {
             $this->logger->critical($e);
             $this->messageManager->addErrorMessage(__('Something went wrong'));
+        }
+
+        if ($offer !== null && $offer->getId() !== null) {
+            return $this->createRedirectEditResult($offer->getId());
         }
 
         return $this->createRedirectIndexResult();

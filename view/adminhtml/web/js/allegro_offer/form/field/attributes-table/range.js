@@ -1,31 +1,37 @@
 define([
-    'knockout'
-], function (ko) {
+    'jquery',
+    'knockout',
+    'Macopedia_Allegro/js/allegro_offer/form/field/attributes-table/abstract-attribute',
+], function ($, ko, abstract) {
+    'use strict';
 
-    return function (configuration) {
+    return abstract.extend({
 
-        var range = {};
+        defaults: {
+            template: 'Macopedia_Allegro/allegro_offer/form/field/attributes-table/range',
+        },
 
-        range._computedValue = function () {
-            return {from: range.inputValueMin(), to: range.inputValueMax()};
-        };
+        initialize: function() {
+            this.inputValueMin = ko.observable("");
+            this.inputValueMax = ko.observable("");
+            this._super();
+        },
 
-        range.initializeValue = function (value) {
-            if (value == undefined) {
+        _computedValue: function () {
+            return {
+                minValue: this.inputValueMin(),
+                maxValue: this.inputValueMax()
+            };
+        },
+
+        initializeValue: function (value) {
+            if (value === undefined || value === null || (Array.isArray(value) && value.length < 1)) {
                 return;
             }
-            // TODO implement range field type
-        };
+            this.inputValueMin = value.minValue;
+            this.inputValueMin = value.maxValue;
+        }
 
-        range.template = 'Macopedia_Allegro/allegro_offer/form/field/attributes-table/range';
-        range.definition = configuration.definition;
-        range.table = configuration.table;
-        range.inputValueMin = ko.observable();
-        range.inputValueMax = ko.observable();
-        range.value = ko.computed(range._computedValue, range);
-
-        return range;
-
-    };
+    });
 
 });

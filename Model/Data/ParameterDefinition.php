@@ -3,8 +3,10 @@
 
 namespace Macopedia\Allegro\Model\Data;
 
-use Macopedia\Allegro\Api\Data\DictionaryItemInterface;
-use Macopedia\Allegro\Api\Data\DictionaryItemInterfaceFactory;
+use Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface;
+use Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterfaceFactory;
+use Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface;
+use Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterfaceFactory;
 use Macopedia\Allegro\Api\Data\ParameterDefinitionInterface;
 use Magento\Framework\DataObject;
 
@@ -22,13 +24,19 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     /** @var DictionaryItemInterfaceFactory */
     private $dictionaryItemFactory;
 
+    /** @var RestrictionInterfaceFactory */
+    private $restrictionFactory;
+
     /**
      * ParameterDefinition constructor.
      * @param DictionaryItemInterfaceFactory $dictionaryItemFactory
      */
-    public function __construct(DictionaryItemInterfaceFactory $dictionaryItemFactory)
-    {
+    public function __construct(
+        DictionaryItemInterfaceFactory $dictionaryItemFactory,
+        RestrictionInterfaceFactory $restrictionFactory
+    ) {
         $this->dictionaryItemFactory = $dictionaryItemFactory;
+        $this->restrictionFactory = $restrictionFactory;
     }
 
     /**
@@ -68,7 +76,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param \Macopedia\Allegro\Api\Data\DictionaryItemInterface[] $dictionary
+     * @param \Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface[] $dictionary
      * @return void
      */
     public function setDictionary(array $dictionary)
@@ -77,7 +85,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param array $restrictions
+     * @param \Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface[] $restrictions
      * @return void
      */
     public function setRestrictions(array $restrictions)
@@ -118,7 +126,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @return \Macopedia\Allegro\Api\Data\DictionaryItemInterface[]
+     * @return \Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface[]
      */
     public function getDictionary(): array
     {
@@ -126,7 +134,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @return array
+     * @return \Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface[]
      */
     public function getRestrictions(): array
     {
@@ -134,22 +142,52 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
+     * @param string $type
+     * @return bool
+     */
+    public function hasRestriction(string $type): bool
+    {
+        foreach ($this->getRestrictions() as $restriction) {
+            if ($restriction->getType() == $type) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param string $type
+     * @return mixed
+     */
+    public function getRestrictionValue(string $type)
+    {
+        foreach ($this->getRestrictions() as $restriction) {
+            if ($restriction->getType() == $type) {
+                return $restriction->getValue();
+            }
+        }
+        return null;
+    }
+
+    /**
      * @return string
      */
     public function getFrontendType(): string
     {
-        if ($this->getType() == 'dictionary') {
+        if ($this->getType() == self::TYPE_DICTIONARY) {
             return self::FRONTEND_TYPE_VALUES_IDS;
         }
 
-        $restrictions = $this->getRestrictions();
-        if (isset($restrictions['range']) && $restrictions['range'] == true) {
+        if ($this->hasRestriction('range') && $this->getRestrictionValue('range') === true) {
             return self::FRONTEND_TYPE_RANGE;
         }
 
         return self::FRONTEND_TYPE_VALUES;
     }
 
+    /**
+     * @param array $rawData
+     */
     public function setRawData(array $rawData)
     {
         if (isset($rawData['id'])) {
@@ -163,7 +201,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
         }
 
         $this->setRequired($rawData['required'] ?? false);
-        $this->setRestrictions($rawData['restrictions'] ?? []);
+        $this->setRestrictions($this->mapRestrictionsData($rawData['restrictions'] ?? []));
         $this->setDictionary($this->mapDictionaryData($rawData['dictionary'] ?? []));
     }
 
@@ -181,5 +219,22 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
             $dictionary[] = $dictionaryItem;
         }
         return $dictionary;
+    }
+
+    /**
+     * @param array $data
+     * @return RestrictionInterface[]
+     */
+    private function mapRestrictionsData(array $data): array
+    {
+        $restrictions = [];
+        foreach ($data as $type => $value) {
+            /** @var RestrictionInterface $restriction */
+            $restriction = $this->restrictionFactory->create();
+            $restriction->setType($type);
+            $restriction->setValue($value);
+            $restrictions[] = $restriction;
+        }
+        return $restrictions;
     }
 }

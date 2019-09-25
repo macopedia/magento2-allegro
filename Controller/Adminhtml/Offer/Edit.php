@@ -19,6 +19,7 @@ class Edit extends Offer
     public function execute()
     {
         try {
+
             $offerId = $this->getRequest()->getParam('id');
             if (!$offerId) {
                 throw new LocalizedException(__('Requested offer does not exists'));
@@ -33,6 +34,7 @@ class Edit extends Offer
             $this->registry->register('product', $product);
 
             return $this->createPageResult();
+
         } catch (LocalizedException $e) {
             $this->logger->critical($e);
             $this->messageManager->addExceptionMessage($e);

@@ -24,6 +24,8 @@ class Save extends Offer
      */
     public function execute()
     {
+        $offer = null;
+
         try {
             $data = $this->getRequest()->getParam('allegro');
 
@@ -43,13 +45,17 @@ class Save extends Offer
                     $this->productRepository->save($product);
                 } catch (CouldNotSaveException $e) {
                     $this->messageManager->addWarningMessage(
-                        __('Offer saved successfully but can not assign it to product. Please update product with proper offer ID manually')
+                        __('Could not assign offer id to product. Please update product data with proper offer ID manually')
                     );
-                    return $this->createRedirectEditResult($offer->getId());
                 }
             }
+            
+            if ($offer->isValid()) {
+                $this->messageManager->addSuccessMessage(__('Offer saved successfully'));
+            } else {
+                $this->messageManager->addWarningMessage(__('Offer saved successfully but contains invalid data. Validation errors: %1', sprintf(implode(' ', $offer->getValidationErrors()))));
+            }
 
-            $this->messageManager->addSuccessMessage(__('Offer saved successfully'));
             return $this->createRedirectEditResult($offer->getId());
 
         } catch (LocalizedException $e) {
@@ -60,12 +66,18 @@ class Save extends Offer
             $this->messageManager->addErrorMessage(__('Something went wrong'));
         }
 
+        if ($offer !== null && $offer->getId() !== null) {
+            return $this->createRedirectEditResult($offer->getId());
+        }
+
         return $this->createRedirectIndexResult();
     }
 
     /**
      * @param array $data
      * @return OfferInterface
+     * @throws \Macopedia\Allegro\Model\Api\ClientException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     private function initializeOffer(array $data): OfferInterface
     {
@@ -74,23 +86,14 @@ class Save extends Offer
         } else {
             /** @var OfferInterface $offer */
             $offer = $this->offerFactory->create();
-
-            /** @var LocationInterface $location */
-            $location = $this->locationFactory->create();
-            $location->setCountryCode(
-                $this->scopeConfig->getValue('allegro/origin/country_id')
-            );
-            $location->setProvince(
-                $this->scopeConfig->getValue('allegro/origin/province')
-            );
-            $location->setCity(
-                $this->scopeConfig->getValue('allegro/origin/city')
-            );
-            $location->setPostCode(
-                $this->scopeConfig->getValue('allegro/origin/post_code')
-            );
-            $offer->setLocation($location);
         }
+
+        $location = $offer->getLocation();
+        $location->setCountryCode($this->scopeConfig->getValue('allegro/origin/country_id'));
+        $location->setProvince($this->scopeConfig->getValue('allegro/origin/province'));
+        $location->setCity($this->scopeConfig->getValue('allegro/origin/city'));
+        $location->setPostCode($this->scopeConfig->getValue('allegro/origin/post_code'));
+        $offer->setLocation($location);
 
         $offer->setName($data['name']);
         $offer->setCategory($data['category']);
@@ -111,7 +114,8 @@ class Save extends Offer
 
     /**
      * @param array $data
-     * @return ParameterInterface[]
+     * @return array
+     * @throws \Macopedia\Allegro\Model\Api\ClientException
      */
     private function initializeParameters(array $data): array
     {

@@ -27,6 +27,7 @@ class Offer extends DataObject implements OfferInterface
     const DELIVERY_HANDLING_TIME_FIELD_NAME = 'delivery_handling_time';
     const PAYMENTS_INVOICE_FIELD_NAME = 'payments_invoice';
     const PUBLICATION_STATUS_FIELD_NAME = 'publication_status';
+    const VALIDATION_ERRORS_FIELD_NAME = 'validation_errors';
 
     /** @var ParameterDefinitionRepositoryInterface */
     private $parameterDefinitionRepository;
@@ -167,6 +168,15 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
+     * @param string[] $validationErrors
+     */
+    public function setValidationErrors(array $validationErrors)
+    {
+        $this->setData(self::VALIDATION_ERRORS_FIELD_NAME, $validationErrors);
+    }
+
+
+    /**
      * @return string
      */
     public function getId(): ?string
@@ -271,6 +281,14 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
+     * @return string[]
+     */
+    public function getValidationErrors(): array
+    {
+        return $this->getData(self::VALIDATION_ERRORS_FIELD_NAME);
+    }
+
+    /**
      * @return bool
      */
     public function canBePublished(): bool
@@ -292,6 +310,13 @@ class Offer extends DataObject implements OfferInterface
         return $this->getPublicationStatus() == self::PUBLICATION_STATUS_ACTIVE;
     }
 
+    /**
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        return count($this->getValidationErrors()) < 1;
+    }
 
     /**
      * @param array $rawData
@@ -333,6 +358,7 @@ class Offer extends DataObject implements OfferInterface
         $this->setParameters($this->mapParametersData($rawData['parameters']?? []));
         $this->setImages($this->mapImagesData($rawData['images'] ?? []));
         $this->setLocation($this->mapLocationData($rawData['location'] ?? []));
+        $this->setValidationErrors($this->mapValidationErrorsData($rawData['validation']['errors'] ?? []));
     }
 
     /**
@@ -340,6 +366,7 @@ class Offer extends DataObject implements OfferInterface
      */
     public function getRawData(): array
     {
+        // TODO: Include only not empty parameters
         $rawData = [
             'id' => $this->getId() != '' ? $this->getId() : null,
             'name' => $this->getName(),
@@ -411,7 +438,7 @@ class Offer extends DataObject implements OfferInterface
 
         $result = [];
         foreach ($parameters as $parameter) {
-            $parameter->setRawData($parametersValues[$parameter->getId()]);
+            $parameter->setRawData($parametersValues[$parameter->getId()] ?? []);
             $result[] = $parameter;
         }
 
@@ -426,6 +453,9 @@ class Offer extends DataObject implements OfferInterface
     {
         $result = [];
         foreach ($parameters as $parameter) {
+            if ($parameter->isValueEmpty()) {
+                continue;
+            }
             $result[] =  $parameter->getRawData();
         }
         return $result;
@@ -479,5 +509,18 @@ class Offer extends DataObject implements OfferInterface
     private function mapLocation(LocationInterface $location): array
     {
         return $location->getRawData();
+    }
+
+    /**
+     * @param array $data
+     * @return string[]
+     */
+    private function mapValidationErrorsData(array $data): array
+    {
+        $result = [];
+        foreach ($data as $error) {
+            $result[] = $error['message'] != '' ? $error['message'] : $error['userMessage'];
+        }
+        return $result;
     }
 }

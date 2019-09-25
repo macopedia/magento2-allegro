@@ -11,10 +11,10 @@ interface ValuesIdsInterface extends ParameterInterface
      * @param int[] $value
      * @return void
      */
-    public function setValue($value);
+    public function setValue(array $value);
 
     /**
      * @return int[]
      */
-    public function getValue();
+    public function getValue(): array;
 }

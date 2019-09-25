@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Macopedia\Allegro\Model\Data\Parameter;
 
 use Macopedia\Allegro\Api\Data\Parameter\ValuesInterface;
@@ -15,9 +14,9 @@ class Values extends Parameter implements ValuesInterface
      * @param string[] $value
      * @return void
      */
-    public function setValue($value)
+    public function setValue(array $value)
     {
-        $this->setData(self::VALUE_FIELD_NAME, $value);
+        $this->setData(self::VALUE_FIELD_NAME, $this->stripEmptyValues($value));
     }
 
     /**
@@ -33,10 +32,16 @@ class Values extends Parameter implements ValuesInterface
      */
     public function setRawData(array $rawData)
     {
-        if (isset($rawData['id'])) {
-            $this->setId($rawData['id']);
-        }
+        parent::setRawData($rawData);
         $this->setValue($rawData['values'] ?? []);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValueEmpty(): bool
+    {
+        return count($this->getValue()) < 1;
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Macopedia\Allegro\Model\Data;
+namespace Macopedia\Allegro\Model\Data\ParameterDefinition;
 
-use Macopedia\Allegro\Api\Data\DictionaryItemInterface;
+use Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface;
 use Magento\Framework\DataObject;
 
 class DictionaryItem extends DataObject implements DictionaryItemInterface

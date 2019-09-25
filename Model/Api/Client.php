@@ -48,12 +48,12 @@ class Client
         if (isset($response['errors'])) {
             $errors = [];
             foreach ($response['errors'] as $error) {
-                $errors[] = $error['message'] ?? $error['userMessage'];
+                $errors[] = $error['message'] != '' ? $error['message'] : $error['userMessage'];
             }
             throw new ClientResponseErrorException(
                 __(
                     'Errors returned in received from Allegro API response: %1',
-                    implode(', ', $errors)
+                    implode(' ', $errors)
                 )
             );
         }

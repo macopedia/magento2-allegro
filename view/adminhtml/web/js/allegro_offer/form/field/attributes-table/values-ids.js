@@ -1,43 +1,44 @@
 define([
-    'knockout'
-], function (ko) {
+    'jquery',
+    'knockout',
+    'Macopedia_Allegro/js/allegro_offer/form/field/attributes-table/abstract-attribute',
+], function ($, ko, abstract) {
+    'use strict';
 
-    return function (configuration) {
+    return abstract.extend({
 
-        var valuesIds = {};
+        defaults: {
+            template: 'Macopedia_Allegro/allegro_offer/form/field/attributes-table/values-ids',
+        },
 
-        valuesIds._computedValue = function () {
-            var val = valuesIds.inputValue();
+        initialize: function() {
+            this.inputValue = ko.observable("");
+            this._super();
+        },
 
-            if (valuesIds.definition.restrictions.allowedNumberOfValues > 1) {
-                if (val == "") {
-                    return [];
-                }
+        initializeValue: function (value) {
+            if (value === undefined || value === null || (Array.isArray(value) && value.length < 1)) {
+                return;
+            }
+            if (this.hasRestriction('multipleChoices') && this.getRestrictionValue('multipleChoices')) {
+                this.inputValue(value);
+                return;
+            }
+            this.inputValue(value[0]);
+        },
+
+        _computedValue: function () {
+            var val = this.inputValue();
+
+            if (val === "" || val === undefined) {
+                return [];
+            }
+            if (this.hasRestriction('multipleChoices') && this.getRestrictionValue('multipleChoices')) {
                 return val;
             }
-
             return [val];
-        };
+        }
 
-        valuesIds.initializeValue = function (value) {
-            if (value == undefined) {
-                return;
-            }
-            if (valuesIds.definition.restrictions.allowedNumberOfValues > 1) {
-                valuesIds.inputValue(value);
-                return;
-            }
-            valuesIds.inputValue(value[0]);
-        };
-
-        valuesIds.template = 'Macopedia_Allegro/allegro_offer/form/field/attributes-table/values-ids';
-        valuesIds.definition = configuration.definition;
-        valuesIds.table = configuration.table;
-        valuesIds.inputValue = ko.observable("");
-        valuesIds.value = ko.computed(valuesIds._computedValue, valuesIds);
-
-        return valuesIds;
-
-    };
+    });
 
 });

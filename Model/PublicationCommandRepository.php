@@ -36,7 +36,7 @@ class PublicationCommandRepository implements PublicationCommandRepositoryInterf
             $this->offers->changeOfferStatus($publication->getRawData());
 
         } catch (ClientResponseException $e) {
-            throw new CouldNotSaveException(__('Could not save publication command'), $e);
+            throw new CouldNotSaveException(__('Could not send publication request Reason: %1', $e->getMessage()), $e);
         }
     }
 }

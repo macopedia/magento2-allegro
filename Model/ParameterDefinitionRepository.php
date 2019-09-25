@@ -2,7 +2,6 @@
 
 namespace Macopedia\Allegro\Model;
 
-use Macopedia\Allegro\Api\Data\CategoryInterface;
 use Macopedia\Allegro\Api\Data\ParameterDefinitionInterface;
 use Macopedia\Allegro\Api\Data\ParameterDefinitionInterfaceFactory;
 use Macopedia\Allegro\Api\Data\ParameterInterface;
@@ -67,7 +66,7 @@ class ParameterDefinitionRepository implements ParameterDefinitionRepositoryInte
 
     /**
      * @param int $categoryId
-     * @return ParameterDefinitionInterface[]
+     * @return ParameterInterface[]
      * @throws ClientException
      */
     public function createParametersByCategoryId(int $categoryId): array
