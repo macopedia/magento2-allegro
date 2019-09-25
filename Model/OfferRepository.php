@@ -66,15 +66,7 @@ class OfferRepository implements OfferRepositoryInterface
             }
 
         } catch (ClientResponseException $e) {
-            throw new CouldNotSaveException(__('Could not save offer'), $e);
-        }
-
-        if (isset($offerRawData['validation']['errors']) && count($offerRawData['validation']['errors']) > 0) {
-            $errors = [];
-            foreach($offerRawData['validation']['errors'] as $error) {
-                $errors[] = $error['message'] ?? $error['userMessage'];
-            }
-            throw new CouldNotSaveException(__('Offer validation errors: %1', sprintf(', ' )));
+            throw new CouldNotSaveException(__('Could not save offer Reason: %1', $e->getMessage()), $e);
         }
 
         if (!isset($offerRawData['id'])) {

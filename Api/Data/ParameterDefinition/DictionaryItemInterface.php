@@ -1,6 +1,6 @@
 <?php
 
-namespace Macopedia\Allegro\Api\Data;
+namespace Macopedia\Allegro\Api\Data\ParameterDefinition;
 
 interface DictionaryItemInterface
 {

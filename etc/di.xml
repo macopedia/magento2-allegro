@@ -20,7 +20,8 @@
     <preference for="Macopedia\Allegro\Api\Data\Offer\LocationInterface" type="Macopedia\Allegro\Model\Data\Offer\Location" />
     <preference for="Macopedia\Allegro\Api\Data\CategoryInterface" type="Macopedia\Allegro\Model\Data\Category" />
     <preference for="Macopedia\Allegro\Api\Data\ParameterDefinitionInterface" type="Macopedia\Allegro\Model\Data\ParameterDefinition" />
-    <preference for="Macopedia\Allegro\Api\Data\DictionaryItemInterface" type="Macopedia\Allegro\Model\Data\DictionaryItem" />
+    <preference for="Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface" type="Macopedia\Allegro\Model\Data\ParameterDefinition\DictionaryItem" />
+    <preference for="Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface" type="Macopedia\Allegro\Model\Data\ParameterDefinition\Restriction" />
     <preference for="Macopedia\Allegro\Api\Data\ParameterInterface" type="Macopedia\Allegro\Model\Data\Parameter" />
     <preference for="Macopedia\Allegro\Api\Data\ParameterInterfaceFactoryInterface" type="Macopedia\Allegro\Model\Data\ParameterFactory" />
     <preference for="Macopedia\Allegro\Api\Data\Parameter\RangeInterface" type="Macopedia\Allegro\Model\Data\Parameter\Range" />

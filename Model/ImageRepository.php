@@ -38,7 +38,7 @@ class ImageRepository implements ImageRepositoryInterface
         try {
             $response = $this->images->postImage($image->getRawData());
         } catch (ClientResponseException $e) {
-            throw new CouldNotSaveException(__('Image with url "%1" could not be saved', $image->getUrl()), $e);
+            throw new CouldNotSaveException(__('Image with url "%1" could not be saved Reason: %2', $image->getUrl(), $e->getMessage()), $e);
         }
 
         $image->setUrl($response['location']);

@@ -4,6 +4,11 @@ namespace Macopedia\Allegro\Api\Data;
 
 interface ParameterDefinitionInterface
 {
+    const TYPE_INTEGER = 'integer';
+    const TYPE_FLOAT = 'float';
+    const TYPE_STRING = 'string';
+    const TYPE_DICTIONARY = 'dictionary';
+
     const FRONTEND_TYPE_RANGE = 'range';
     const FRONTEND_TYPE_VALUES = 'values';
     const FRONTEND_TYPE_VALUES_IDS = 'values_ids';
@@ -27,7 +32,7 @@ interface ParameterDefinitionInterface
     public function setType(string $type);
 
     /**
-     * @param \Macopedia\Allegro\Api\Data\DictionaryItemInterface[] $dictionary
+     * @param \Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface[] $dictionary
      * @return void
      */
     public function setDictionary(array $dictionary);
@@ -39,7 +44,7 @@ interface ParameterDefinitionInterface
     public function setRequired(bool $required);
 
     /**
-     * @param array $restrictions
+     * @param \Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface[] $restrictions
      * @return void
      */
     public function setRestrictions(array $restrictions);
@@ -65,7 +70,7 @@ interface ParameterDefinitionInterface
     public function getRequired(): ?bool;
 
     /**
-     * @return \Macopedia\Allegro\Api\Data\DictionaryItemInterface[]
+     * @return \Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface[]
      */
     public function getDictionary(): array;
 
@@ -75,9 +80,21 @@ interface ParameterDefinitionInterface
     public function getFrontendType(): ?string;
 
     /**
-     * @return array
+     * @return \Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface[]
      */
     public function getRestrictions(): array;
+
+    /**
+     * @param string $type
+     * @return bool
+     */
+    public function hasRestriction(string $type): bool;
+
+    /**
+     * @param string $type
+     * @return mixed
+     */
+    public function getRestrictionValue(string $type);
 
     /**
      * @param array $rawData

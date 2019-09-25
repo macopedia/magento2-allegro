@@ -49,39 +49,47 @@ class SaveShippingBeforeObserver implements ObserverInterface
 
     /**
      * @param Observer $observer
-     * @return void
+     * @throws ClientException
      * @throws ConnectionLostException
+     * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
+     * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
      */
     public function execute(Observer $observer)
     {
-        /** @var Shipment $shipment */
-        $shipment = $observer->getEvent()->getShipment();
+        try {
 
-        // TODO use ExtensionAttributesInterface
-        $orderFrom = $shipment->getOrder()->getData('order_from');
-        $orderId = $shipment->getOrder()->getData('external_id');
-        
-        if ($orderFrom == 'Allegro') {
+            /** @var Shipment $shipment */
+            $shipment = $observer->getEvent()->getShipment();
+
+            // TODO use ExtensionAttributesInterface
+            $orderFrom = $shipment->getOrder()->getData('order_from');
+            $orderId = $shipment->getOrder()->getData('external_id');
+
+            if ($orderFrom != 'Allegro') {
+                return;
+            }
 
             try {
-                $token = $this->credentials->getToken();
+
+                $this->credentials->getToken();
+
             } catch (ClientException $e) {
-                $this->logger->error("Error while receiving token from Allegro");
+                $this->logger->exception($e);
                 $this->managerInterface->addErrorMessage(
                     __('Can\'t set tracking information for this order - Allegro account is not connected. Connect to Allegro account and try again')
                 );
-                throw new ConnectionLostException('Error while receiving token from Allegro', $e);
             }
+
             $orderData = $this->checkoutForm->getCheckoutForm($orderId);
             if (!isset($orderData['status']) || $orderData['status'] != 'READY_FOR_PROCESSING') {
                 $this->logger->error("Error while saving shipping for order: Order $orderId is not yet paid");
                 $this->managerInterface->addErrorMessage(
                     __('Can\'t set tracking information for this order - it is not yet paid')
                 );
-                throw new ConnectionLostException(
-                    "Error while saving shipping for order: Order $orderId is not yet paid"
-                );
             }
+
+        } catch (\Exception $e) {
+            $this->logger->exception($e);
         }
     }
 }

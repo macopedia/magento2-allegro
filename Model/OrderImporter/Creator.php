@@ -74,6 +74,7 @@ class Creator extends AbstractAction
         Invoice $invoice,
         EventManager $eventManager
     ) {
+        // TODO Parent construct call is missing
         $this->orderRepository = $orderRepository;
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;

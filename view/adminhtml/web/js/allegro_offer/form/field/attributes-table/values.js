@@ -1,32 +1,55 @@
 define([
-    'knockout'
-], function (ko) {
+    'jquery',
+    'knockout',
+    'Macopedia_Allegro/js/allegro_offer/form/field/attributes-table/abstract-attribute',
+], function ($, ko, abstract) {
+    'use strict';
 
-    return function (configuration) {
+    return abstract.extend({
 
-        var values = {};
+        defaults: {
+            template: 'Macopedia_Allegro/allegro_offer/form/field/attributes-table/values',
+        },
 
-        values._computedValue = function () {
-            var val = values.inputValue();
+        initialize: function() {
+            this.inputValue=  ko.observable([]);
+            this._super();
+        },
 
-            return [val];
-        };
-
-        values.initializeValue = function (value) {
-            if (value == undefined) {
+        initializeValue: function (value) {
+            if (value === undefined || value === null || (Array.isArray(value) && value.length < 1)) {
+                this.addNextValue();
                 return;
             }
-            // TODO implement multiple values support
-            values.inputValue(value[0]);
-        };
+            var self = this;
+            $.each(value, function (k, v) {
+                self.addNextValue(v);
+            });
+        },
 
-        values.template = 'Macopedia_Allegro/allegro_offer/form/field/attributes-table/values';
-        values.definition = configuration.definition;
-        values.table = configuration.table;
-        values.inputValue = ko.observable("");
-        values.value = ko.computed(values._computedValue, values);
+        _computedValue: function () {
+            var result = [];
+            $.each(this.inputValue(), function (index, value) {
+                result.push(value());
+            });
+            return result;
+        },
 
-        return values;
-    };
+        addNextValue: function (value) {
+            if (value === undefined) {
+                value = "";
+            }
+            var inputValue = [...this.inputValue()];
+            inputValue.push(ko.observable(value));
+            this.inputValue(inputValue);
+        },
+
+        removeValue: function (index) {
+            var inputValue = [...this.inputValue()];
+            inputValue.splice(index, 1);
+            this.inputValue(inputValue);
+        }
+
+    });
 
 });

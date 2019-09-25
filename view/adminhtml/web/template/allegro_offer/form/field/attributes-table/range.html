@@ -1,17 +1,28 @@
-Min:
-<input
-    class="admin__control-text"
-    type="text"
-    data-bind="
-        value: inputValueMin
-    "
-/>
+<div>
+    Min:
+    <input
+        class="admin__control-text"
+        type="text"
+        data-bind="
+            value: inputValueMin
+        "
+    />
 
-Max:
-<input
-    class="admin__control-text"
-    type="text"
-    data-bind="
-        value: inputValueMax
-    "
-/>
+    Max:
+    <input
+        class="admin__control-text"
+        type="text"
+        data-bind="
+            value: inputValueMax
+        "
+    />
+
+    <!-- ko ifnot: errorMessage() == '' -->
+        <label
+            class="admin__field-error"
+            data-bind="
+                text: errorMessage
+            "></label>
+    <!-- /ko -->
+
+</div>

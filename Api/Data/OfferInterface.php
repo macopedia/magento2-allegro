@@ -91,6 +91,12 @@ interface OfferInterface
     public function setPublicationStatus(string $publicationStatus);
 
     /**
+     * @param string[] $validationErrors
+     * @return void
+     */
+    public function setValidationErrors(array $validationErrors);
+
+    /**
      * @return string|null
      */
     public function getId(): ?string;
@@ -156,6 +162,11 @@ interface OfferInterface
     public function getPublicationStatus(): ?string;
 
     /**
+     * @return string[]
+     */
+    public function getValidationErrors(): array;
+
+    /**
      * @return bool
      */
     public function canBePublished(): bool;
@@ -164,6 +175,11 @@ interface OfferInterface
      * @return bool
      */
     public function canBeEnded(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isValid(): bool;
 
     /**
      * @param array $rawData

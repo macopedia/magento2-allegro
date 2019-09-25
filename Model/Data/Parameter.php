@@ -27,4 +27,30 @@ abstract class Parameter extends DataObject implements ParameterInterface
     {
         return $this->getData(self::ID_FIELD_NAME);
     }
+
+    /**
+     * @param array $rawData
+     */
+    public function setRawData(array $rawData)
+    {
+        if (isset($rawData['id'])) {
+            $this->setId($rawData['id']);
+        }
+    }
+
+    /**
+     * @param string[] $values
+     * @return string[]
+     */
+    protected function stripEmptyValues(array $values): array
+    {
+        $result = [];
+        foreach ($values as $value) {
+            if ($value === null || $value === '') {
+                continue;
+            }
+            $result[] = $value;
+        }
+        return $result;
+    }
 }

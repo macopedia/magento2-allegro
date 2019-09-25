@@ -43,6 +43,9 @@ class Consumer implements ConsumerInterface
     /** @var PublicationCommandInterfaceFactory */
     private $publicationCommandFactory;
 
+    /** @var Configuration */
+    private $config;
+
     /**
      * Consumer constructor.
      * @param Logger $logger
@@ -52,6 +55,7 @@ class Consumer implements ConsumerInterface
      * @param OfferRepositoryInterface $offerRepository
      * @param PublicationCommandRepositoryInterface $publicationCommandRepository
      * @param PublicationCommandInterfaceFactory $publicationCommandFactory
+     * @param Configuration $config
      */
     public function __construct(
         Logger $logger,
@@ -60,7 +64,8 @@ class Consumer implements ConsumerInterface
         Credentials $credentials,
         OfferRepositoryInterface $offerRepository,
         PublicationCommandRepositoryInterface $publicationCommandRepository,
-        PublicationCommandInterfaceFactory $publicationCommandFactory
+        PublicationCommandInterfaceFactory $publicationCommandFactory,
+        Configuration $config
     ) {
         $this->logger = $logger;
         $this->productRepository = $productRepository;
@@ -69,15 +74,21 @@ class Consumer implements ConsumerInterface
         $this->offerRepository = $offerRepository;
         $this->publicationCommandRepository = $publicationCommandRepository;
         $this->publicationCommandFactory = $publicationCommandFactory;
+        $this->config = $config;
     }
 
     /**
      * @param MessageInterface $message
+     * @throws ClientException
      * @throws ConnectionLostException
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
     public function processMessage(MessageInterface $message)
     {
+        if (!$this->config->isStockSynchronizationEnabled()) {
+            return;
+        }
+
         try {
             $this->credentials->getToken();
         } catch (ClientException $e) {

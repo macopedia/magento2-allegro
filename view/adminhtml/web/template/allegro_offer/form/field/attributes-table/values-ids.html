@@ -1,29 +1,35 @@
-<!-- ko if: (definition.restrictions.allowedNumberOfValues > 1) -->
+<div>
+    <!-- ko if: (getRestrictionValue('multipleChoices')) -->
+        <select
+            class="admin__control-multiselect"
+            multiple="multiple"
+            data-bind="
+                options: definition.dictionary,
+                optionsText: 'label',
+                optionsValue: 'value',
+                selectedOptions: inputValue,
+            "
+        ></select>
+    <!-- /ko -->
 
-    <select
-        class="admin__control-multiselect"
-        multiple="multiple"
-        data-bind="
-            options: definition.dictionary,
-            optionsText: 'label',
-            optionsValue: 'value',
-            selectedOptions: inputValue,
-        "
-    ></select>
+    <!-- ko ifnot: (getRestrictionValue('multipleChoices')) -->
+        <select
+            class="admin__control-select"
+            data-bind="
+                options: definition.dictionary,
+                optionsText: 'label',
+                optionsValue: 'value',
+                value: inputValue,
+                optionsCaption: 'Choose option...',
+            "
+        ></select>
+    <!-- /ko -->
 
-<!-- /ko -->
-
-<!-- ko ifnot: (definition.restrictions.allowedNumberOfValues > 1) -->
-
-    <select
-        class="admin__control-select"
-        data-bind="
-            options: definition.dictionary,
-            optionsText: 'label',
-            optionsValue: 'value',
-            value: inputValue,
-            optionsCaption: 'Choose option...',
-        "
-    ></select>
-
-<!-- /ko -->
+    <!-- ko ifnot: errorMessage() == '' -->
+        <label
+            class="admin__field-error"
+            data-bind="
+                text: errorMessage
+            "></label>
+    <!-- /ko -->
+</div>

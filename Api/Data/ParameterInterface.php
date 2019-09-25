@@ -12,24 +12,23 @@ interface ParameterInterface
     public function setId(int $id);
 
     /**
-     * @param $value
-     * @return void
-     */
-    public function setValue($value);
-
-    /**
      * @return int
      */
     public function getId(): ?int;
-
-    /**
-     * @return mixed
-     */
-    public function getValue();
 
     /**
      * @param array $rawData
      * @return void
      */
     public function setRawData(array $rawData);
+
+    /**
+     * @return array
+     */
+    public function getRawData(): array;
+
+    /**
+     * @return bool
+     */
+    public function isValueEmpty(): bool;
 }

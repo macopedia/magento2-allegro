@@ -3,11 +3,13 @@
 namespace Macopedia\Allegro\Observer;
 
 use Macopedia\Allegro\Logger\Logger;
+use Macopedia\Allegro\Model\Configuration;
 use Macopedia\Allegro\Model\ResourceModel\Order\CheckoutForm;
 use Magento\Catalog\Model\ResourceModel\Product;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Model\Order\Shipment;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Save shipping after observer
@@ -41,19 +43,26 @@ class SaveShippingAfterObserver implements ObserverInterface
     /** @var Logger */
     private $logger;
 
+    /** @var Configuration */
+    private $config;
+
     /**
+     * SaveShippingAfterObserver constructor.
      * @param Product $productResource
      * @param CheckoutForm $checkoutFrom
      * @param Logger $logger
+     * @param Configuration $config
      */
     public function __construct(
         Product $productResource,
         CheckoutForm $checkoutFrom,
-        Logger $logger
+        Logger $logger,
+        Configuration $config
     ) {
         $this->productResource = $productResource;
         $this->checkoutFrom = $checkoutFrom;
         $this->logger = $logger;
+        $this->config = $config;
     }
 
     /**
@@ -62,40 +71,52 @@ class SaveShippingAfterObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        if (!$this->config->isTrackingNumberSendingEnabled()) {
+            return;
+        }
+
         /** @var Shipment $shipment */
         $shipment = $observer->getEvent()->getShipment();
 
         // TODO use ExtensionAttributesInterface
         $orderId = $shipment->getOrder()->getData('external_id');
         $orderFrom = $shipment->getOrder()->getData('order_from');
-        
-        if ($orderFrom == 'Allegro') {
-            $shipmentData = ['lineItems' => []];
-            foreach ($shipment->getItems() as $item) {
-                $allegroId = $item->getOrderItem()->getData('allegro_line_item_id');
-                if (!$allegroId) {
-                    continue;
-                }
-                $shipmentData['lineItems'][] = ['id' => $allegroId];
+
+        if ($orderFrom != 'Allegro') {
+            return;
+        }
+
+        $shipmentData = ['lineItems' => []];
+        foreach ($shipment->getItems() as $item) {
+            $allegroId = $item->getOrderItem()->getData('allegro_line_item_id');
+            if (!$allegroId) {
+                continue;
+            }
+            $shipmentData['lineItems'][] = ['id' => $allegroId];
+        }
+
+        foreach ($shipment->getTracks() as $shipmentTrack) {
+            $trackNumber = $shipmentTrack->getTrackNumber();
+            if (!$trackNumber) {
+                continue;
             }
 
-            foreach ($shipment->getTracks() as $shipmentTrack) {
-                $carrierCode = $shipmentTrack->getCarrierCode();
-                $trackNumber = $shipmentTrack->getTrackNumber();
-                if ($trackNumber) {
-                    if (isset(self::$availableCarriers[$carrierCode])) {
-                        $shipmentData['carrierId'] = self::$availableCarriers[$carrierCode];
-                    } else {
-                        $shipmentData['carrierId'] = 'OTHER';
-                        $shipmentData['carrierName'] = $carrierCode;
-                    }
-                    $shipmentData['waybill'] = $trackNumber;
-                    try {
-                        $this->checkoutFrom->shipment($orderId, $shipmentData);
-                    } catch (\Exception $exception) {
-                        $this->logger->exception($exception);
-                    }
-                }
+            $carrierCode = $shipmentTrack->getCarrierCode();
+            if (isset(self::$availableCarriers[$carrierCode])) {
+                $shipmentData['carrierId'] = self::$availableCarriers[$carrierCode];
+            } else {
+                $shipmentData['carrierId'] = 'OTHER';
+                $shipmentData['carrierName'] = $carrierCode;
+            }
+            $shipmentData['waybill'] = $trackNumber;
+
+            try {
+                $this->checkoutFrom->shipment($orderId, $shipmentData);
+            } catch (\Exception $exception) {
+                $this->logger->exception($exception);
+                $this->managerInterface->addErrorMessage(
+                    __('Can\'t send tracking information to Allegro for this order')
+                );
             }
         }
     }

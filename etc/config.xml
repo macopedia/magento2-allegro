@@ -14,6 +14,8 @@
                 <enabled>1</enabled>
                 <overpayment_status>Pending:allegro_overpayment</overpayment_status>
                 <underpayment_status>Pending:allegro_underpayment</underpayment_status>
+                <stock_synchronization_enabled>1</stock_synchronization_enabled>
+                <tracking_number_sending_enabled>1</tracking_number_sending_enabled>
             </order>
         </allegro>
     </default>

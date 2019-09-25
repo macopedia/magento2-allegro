@@ -19,6 +19,8 @@ class End extends Offer
      */
     public function execute()
     {
+        $offer = null;
+
         try {
             $offerId = $this->getRequest()->getParam('id');
             if (!$offerId) {
@@ -45,6 +47,10 @@ class End extends Offer
         } catch (\Exception $e) {
             $this->logger->critical($e);
             $this->messageManager->addErrorMessage(__('Something went wrong'));
+        }
+
+        if ($offer !== null && $offer->getId() !== null) {
+            return $this->createRedirectEditResult($offer->getId());
         }
 
         return $this->createRedirectIndexResult();
