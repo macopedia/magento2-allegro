@@ -12,14 +12,12 @@ use Macopedia\Allegro\Model\OrderImporter\CreatorItemsException;
 use Macopedia\Allegro\Model\OrderImporter\Updater;
 use Macopedia\Allegro\Logger\Logger;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\FlagManager;
 
 /**
  * Class responsible for handling events fetched from Allegro API
  */
 class OrderImporter
 {
-    const LAST_ORDER_ID_FLAG_KEY = 'macopedia_allegro_last_order_id';
     const BOUGHT_TYPE = 'BOUGHT';
     const STATUS_FILLED_IN = 'FILLED_IN';
     const STATUS_BOUGHT = 'BOUGHT';
@@ -37,8 +35,8 @@ class OrderImporter
     /** @var CheckoutFormRepositoryInterface */
     private $checkoutFormRepository;
 
-    /** @var FlagManager */
-    private $flagManager;
+    /** @var Configuration */
+    private $configuration;
 
     /** @var Creator */
     private $creator;
@@ -54,7 +52,7 @@ class OrderImporter
      * @param EventRepositoryInterface $eventRepository
      * @param OrderRepositoryInterface $orderRepository
      * @param CheckoutFormRepositoryInterface $checkoutFormRepository
-     * @param FlagManager $flagManager
+     * @param Configuration $configuration
      * @param Creator $creator
      * @param Updater $updater
      * @param Logger $logger
@@ -63,7 +61,7 @@ class OrderImporter
         EventRepositoryInterface $eventRepository,
         OrderRepositoryInterface $orderRepository,
         CheckoutFormRepositoryInterface $checkoutFormRepository,
-        FlagManager $flagManager,
+        Configuration $configuration,
         Creator $creator,
         Updater $updater,
         Logger $logger
@@ -71,7 +69,7 @@ class OrderImporter
         $this->eventRepository = $eventRepository;
         $this->orderRepository = $orderRepository;
         $this->checkoutFormRepository = $checkoutFormRepository;
-        $this->flagManager = $flagManager;
+        $this->configuration = $configuration;
         $this->creator = $creator;
         $this->updater = $updater;
         $this->logger = $logger;
@@ -83,7 +81,7 @@ class OrderImporter
     public function execute()
     {
         try {
-            $lastEventId = $this->flagManager->getFlagData(self::LAST_ORDER_ID_FLAG_KEY);
+            $lastEventId = $this->configuration->getLastEventId();
             if ($lastEventId) {
                 $events = $this->eventRepository->getListFrom($lastEventId);
             } else {
@@ -105,7 +103,7 @@ class OrderImporter
             foreach ($events as $event) {
                 $this->executeEvent($event);
                 $lastEventId = $event->getId();
-                $this->flagManager->saveFlag(self::LAST_ORDER_ID_FLAG_KEY, $lastEventId);
+                $this->configuration->setLastEventId($lastEventId);
             }
 
         } catch (\Exception $e) {
