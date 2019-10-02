@@ -7,6 +7,7 @@ use Macopedia\Allegro\Model\Api\Credentials;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
+use Macopedia\Allegro\Model\LastEventIdInitializer;
 
 /**
  * Authenticate Controller class
@@ -21,18 +22,24 @@ class Authenticate extends Action
     /** @var Credentials */
     protected $credentials;
 
+    /** @var LastEventIdInitializer  */
+    protected $lastEventIdInitializer;
+
     /**
      * @param Auth $auth
      * @param Credentials $credentials
      * @param Action\Context $context
+     * @param LastEventIdInitializer $lastEventIdInitializer
      */
     public function __construct(
         Auth $auth,
         Credentials $credentials,
-        Action\Context $context
+        Action\Context $context,
+        LastEventIdInitializer $lastEventIdInitializer
     ) {
         $this->auth = $auth;
         $this->credentials = $credentials;
+        $this->lastEventIdInitializer = $lastEventIdInitializer;
         parent::__construct($context);
     }
 
@@ -46,6 +53,9 @@ class Authenticate extends Action
             try {
                 $token = $this->auth->getNewToken($params['code']);
                 $this->credentials->saveToken($token);
+
+                $this->lastEventIdInitializer->initialize();
+
                 $this->messageManager->addSuccessMessage(__('You have successfully connected with Allegro account'));
             } catch (\Exception $exception) {
                 $this->getMessageManager()->addErrorMessage(__('Something went wrong while authorization in Allegro. Please check credentials and try again'));
