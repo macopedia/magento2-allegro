@@ -5,14 +5,14 @@ define([
 ], function (validator, $) {
 
     validator.addRule(
-        'allegro-offer-description-tags',
+        'allegro-offer-description-tags-attributes',
         function (value) {
-            if (/\<(?!\/?(h1|h2|p|b|ul|ol|li)(\s+.*)?\/?\>).*?\>/gm.test(value)) {
+            if (/\<([^\>\s]+?)(\s+[^\>\s]+)+\>/gm.test(value)) {
                 return false;
             }
             return true;
         }
-        ,$.mage.__("Allegro allows only the use of specific HTML tags: h1, h2, p, b, ul, ol, li.")
+        ,$.mage.__('Allegro disallows HTML tags with attributes like class, name, id etc.')
     );
 
 });
