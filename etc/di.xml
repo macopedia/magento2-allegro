@@ -84,4 +84,8 @@
         <plugin name="get_pickup_location" type="Macopedia\Allegro\Plugin\OrderGet"/>
     </type>
 
+    <type name="Magento\Shipping\Model\Shipping">
+        <plugin name="update_shipping_rate_price_for_allegro_orders" type="Macopedia\Allegro\Plugin\UpdateShippingRatePrice" />
+    </type>
+
 </config>

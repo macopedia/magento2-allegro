@@ -22,6 +22,7 @@ class OrderImporter
     const LAST_ORDER_ID_FLAG_KEY = 'macopedia_allegro_last_order_id';
     const BOUGHT_TYPE = 'BOUGHT';
     const STATUS_FILLED_IN = 'FILLED_IN';
+    const STATUS_BOUGHT = 'BOUGHT';
 
     private $errorsCount = 0;
     private $createdIds = [];
@@ -109,9 +110,10 @@ class OrderImporter
 
         } catch (\Exception $e) {
             $this->errorsCount++;
+            $lastEvent = $event ?? reset($events);
             $this->logger->exception(
                 $e,
-                "Error while creating/updating order for checkout form with id [{$lastEventId}]"
+                "Error while creating/updating order for checkout form with id [{$lastEvent->getCheckoutFormId()}]"
             );
         }
 
@@ -128,7 +130,7 @@ class OrderImporter
      */
     private function executeEvent(EventInterface $event)
     {
-        if ($event->getType() === self::STATUS_FILLED_IN) {
+        if ($event->getType() !== 'READY_FOR_PROCESSING') {
             return;
         }
 
