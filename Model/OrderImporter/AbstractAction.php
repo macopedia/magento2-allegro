@@ -3,9 +3,18 @@
 namespace Macopedia\Allegro\Model\OrderImporter;
 
 use Macopedia\Allegro\Api\Data\CheckoutFormInterface;
+use Magento\Quote\Model\QuoteFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
+use Magento\Framework\DataObject\Copy;
+use Magento\Quote\Model\Quote\TotalsCollector;
+use Magento\Framework\Event\ManagerInterface;
+use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\ProductFactory;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Sales\Model\Config as SalesConfig;
+use Magento\Tax\Model\Config as TaxConfig;
 
 abstract class AbstractAction
 {
@@ -25,25 +34,73 @@ abstract class AbstractAction
     /** @var OrderRepositoryInterface */
     protected $orderRepository;
 
+    /** @var QuoteFactory */
+    protected $quoteFactory;
+
+    /** @var Copy */
+    protected $objectCopyService;
+
+    /** @var TotalsCollector */
+    protected $totalsCollector;
+
+    /** @var ManagerInterface */
+    protected $eventManager;
+
+    /** @var ProductFactory */
+    protected $productFactory;
+
+    /** @var Json */
+    protected $jsonSerializer;
+
+    /** @var SalesConfig */
+    protected $salesConfig;
+
+    /** @var TaxConfig */
+    protected $taxConfig;
+
     /**
+     * AbstractAction constructor.
      * @param Shipping $shipping
      * @param Payment $payment
      * @param Status $status
      * @param Invoice $invoice
      * @param OrderRepositoryInterface $orderRepository
+     * @param QuoteFactory $quoteFactory
+     * @param Copy $objectCopyService
+     * @param TotalsCollector $totalsCollector
+     * @param ManagerInterface $eventManager
+     * @param ProductFactory $productFactory
+     * @param Json $jsonSerializer
+     * @param SalesConfig $salesConfig
      */
     public function __construct(
         Shipping $shipping,
         Payment $payment,
         Status $status,
         Invoice $invoice,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        QuoteFactory $quoteFactory,
+        Copy $objectCopyService,
+        TotalsCollector $totalsCollector,
+        ManagerInterface $eventManager,
+        ProductFactory $productFactory,
+        Json $jsonSerializer,
+        SalesConfig $salesConfig,
+        TaxConfig $taxConfig
     ) {
         $this->shipping = $shipping;
         $this->payment = $payment;
         $this->status = $status;
         $this->invoice = $invoice;
         $this->orderRepository = $orderRepository;
+        $this->quoteFactory = $quoteFactory;
+        $this->objectCopyService = $objectCopyService;
+        $this->totalsCollector = $totalsCollector;
+        $this->eventManager = $eventManager;
+        $this->productFactory = $productFactory;
+        $this->jsonSerializer = $jsonSerializer;
+        $this->salesConfig = $salesConfig;
+        $this->taxConfig = $taxConfig;
     }
 
     /**
@@ -71,13 +128,133 @@ abstract class AbstractAction
      */
     protected function processTotals(OrderInterface $order, CheckoutFormInterface $checkoutForm)
     {
-        $shippingAmount = $order->getShippingAmount();
-        $deliveryCostAmount = $checkoutForm->getDelivery()->getCost()->getAmount();
+        // TODO: This functionality requires refactor
+        $quote = $this->quoteFactory->create();
 
-        $order->setShippingAmount($deliveryCostAmount);
-        $order->setBaseShippingAmount($deliveryCostAmount);
-        $order->setBaseGrandTotal($order->getBaseGrandTotal() + $deliveryCostAmount - $shippingAmount);
-        $order->setGrandTotal($order->getGrandTotal() + $deliveryCostAmount - $shippingAmount);
+        $orderItems = $order->getItemsCollection($this->salesConfig->getAvailableProductTypes(), true);
+        foreach ($orderItems as $orderItem) {
+            if ($orderItem->getParentItem()) {
+                continue;
+            }
+            $qty = $orderItem->getQtyOrdered();
+            if ($qty <= 0) {
+                continue;
+            }
+            if (!$orderItem->getId()) {
+                continue;
+            }
+            /** @var Product $product */
+            $product = $this->productFactory->create()
+                ->setStoreId($order->getStoreId())
+                ->load($orderItem->getProductId());
+            if (!$product->getId()) {
+                continue;
+            }
+            $product->setSkipCheckRequiredOption(true);
+            $buyRequest = $orderItem->getBuyRequest();
+            $product->setPrice($orderItem->getPrice());
+            $item = $quote->addProduct($product, $buyRequest);
+            $item->setOrderItemId($orderItem->getId());
+            if (is_string($item)) {
+                throw new \Exception(__($item)); // TODO test
+            }
+            if ($additionalOptions = $orderItem->getProductOptionByCode('additional_options')) {
+                $item->addOption(
+                    new \Magento\Framework\DataObject(
+                        [
+                            'product' => $item->getProduct(),
+                            'code' => 'additional_options',
+                            'value' => $this->serializer->serialize($additionalOptions)
+                        ]
+                    )
+                );
+            }
+            $this->eventManager->dispatch(
+                'sales_convert_order_item_to_quote_item',
+                ['order_item' => $orderItem, 'quote_item' => $item]
+            );
+        }
+
+        $this->objectCopyService->copyFieldsetToTarget(
+            'sales_copy_order_billing_address',
+            'to_order',
+            $order->getBillingAddress(),
+            $quote->getBillingAddress()
+        );
+
+        $this->objectCopyService->copyFieldsetToTarget(
+            'sales_copy_order_shipping_address',
+            'to_order',
+            $order->getShippingAddress(),
+            $quote->getShippingAddress()
+        );
+        $quote->getShippingAddress()->setShippingMethod($order->getShippingMethod());
+        $quote->getShippingAddress()->setShippingDescription($order->getShippingDescription());
+        $quote->getShippingAddress()->unsCachedItemsAll();
+
+        $this->objectCopyService->copyFieldsetToTarget(
+            'sales_copy_order',
+            'to_edit',
+            $order,
+            $quote
+        );
+        $this->eventManager->dispatch(
+            'sales_convert_order_to_quote',
+            ['order' => $order, 'quote' => $quote]
+        );
+
+        // TODO: Use ExtensionsAttributesInterface
+        $quote->setOrderFrom($order->getOrderFrom());
+        $quote->setExternalId($order->getExternalId());
+        $quote->setAllegroShippingPrice($checkoutForm->getDelivery()->getCost()->getAmount());
+
+
+        $quote->getShippingAddress()->setCollectShippingRates(true);
+        $quote->getShippingAddress()->collectShippingRates();
+        $quote->setTotalsCollectedFlag(false);
+
+        $this->taxConfig->setShippingPriceIncludeTax(true);
+        $this->taxConfig->setPriceIncludesTax(true);
+        if (count($quote->getShippingAddress()->getAllItems()) > 0) {
+            $order->addData(
+                $this->totalsCollector->collectAddressTotals(
+                    $quote,
+                    $quote->getShippingAddress()
+                )
+                ->getData()
+            );
+        } else {
+            $order->addData(
+                $this->totalsCollector->collectAddressTotals(
+                    $quote,
+                    $quote->getBillingAddress()
+                )
+                    ->getData()
+            );
+        }
+        $totals = $this->totalsCollector->collect($quote);
+        $order->addData($totals->getData());
+        foreach($quote->getAllItems() as $item) {
+            $orderItem = $orderItems->getItemById($item->getOrderItemId());
+            $orderItem->setPrice($item->getPrice());
+            $orderItem->setBasePrice($item->getBasePrice());
+            $orderItem->setOriginalPrice($item->getOriginalPrice());
+            $orderItem->setBaseOriginalPrice($item->getBaseOriginalPrice());
+            $orderItem->setTaxPercent($item->getTaxPercent());
+            $orderItem->setTaxAmount($item->getTaxAmount());
+            $orderItem->setBaseTaxAmount($item->getBaseTaxAmount());
+            $orderItem->setRowTotal($item->getRowTotal());
+            $orderItem->setBaseRowTotal($item->getBaseRowTotal());
+            $orderItem->setPriceInclTax($item->getPriceInclTax());
+            $orderItem->setBasePriceInclTax($item->getBasePriceInclTax());
+            $orderItem->setRowTotalInclTax($item->getRowTotalInclTax());
+            $orderItem->setBaseRowTotalInclTax($item->getBaseRowTotalInclTax());
+            $orderItem->save();
+        }
+        $this->taxConfig->setShippingPriceIncludeTax(null);
+        $this->taxConfig->setPriceIncludesTax(null);
+
+        return;
     }
 
     /**

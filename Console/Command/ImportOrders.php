@@ -2,8 +2,8 @@
 
 namespace Macopedia\Allegro\Console\Command;
 
-use Macopedia\Allegro\Logger\Logger;
 use Macopedia\Allegro\Model\OrderImporter;
+use Macopedia\Allegro\Model\OrderImporterFactory;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\LocalizedException;
@@ -18,29 +18,36 @@ class ImportOrders extends Command
 {
     const COMMAND_NAME = "macopedia:allegro:orders-import";
 
-    /** @var OrderImporter */
-    private $orderImporter;
+    /** @var OrderImporterFactory */
+    private $orderImporterFactory;
 
     /** @var State */
     private $state;
 
     /**
      * ImportOrders constructor.
-     * @param Logger $logger
-     * @param OrderImporter $orderImporter
+     * @param OrderImporterFactory $orderImporterFactory
      * @param State $state
      * @param null $name
      */
     public function __construct(
-        Logger $logger,
-        OrderImporter $orderImporter,
+        OrderImporterFactory $orderImporterFactory,
         State $state,
         $name = null
     ) {
-        $this->logger = $logger;
-        $this->orderImporter = $orderImporter;
+        $this->orderImporterFactory = $orderImporterFactory;
         $this->state = $state;
         parent::__construct($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this->setName(self::COMMAND_NAME);
+        $this->setDescription("Import orders from Allegro account ");
+        parent::configure();
     }
 
     /**
@@ -55,17 +62,11 @@ class ImportOrders extends Command
         }
 
         $output->writeln('Order import start');
-        $info = $this->orderImporter->execute();
-        $output->writeln($info->getMessage());
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this->setName(self::COMMAND_NAME);
-        $this->setDescription("Import orders from Allegro account ");
-        parent::configure();
+        /** @var OrderImporter $orderImporter */
+        $orderImporter = $this->orderImporterFactory->create();
+        $info = $orderImporter->execute();
+
+        $output->writeln($info->getMessage());
     }
 }

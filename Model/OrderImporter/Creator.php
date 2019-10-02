@@ -5,18 +5,22 @@ namespace Macopedia\Allegro\Model\OrderImporter;
 use Macopedia\Allegro\Api\Data\CheckoutForm\LineItemInterface;
 use Macopedia\Allegro\Api\Data\CheckoutFormInterface;
 use Macopedia\Allegro\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\ProductFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\EntityManager\EventManager;
+use Magento\Framework\DataObject\Copy;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\TotalsCollector;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Quote\Model\QuoteManagement;
-use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Config as SalesConfig;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Tax\Model\Config as TaxConfig;
 
 /**
  * Magento order creator
@@ -38,55 +42,68 @@ class Creator extends AbstractAction
     /** @var ScopeConfigInterface */
     private $scopeConfig;
 
-    /** @var QuoteFactory */
-    private $quoteFactory;
-
     /** @var QuoteManagement */
     private $quoteManagement;
 
-    /** @var EventManager */
-    private $eventManager;
-
     /**
-     * @param OrderRepositoryInterface $orderRepository
-     * @param StoreManagerInterface $storeManager
-     * @param Customer $customer
-     * @param ScopeConfigInterface $scopeConfig
-     * @param QuoteFactory $quoteFactory
-     * @param QuoteManagement $quoteManagement
+     * Creator constructor.
      * @param Shipping $shipping
      * @param Payment $payment
      * @param Status $status
      * @param Invoice $invoice
-     * @param EventManager $eventManager
+     * @param OrderRepositoryInterface $orderRepository
+     * @param QuoteFactory $quoteFactory
+     * @param Copy $objectCopyService
+     * @param TotalsCollector $totalsCollector
+     * @param ManagerInterface $eventManager
+     * @param ProductFactory $productFactory
+     * @param Json $jsonSerializer
+     * @param ProductRepositoryInterface $productRepository
+     * @param StoreManagerInterface $storeManager
+     * @param Customer $customer
+     * @param ScopeConfigInterface $scopeConfig
+     * @param QuoteManagement $quoteManagement
      */
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
-        ProductRepositoryInterface $productRepository,
-        StoreManagerInterface $storeManager,
-        Customer $customer,
-        ScopeConfigInterface $scopeConfig,
-        QuoteFactory $quoteFactory,
-        QuoteManagement $quoteManagement,
         Shipping $shipping,
         Payment $payment,
         Status $status,
         Invoice $invoice,
-        EventManager $eventManager
+        OrderRepositoryInterface $orderRepository,
+        QuoteFactory $quoteFactory,
+        Copy $objectCopyService,
+        TotalsCollector $totalsCollector,
+        ManagerInterface $eventManager,
+        ProductFactory $productFactory,
+        Json $jsonSerializer,
+        TaxConfig $taxConfig,
+        SalesConfig $salesConfig,
+        ProductRepositoryInterface $productRepository,
+        StoreManagerInterface $storeManager,
+        Customer $customer,
+        ScopeConfigInterface $scopeConfig,
+        QuoteManagement $quoteManagement
     ) {
-        // TODO Parent construct call is missing
-        $this->orderRepository = $orderRepository;
+        parent::__construct(
+            $shipping,
+            $payment,
+            $status,
+            $invoice,
+            $orderRepository,
+            $quoteFactory,
+            $objectCopyService,
+            $totalsCollector,
+            $eventManager,
+            $productFactory,
+            $jsonSerializer,
+            $salesConfig,
+            $taxConfig
+        );
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
         $this->customer = $customer;
         $this->scopeConfig = $scopeConfig;
-        $this->quoteFactory = $quoteFactory;
         $this->quoteManagement = $quoteManagement;
-        $this->shipping = $shipping;
-        $this->payment = $payment;
-        $this->status = $status;
-        $this->invoice = $invoice;
-        $this->eventManager = $eventManager;
     }
 
     /**
@@ -98,9 +115,17 @@ class Creator extends AbstractAction
      */
     public function execute(CheckoutFormInterface $checkoutForm)
     {
+        $this->taxConfig->setShippingPriceIncludeTax(true);
+        $this->taxConfig->setPriceIncludesTax(true);
+
         /** @var Quote $quote */
         $quote = $this->quoteFactory->create();
-        $quote->setStore($store = $this->getStore());
+        $quote->setStore($this->getStore());
+
+        // TODO use ExtensionAttributesInterface
+        $quote->setData('order_from', 'Allegro');
+        $quote->setData('external_id', $checkoutForm->getId());
+        $quote->setAllegroShippingPrice($checkoutForm->getDelivery()->getCost()->getAmount());
 
         $this->processCustomer($quote, $checkoutForm);
         $lineItemsIds = $this->processItems($quote, $checkoutForm);
@@ -113,13 +138,17 @@ class Creator extends AbstractAction
         $this->processBilling($quote, $checkoutForm);
 
         $order = $this->placeOrder($quote, $checkoutForm);
+
+        $this->taxConfig->setShippingPriceIncludeTax(false);
+        $this->taxConfig->setPriceIncludesTax(false);
+
         $order->setCanSendNewEmailFlag(false);
 
         foreach ($order->getItems() as $item) {
             $item->setData('allegro_line_item_id', $lineItemsIds[$item->getSku()]);
         }
 
-        $this->processTotals($order, $checkoutForm);
+//        $this->processTotals($order, $checkoutForm);
         $this->processStatus($order, $checkoutForm);
         $this->processComments($order, $checkoutForm);
 
@@ -204,6 +233,7 @@ class Creator extends AbstractAction
 
         $quote->getShippingAddress()
             ->setShippingMethod($shippingMethodCode)
+            ->setAllegroShippingPrice($checkoutForm->getDelivery()->getCost()->getAmount())
             ->setCollectShippingRates(true)
             ->collectShippingRates();
     }
@@ -244,10 +274,6 @@ class Creator extends AbstractAction
         );
 
         $quote->collectTotals();
-
-        // TODO use ExtensionAttributesInterface
-        $quote->setData('order_from', 'Allegro');
-        $quote->setData('external_id', $checkoutForm->getId());
 
         $quote->collectTotals()->save();
         return $this->quoteManagement->submit($quote);
