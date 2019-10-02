@@ -41,16 +41,16 @@ define([
                 return $.mage.__("Invalid max value format! Allowed format is integer"); // TODO test
             }
             if (!this.__validateMin(attribute, attribute._computedValue().minValue)) {
-                return $.mage.__("Min value is to small! Minimal value is: %1").replace("%1", attribute.getRestrictionValue('min'));
+                return $.mage.__("Min value is too small! Minimal value is: %1").replace("%1", attribute.getRestrictionValue('min'));
             }
             if (!this.__validateMax(attribute, attribute._computedValue().maxValue)) {
-                return $.mage.__("Max value is to big! Maximal value is: %1").replace("%1", attribute.getRestrictionValue('max'));
+                return $.mage.__("Max value is too big! Maximal value is: %1").replace("%1", attribute.getRestrictionValue('max'));
             }
             if (!this.__validatePrecision(attribute, attribute._computedValue().minValue)) {
-                return $.mage.__("Min value is to precise! Maximal precision is: %1").replace("%1", attribute.getRestrictionValue('precision'));
+                return $.mage.__("Min value is too precise! Maximal precision is: %1").replace("%1", attribute.getRestrictionValue('precision'));
             }
             if (!this.__validatePrecision(attribute, attribute._computedValue().maxValue)) {
-                return $.mage.__("Max value is to precise! Maximal precision is: %1").replace("%1", attribute.getRestrictionValue('precision'));
+                return $.mage.__("Max value is too precise! Maximal precision is: %1").replace("%1", attribute.getRestrictionValue('precision'));
             }
 
             return true;
@@ -58,7 +58,7 @@ define([
 
         _validateAttributeValues: function (attribute) {
             if (!this.__validateNumberOfValues(attribute)) {
-                return $.mage.__("To many values! Max allowed values is: %1").replace("%1", attribute.getRestrictionValue('allowedNumberOfValues'));
+                return $.mage.__("Too many values! Max allowed values is: %1").replace("%1", attribute.getRestrictionValue('allowedNumberOfValues'));
             }
             if (attribute.definition.required && attribute._computedValue().length < 1) {
                 return $.mage.__("This parameter is required"); // TODO Test
@@ -75,19 +75,19 @@ define([
                         return $.mage.__("Invalid value format! Allowed format is integer");
                 }
                 if (!this.__validateMin(attribute, value)) {
-                    return $.mage.__("Value is to small! Minimal value is: %1").replace("%1", attribute.getRestrictionValue('min'));
+                    return $.mage.__("Value is too small! Minimal value is: %1").replace("%1", attribute.getRestrictionValue('min'));
                 }
                 if (!this.__validateMax(attribute, value)) {
-                    return $.mage.__("Value is to big! Maximal value is: %1").replace("%1", attribute.getRestrictionValue('max'));
+                    return $.mage.__("Value is too big! Maximal value is: %1").replace("%1", attribute.getRestrictionValue('max'));
                 }
                 if (!this.__validatePrecision(attribute, value)) {
-                    return $.mage.__("Value is to precise! Maximal precision is: %1").replace("%1", attribute.getRestrictionValue('precision'));
+                    return $.mage.__("Value is too precise! Maximal precision is: %1").replace("%1", attribute.getRestrictionValue('precision'));
                 }
                 if (!this.__validateMinLength(attribute, value)) {
-                    return $.mage.__("Value is short! Minimal value length is: %1").replace("%1", attribute.getRestrictionValue('minLength'));
+                    return $.mage.__("Value is too short! Minimal value length is: %1").replace("%1", attribute.getRestrictionValue('minLength'));
                 }
                 if (!this.__validateMaxLength(attribute, value)) {
-                    return $.mage.__("Value is to long! Maximal value length is: %1").replace("%1", attribute.getRestrictionValue('maxLength'));
+                    return $.mage.__("Value is too long! Maximal value length is: %1").replace("%1", attribute.getRestrictionValue('maxLength'));
                 }
 
                 return true;
@@ -96,7 +96,7 @@ define([
 
         _validateAttributeValuesIds: function (attribute) {
             if (!this.__validateNumberOfValues(attribute)) { // TODO Is this restriction allowed for multiple select fields?
-                return $.mage.__("To many values! Max allowed values is: %1").replace("%1", attribute.getRestrictionValue('allowedNumberOfValues'));
+                return $.mage.__("Too many values! Max allowed values is: %1").replace("%1", attribute.getRestrictionValue('allowedNumberOfValues'));
             }
             if (attribute.definition.required && attribute._computedValue().length < 1) {
                 return $.mage.__("This parameter is required"); // TODO Test
