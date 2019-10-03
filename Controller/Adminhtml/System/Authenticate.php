@@ -8,6 +8,7 @@ use Magento\Backend\App\Action;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Macopedia\Allegro\Model\LastEventIdInitializer;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Authenticate Controller class
@@ -57,6 +58,9 @@ class Authenticate extends Action
                 $this->lastEventIdInitializer->initialize();
 
                 $this->messageManager->addSuccessMessage(__('You have successfully connected with Allegro account'));
+            } catch (LocalizedException $exception) {
+                $this->getMessageManager()->addErrorMessage(__('Something went wrong while authorization in Allegro.'));
+                $this->getMessageManager()->addExceptionMessage($exception);
             } catch (\Exception $exception) {
                 $this->getMessageManager()->addErrorMessage(__('Something went wrong while authorization in Allegro. Please check credentials and try again'));
             }

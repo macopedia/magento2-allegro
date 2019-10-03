@@ -22,7 +22,7 @@ class Province implements OptionSourceInterface
     public function getOptions()
     {
         return [
-            '' => '',
+            '' => __('--Please Select--'),
             'DOLNOSLASKIE' => 'Dolnośląskie',
             'KUJAWSKO_POMORSKIE' => 'Kujawsko-pomorskie',
             'LUBELSKIE' => 'Lubelskie',

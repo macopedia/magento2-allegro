@@ -35,8 +35,8 @@ class Credentials
     /**
      * @param ScopeConfigInterface $scopeConfig
      * @param WriterInterface $configWriter
-     * @param EncryptorInterface $encryptor
      * @param TypeListInterface $cacheTypeList
+     * @param TokenSerializer $tokenSerializer
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,

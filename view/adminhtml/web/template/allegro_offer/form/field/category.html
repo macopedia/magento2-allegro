@@ -17,7 +17,7 @@
                     options: rootCategories,
                     value: valuesStack()[0],
                     optionsText: $data._getCategoryName.bind($data),
-                    optionsCaption: 'Choose root category...',
+                    optionsCaption: $t('Choose root category...'),
                 "
         ></select>
         <br />
@@ -37,7 +37,7 @@
                         options: $parent.categories()[$data].children,
                         value: $parent.valuesStack()[$index()+1],
                         optionsText: $parent._getCategoryName.bind($parent),
-                        optionsCaption: 'Choose category...',
+                        optionsCaption: $t('Choose category...'),
                     "
                 ></select>
                 <br />

@@ -5,4 +5,13 @@
     <event name="sales_model_service_quote_submit_success">
         <observer name="macopedia_allegro_place_order_after" instance="Macopedia\Allegro\Observer\OrderObserver"/>
     </event>
+    <event name="cataloginventory_stock_item_save_commit_after">
+        <observer name="macopedia_allegro_qty_change" instance="Macopedia\Allegro\Observer\QtyChangeObserver"/>
+    </event>
+    <event name="sales_order_shipment_save_after">
+        <observer name="macopedia_allegro_shipping_save_after" instance="Macopedia\Allegro\Observer\SaveShippingAfterObserver" />
+    </event>
+    <event name="sales_order_shipment_save_before">
+        <observer name="macopedia_allegro_shipping_save_before" instance="Macopedia\Allegro\Observer\SaveShippingBeforeObserver" />
+    </event>
 </config>
