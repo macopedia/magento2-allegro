@@ -16,6 +16,6 @@ class ShippingRates extends AbstractResource
     public function getList()
     {
         $response = $this->requestGet('/sale/shipping-rates?seller.id=' . $this->getCurrentUserId());
-        return $response['shippingRates'];
+        return $response['shippingRates'] ?? [];
     }
 }

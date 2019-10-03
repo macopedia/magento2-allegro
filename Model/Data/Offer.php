@@ -4,6 +4,8 @@ namespace Macopedia\Allegro\Model\Data;
 
 use Macopedia\Allegro\Api\Data\ImageInterface;
 use Macopedia\Allegro\Api\Data\ImageInterfaceFactory;
+use Macopedia\Allegro\Api\Data\Offer\AfterSalesServicesInterface;
+use Macopedia\Allegro\Api\Data\Offer\AfterSalesServicesInterfaceFactory;
 use Macopedia\Allegro\Api\Data\Offer\LocationInterface;
 use Macopedia\Allegro\Api\Data\Offer\LocationInterfaceFactory;
 use Macopedia\Allegro\Api\Data\ParameterInterface;
@@ -28,6 +30,7 @@ class Offer extends DataObject implements OfferInterface
     const PAYMENTS_INVOICE_FIELD_NAME = 'payments_invoice';
     const PUBLICATION_STATUS_FIELD_NAME = 'publication_status';
     const VALIDATION_ERRORS_FIELD_NAME = 'validation_errors';
+    const AFTER_SALES_SERVICES_FIELD_NAME = 'after_sales_services';
 
     /** @var ParameterDefinitionRepositoryInterface */
     private $parameterDefinitionRepository;
@@ -38,20 +41,27 @@ class Offer extends DataObject implements OfferInterface
     /** @var LocationInterfaceFactory */
     private $locationFactory;
 
+    /** @var AfterSalesServicesInterfaceFactory */
+    private $afterSalesServicesFactory;
+
     /**
      * Offer constructor.
      * @param ParameterDefinitionRepositoryInterface $parameterDefinitionRepository
      * @param ImageInterfaceFactory $imageFactory
+     * @param LocationInterfaceFactory $locationFactory
+     * @param AfterSalesServicesInterfaceFactory $afterSalesServicesFactory
      * @throws \Macopedia\Allegro\Model\Api\ClientException
      */
     public function __construct(
         ParameterDefinitionRepositoryInterface $parameterDefinitionRepository,
         ImageInterfaceFactory $imageFactory,
-        LocationInterfaceFactory $locationFactory
+        LocationInterfaceFactory $locationFactory,
+        AfterSalesServicesInterfaceFactory $afterSalesServicesFactory
     ) {
         $this->parameterDefinitionRepository = $parameterDefinitionRepository;
         $this->imageFactory = $imageFactory;
         $this->locationFactory = $locationFactory;
+        $this->afterSalesServicesFactory = $afterSalesServicesFactory;
         $this->setRawData([]);
     }
 
@@ -175,6 +185,14 @@ class Offer extends DataObject implements OfferInterface
         $this->setData(self::VALIDATION_ERRORS_FIELD_NAME, $validationErrors);
     }
 
+    /**
+     * @param AfterSalesServicesInterface $afterSalesServices
+     * @return void
+     */
+    public function setAfterSalesServices(AfterSalesServicesInterface $afterSalesServices)
+    {
+        $this->setData(self::AFTER_SALES_SERVICES_FIELD_NAME, $afterSalesServices);
+    }
 
     /**
      * @return string
@@ -289,6 +307,15 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
+     * @return AfterSalesServicesInterface
+     */
+    public function getAfterSalesServices(): AfterSalesServicesInterface
+    {
+        return $this->getData(self::AFTER_SALES_SERVICES_FIELD_NAME);
+    }
+
+
+    /**
      * @return bool
      */
     public function canBePublished(): bool
@@ -359,6 +386,7 @@ class Offer extends DataObject implements OfferInterface
         $this->setImages($this->mapImagesData($rawData['images'] ?? []));
         $this->setLocation($this->mapLocationData($rawData['location'] ?? []));
         $this->setValidationErrors($this->mapValidationErrorsData($rawData['validation']['errors'] ?? []));
+        $this->setAfterSalesServices($this->mapAfterSalesServicesData($rawData['afterSalesServices'] ?? []));
     }
 
     /**
@@ -366,7 +394,6 @@ class Offer extends DataObject implements OfferInterface
      */
     public function getRawData(): array
     {
-        // TODO: Include only not empty parameters
         $rawData = [
             'id' => $this->getId() != '' ? $this->getId() : null,
             'name' => $this->getName(),
@@ -412,7 +439,8 @@ class Offer extends DataObject implements OfferInterface
             'location' => $this->mapLocation($this->getLocation()),
             'payments' => [
                 'invoice' => $this->getPaymentsInvoice()
-            ]
+            ],
+            'afterSalesServices' => $this->mapAfterSalesServices($this->getAfterSalesServices())
         ];
 
         return $rawData;
@@ -522,5 +550,26 @@ class Offer extends DataObject implements OfferInterface
             $result[] = $error['message'] != '' ? $error['message'] : $error['userMessage'];
         }
         return $result;
+    }
+
+    /**
+     * @param array $data
+     * @return AfterSalesServicesInterface
+     */
+    private function mapAfterSalesServicesData(array $data): AfterSalesServicesInterface
+    {
+        /** @var AfterSalesServicesInterface $afterSalesServices */
+        $afterSalesServices = $this->afterSalesServicesFactory->create();
+        $afterSalesServices->setRawData($data);
+        return $afterSalesServices;
+    }
+
+    /**
+     * @param AfterSalesServicesInterface $afterSalesServices
+     * @return array
+     */
+    private function mapAfterSalesServices(AfterSalesServicesInterface $afterSalesServices): ?array
+    {
+        return $afterSalesServices->getRawData();
     }
 }
