@@ -34,13 +34,12 @@ class LastEventIdInitializer
     {
         $lastUserId = $this->configuration->getLastUserId();
         $currentUserId = $this->eventStats->getCurrentUserId();
-        if ($lastUserId) {
-            if ($lastUserId !== $currentUserId) {
-                $this->updateLastUserIdAndLastEventId($currentUserId);
-            }
-        } else {
-            $this->updateLastUserIdAndLastEventId($currentUserId);
+        $lastEventId = $this->configuration->getLastEventId();
+        if ($lastEventId && $lastUserId === $currentUserId) {
+            return;
         }
+        $this->updateLastUserIdAndLastEventId($currentUserId);
+
     }
 
     /**
@@ -51,6 +50,7 @@ class LastEventIdInitializer
      */
     private function updateLastUserIdAndLastEventId($currentUserId)
     {
+        // TODO: Use EventRepositoryInterface
         $lastEvent = $this->eventStats->getLastEvent();
         $lastEventId = $lastEvent['id'];
         $this->configuration->setLastEventId($lastEventId);
