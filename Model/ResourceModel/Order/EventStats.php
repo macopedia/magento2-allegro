@@ -1,14 +1,14 @@
 <?php
 
-namespace Macopedia\Allegro\Model\ResourceModel\Sale;
+namespace Macopedia\Allegro\Model\ResourceModel\Order;
 
 use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\ResourceModel\AbstractResource;
 
 /**
- * Resource model to get offers from Allegro API
+ * Resource model to get the latest event
  */
-class DeliveryMethod extends AbstractResource
+class EventStats extends AbstractResource
 {
 
     /**
@@ -17,9 +17,9 @@ class DeliveryMethod extends AbstractResource
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
      */
-    public function getList()
+    public function getLastEvent()
     {
-        $response = $this->requestGet('/sale/delivery-methods');
-        return $response['deliveryMethods'] ?? [];
+        $response = $this->requestGet('/order/event-stats', [], false);
+        return $response['latestEvent'] ?? [];
     }
 }

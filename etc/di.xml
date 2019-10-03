@@ -15,9 +15,13 @@
     <preference for="Macopedia\Allegro\Api\CheckoutFormRepositoryInterface" type="Macopedia\Allegro\Model\CheckoutFormRepository" />
     <preference for="Macopedia\Allegro\Api\DeliveryMethodRepositoryInterface" type="Macopedia\Allegro\Model\DeliveryMethodRepository" />
     <preference for="Macopedia\Allegro\Api\ShippingRateRepositoryInterface" type="Macopedia\Allegro\Model\ShippingRateRepository" />
+    <preference for="Macopedia\Allegro\Api\ImpliedWarrantyRepositoryInterface" type="Macopedia\Allegro\Model\ImpliedWarrantyRepository" />
+    <preference for="Macopedia\Allegro\Api\ReturnPolicyRepositoryInterface" type="Macopedia\Allegro\Model\ReturnPolicyRepository" />
+    <preference for="Macopedia\Allegro\Api\WarrantyRepositoryInterface" type="Macopedia\Allegro\Model\WarrantyRepository" />
 
     <preference for="Macopedia\Allegro\Api\Data\OfferInterface" type="Macopedia\Allegro\Model\Data\Offer" />
     <preference for="Macopedia\Allegro\Api\Data\Offer\LocationInterface" type="Macopedia\Allegro\Model\Data\Offer\Location" />
+    <preference for="Macopedia\Allegro\Api\Data\Offer\AfterSalesServicesInterface" type="Macopedia\Allegro\Model\Data\Offer\AfterSalesServices" />
     <preference for="Macopedia\Allegro\Api\Data\CategoryInterface" type="Macopedia\Allegro\Model\Data\Category" />
     <preference for="Macopedia\Allegro\Api\Data\ParameterDefinitionInterface" type="Macopedia\Allegro\Model\Data\ParameterDefinition" />
     <preference for="Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface" type="Macopedia\Allegro\Model\Data\ParameterDefinition\DictionaryItem" />
@@ -48,6 +52,9 @@
     <preference for="Macopedia\Allegro\Api\Data\CheckoutForm\AmountInterface" type="Macopedia\Allegro\Model\Data\CheckoutForm\Amount" />
     <preference for="Macopedia\Allegro\Api\Data\DeliveryMethodInterface" type="Macopedia\Allegro\Model\Data\DeliveryMethod" />
     <preference for="Macopedia\Allegro\Api\Data\ShippingRateInterface" type="Macopedia\Allegro\Model\Data\ShippingRate" />
+    <preference for="Macopedia\Allegro\Api\Data\ImpliedWarrantyInterface" type="Macopedia\Allegro\Model\Data\ImpliedWarranty" />
+    <preference for="Macopedia\Allegro\Api\Data\ReturnPolicyInterface" type="Macopedia\Allegro\Model\Data\ReturnPolicy" />
+    <preference for="Macopedia\Allegro\Api\Data\WarrantyInterface" type="Macopedia\Allegro\Model\Data\Warranty" />
     <preference for="Macopedia\Allegro\Api\Data\Sales\Order\PickupPointExtensionAttributesInterface" type="Macopedia\Allegro\Model\Data\Sales\Order\PickupPointExtensionAttributes" />
 
     <preference for="Magento\Sales\Block\Adminhtml\Order\View\Info" type="Macopedia\Allegro\Block\Adminhtml\HideAddressInformation" />

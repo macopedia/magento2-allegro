@@ -20,7 +20,7 @@ class Categories extends AbstractResource
     public function getRootList()
     {
         $response = $this->requestGet('/sale/categories');
-        return $response['categories'];
+        return $response['categories'] ??[];
     }
 
     /**
@@ -33,7 +33,7 @@ class Categories extends AbstractResource
     public function getList($parentId)
     {
         $response = $this->requestGet('/sale/categories?parent.id=' . $parentId);
-        return $response['categories'];
+        return $response['categories'] ?? [];
     }
 
     /**
@@ -45,8 +45,7 @@ class Categories extends AbstractResource
      */
     public function get($categoryId)
     {
-        $response = $this->requestGet('/sale/categories/' . $categoryId);
-        return $response;
+        return  $this->requestGet('/sale/categories/' . $categoryId);
     }
 
     /**
@@ -59,6 +58,6 @@ class Categories extends AbstractResource
     public function getParameters($categoryId)
     {
         $response = $this->requestGet('/sale/categories/' . $categoryId . '/parameters');
-        return $response['parameters'];
+        return $response['parameters'] ?? [];
     }
 }

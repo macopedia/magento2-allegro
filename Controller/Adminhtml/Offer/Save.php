@@ -3,11 +3,15 @@
 namespace Macopedia\Allegro\Controller\Adminhtml\Offer;
 
 use Macopedia\Allegro\Api\Data\ImageInterface;
+use Macopedia\Allegro\Api\Data\Offer\AfterSalesServicesInterface;
+use Macopedia\Allegro\Api\Data\Offer\AfterSalesServicesInterfaceFactory;
 use Macopedia\Allegro\Api\Data\Offer\LocationInterface;
 use Macopedia\Allegro\Api\Data\OfferInterface;
 use Macopedia\Allegro\Api\Data\ParameterInterface;
 use Macopedia\Allegro\Api\Data\ParameterInterfaceFactoryInterface;
 use Macopedia\Allegro\Controller\Adminhtml\Offer;
+use Macopedia\Allegro\Controller\Adminhtml\Offer\Context as OfferContext;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
@@ -18,6 +22,24 @@ use Magento\Framework\Exception\LocalizedException;
  */
 class Save extends Offer
 {
+
+    /** @var AfterSalesServicesInterfaceFactory */
+    private $afterSalesServicesFactory;
+
+    /**
+     * Save constructor.
+     * @param Context $context
+     * @param \Macopedia\Allegro\Controller\Adminhtml\Offer\Context $offerContext
+     * @param AfterSalesServicesInterfaceFactory $afterSalesServicesFactory
+     */
+    public function __construct(
+        Context $context,
+        OfferContext $offerContext,
+        AfterSalesServicesInterfaceFactory $afterSalesServicesFactory
+    ) {
+        parent::__construct($context, $offerContext);
+        $this->afterSalesServicesFactory = $afterSalesServicesFactory;
+    }
 
     /**
      * @return ResultInterface|ResponseInterface
@@ -102,6 +124,7 @@ class Save extends Offer
         $offer->setPrice($data['price']);
         $offer->setParameters($this->initializeParameters($data));
         $offer->setDeliveryShippingRatesId($data['delivery_shipping_rates_id']);
+        $offer->setAfterSalesServices($this->initializeAfterSalesServices($data));
         $offer->setDeliveryHandlingTime($data['delivery_handling_time']);
         $offer->setPaymentsInvoice($data['payments_invoice']);
 
@@ -151,5 +174,27 @@ class Save extends Offer
             $images[] = $image;
         }
         return $images;
+    }
+
+    /**
+     * @param array $data
+     * @return AfterSalesServicesInterface
+     */
+    private function initializeAfterSalesServices(array $data): AfterSalesServicesInterface
+    {
+        /** @var AfterSalesServicesInterface $afterSalesServices */
+        $afterSalesServices = $this->afterSalesServicesFactory->create();
+
+        if ($data['implied_warranty'] !== '') {
+            $afterSalesServices->setImpliedWarrantyId($data['implied_warranty']);
+        }
+        if ($data['return_policy'] !== '') {
+            $afterSalesServices->setReturnPolicyId($data['return_policy']);
+        }
+        if ($data['warranty'] !== '') {
+            $afterSalesServices->setWarrantyId($data['warranty']);
+        }
+
+        return $afterSalesServices;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Macopedia\Allegro\Api\Data;
 
+use Macopedia\Allegro\Api\Data\Offer\AfterSalesServicesInterface;
 use Macopedia\Allegro\Api\Data\Offer\LocationInterface;
 
 interface OfferInterface
@@ -97,6 +98,12 @@ interface OfferInterface
     public function setValidationErrors(array $validationErrors);
 
     /**
+     * @param AfterSalesServicesInterface $afterSalesServices
+     * @return mixed
+     */
+    public function setAfterSalesServices(AfterSalesServicesInterface $afterSalesServices);
+
+    /**
      * @return string|null
      */
     public function getId(): ?string;
@@ -165,6 +172,11 @@ interface OfferInterface
      * @return string[]
      */
     public function getValidationErrors(): array;
+
+    /**
+     * @return AfterSalesServicesInterface
+     */
+    public function getAfterSalesServices(): AfterSalesServicesInterface;
 
     /**
      * @return bool

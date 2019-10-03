@@ -19,7 +19,7 @@ class Events extends AbstractResource
     public function getList()
     {
         $response = $this->requestGet('/order/events', [], true);
-        return $response['events'];
+        return $response['events'] ?? [];
     }
 
     /**
@@ -32,6 +32,6 @@ class Events extends AbstractResource
     public function getListFrom(string $from)
     {
         $response = $this->requestGet('/order/events?from=' . $from, [], true);
-        return $response['events'];
+        return $response['events'] ?? [];
     }
 }
