@@ -95,4 +95,8 @@
         <plugin name="update_shipping_rate_price_for_allegro_orders" type="Macopedia\Allegro\Plugin\UpdateShippingRatePrice" />
     </type>
 
+    <type name="Magento\Quote\Model\Quote\TotalsCollectorList">
+        <plugin name="remove_discount_calculation" type="Macopedia\Allegro\Plugin\RemoveDiscountCalculation" />
+    </type>
+
 </config>

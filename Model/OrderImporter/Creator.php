@@ -21,6 +21,7 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Tax\Model\Config as TaxConfig;
+use Magento\Framework\Registry;
 
 /**
  * Magento order creator
@@ -45,6 +46,9 @@ class Creator extends AbstractAction
     /** @var QuoteManagement */
     private $quoteManagement;
 
+    /** @var Registry */
+    private $registry;
+
     /**
      * Creator constructor.
      * @param Shipping $shipping
@@ -58,11 +62,14 @@ class Creator extends AbstractAction
      * @param ManagerInterface $eventManager
      * @param ProductFactory $productFactory
      * @param Json $jsonSerializer
+     * @param TaxConfig $taxConfig
+     * @param SalesConfig $salesConfig
      * @param ProductRepositoryInterface $productRepository
      * @param StoreManagerInterface $storeManager
      * @param Customer $customer
      * @param ScopeConfigInterface $scopeConfig
      * @param QuoteManagement $quoteManagement
+     * @param Registry $registry
      */
     public function __construct(
         Shipping $shipping,
@@ -82,7 +89,8 @@ class Creator extends AbstractAction
         StoreManagerInterface $storeManager,
         Customer $customer,
         ScopeConfigInterface $scopeConfig,
-        QuoteManagement $quoteManagement
+        QuoteManagement $quoteManagement,
+        Registry $registry
     ) {
         parent::__construct(
             $shipping,
@@ -104,6 +112,7 @@ class Creator extends AbstractAction
         $this->customer = $customer;
         $this->scopeConfig = $scopeConfig;
         $this->quoteManagement = $quoteManagement;
+        $this->registry = $registry;
     }
 
     /**
@@ -115,6 +124,8 @@ class Creator extends AbstractAction
      */
     public function execute(CheckoutFormInterface $checkoutForm)
     {
+        $this->registry->register('is_allegro_order', true, true);
+
         $this->taxConfig->setShippingPriceIncludeTax(true);
         $this->taxConfig->setPriceIncludesTax(true);
 
