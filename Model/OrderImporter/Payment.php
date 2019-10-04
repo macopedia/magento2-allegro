@@ -99,7 +99,7 @@ class Payment
             return $this->getDefaultMethodCode();
         }
 
-        $paymentMethodMap[$paymentType];
+        return $paymentMethodMap[$paymentType];
     }
 
     /**
