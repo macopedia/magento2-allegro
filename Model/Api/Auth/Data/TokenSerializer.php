@@ -53,7 +53,7 @@ class TokenSerializer
 
     /**
      * @param string $tokenString
-     * @return Token
+     * @return TokenInterface
      * @throws \Macopedia\Allegro\Model\Api\Auth\Data\TokenSerializer\TokenSerializerException
      */
     public function decode(string $tokenString)

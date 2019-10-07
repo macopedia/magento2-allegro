@@ -36,7 +36,7 @@ class TokenProvider
     }
 
     /**
-     * @return bool|mixed|void
+     * @return TokenInterface
      * @throws ClientException
      */
     public function getCurrent()

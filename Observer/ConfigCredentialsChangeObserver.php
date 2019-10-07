@@ -2,24 +2,22 @@
 
 namespace Macopedia\Allegro\Observer;
 
-use Magento\Framework\App\Cache\TypeListInterface;
+use Macopedia\Allegro\Model\Api\ClientException;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface;
+use Macopedia\Allegro\Model\Api\Credentials;
 
 /**
  * Allegro credentials change observer
  */
 class ConfigCredentialsChangeObserver implements ObserverInterface
 {
-    const TOKEN_DATA_CONFIG_KEY = 'allegro/credentials/token_data';
-
     private static $credentialKeys = [
         'allegro/credentials/api_key',
-        'allegro/credentials/client_id',
-        'allegro/credentials/token_data'
+        'allegro/credentials/client_id'
     ];
 
     /** @var ScopeConfigInterface */
@@ -31,26 +29,26 @@ class ConfigCredentialsChangeObserver implements ObserverInterface
     /** @var ManagerInterface */
     private $messageManager;
 
-    /** @var TypeListInterface */
-    private $cacheTypeList;
+    /** @var Credentials  */
+    private $credentials;
 
     /**
      * ConfigCredentialsChangeObserver constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param WriterInterface $configWriter
      * @param ManagerInterface $messageManager
-     * @param TypeListInterface $cacheTypeList
+     * @param Credentials $credentials
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         WriterInterface $configWriter,
         ManagerInterface $messageManager,
-        TypeListInterface $cacheTypeList
+        Credentials $credentials
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->configWriter = $configWriter;
         $this->messageManager = $messageManager;
-        $this->cacheTypeList = $cacheTypeList;
+        $this->credentials = $credentials;
     }
 
     /**
@@ -60,11 +58,11 @@ class ConfigCredentialsChangeObserver implements ObserverInterface
     {
         $changedPaths = $observer->getData('changed_paths');
         if (!empty(array_intersect($changedPaths, self::$credentialKeys))) {
-            if ($this->scopeConfig->getValue(self::TOKEN_DATA_CONFIG_KEY)) {
-                $this->configWriter->delete(self::TOKEN_DATA_CONFIG_KEY);
+            try {
+                $this->credentials->getToken();
+                $this->credentials->deleteToken();
                 $this->messageManager->addNoticeMessage(__('You have changed credentials to Allegro account. Your current connection has been lost and you have to connect with Allegro account again'));
-            }
-            $this->cacheTypeList->cleanType('config');
+            } catch (ClientException $e) {}
         }
     }
 }
