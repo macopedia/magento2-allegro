@@ -41,10 +41,6 @@
                     <label>Client Secret</label>
                     <comment/>
                 </field>
-                <field id="token_data" showInDefault="0" showInStore="0" showInWebsite="0" sortOrder="0" translate="label" type="obscure">
-                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                    <comment/>
-                </field>
             </group>
             <group id="order" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Order import</label>
