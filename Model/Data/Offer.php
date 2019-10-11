@@ -547,7 +547,7 @@ class Offer extends DataObject implements OfferInterface
     {
         $result = [];
         foreach ($data as $error) {
-            $result[] = $error['message'] != '' ? $error['message'] : $error['userMessage'];
+            $result[] = $error['message'] ?: $error['userMessage'];
         }
         return $result;
     }

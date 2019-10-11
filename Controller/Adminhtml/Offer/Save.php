@@ -185,13 +185,13 @@ class Save extends Offer
         /** @var AfterSalesServicesInterface $afterSalesServices */
         $afterSalesServices = $this->afterSalesServicesFactory->create();
 
-        if ($data['implied_warranty'] !== '') {
+        if (!empty($data['implied_warranty'])) {
             $afterSalesServices->setImpliedWarrantyId($data['implied_warranty']);
         }
-        if ($data['return_policy'] !== '') {
+        if (!empty($data['return_policy'])) {
             $afterSalesServices->setReturnPolicyId($data['return_policy']);
         }
-        if ($data['warranty'] !== '') {
+        if (!empty($data['warranty'])) {
             $afterSalesServices->setWarrantyId($data['warranty']);
         }
 

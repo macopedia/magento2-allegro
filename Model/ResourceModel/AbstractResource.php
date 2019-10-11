@@ -11,16 +11,18 @@ use Macopedia\Allegro\Model\Api\ClientResponseErrorException;
 use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\Api\Request;
 use Macopedia\Allegro\Model\Api\TokenProvider;
+use Macopedia\Allegro\Model\Cache\Type;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * Base class for resource models to send requests for Allegro API
  */
 abstract class AbstractResource
 {
-    const REQUEST_GET = 'GET';
+    const REQUEST_GET  = 'GET';
     const REQUEST_POST = 'POST';
-    const REQUEST_PUT = 'PUT';
+    const REQUEST_PUT  = 'PUT';
 
     const SANDBOX_CONFIG_KEY = 'allegro/general/sandbox';
 
@@ -41,9 +43,9 @@ abstract class AbstractResource
 
     /**
      * @param ScopeConfigInterface $scopeConfig
-     * @param Client $client
-     * @param TokenProvider $tokenProvider
-     * @param Logger $logger
+     * @param Client               $client
+     * @param TokenProvider        $tokenProvider
+     * @param Logger               $logger
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -52,11 +54,11 @@ abstract class AbstractResource
         TokenDecoder $tokenDecoder,
         Logger $logger
     ) {
-        $this->scopeConfig = $scopeConfig;
-        $this->client = $client;
+        $this->scopeConfig   = $scopeConfig;
+        $this->client        = $client;
         $this->tokenProvider = $tokenProvider;
-        $this->tokenDecoder = $tokenDecoder;
-        $this->logger = $logger;
+        $this->tokenDecoder  = $tokenDecoder;
+        $this->logger        = $logger;
     }
 
     /**
@@ -77,8 +79,8 @@ abstract class AbstractResource
 
     /**
      * @param string $uri
-     * @param array $params
-     * @param bool $isBeta
+     * @param array  $params
+     * @param bool   $isBeta
      * @return array
      * @throws ClientException
      * @throws ClientResponseException
@@ -86,13 +88,37 @@ abstract class AbstractResource
      */
     protected function requestGet($uri, array $params = [], $isBeta = false)
     {
-        return $this->sendRequest($uri, self::REQUEST_GET, $params, $isBeta);
+        $response = $this->sendRequest($uri, self::REQUEST_GET, $params, $isBeta);
+        return $response;
     }
 
     /**
      * @param string $uri
-     * @param array $params
-     * @param bool $isBeta
+     * @param array  $params
+     * @param bool   $isBeta
+     * @return array
+     * @throws ClientException
+     * @throws ClientResponseException
+     * @throws ClientResponseErrorException
+     */
+    protected function cachedRequestGet($uri, array $params = [], $isBeta = false)
+    {
+        \Magento\Framework\Profiler::start(__CLASS__ . '::' . __METHOD__ . '::' . $uri);
+        $identifier = sha1($this->serializer()->serialize([$uri, self::REQUEST_GET, $params, $isBeta]));
+        if ($this->cache()->test($identifier)) {
+            $response = $this->serializer()->unserialize($this->cache()->load($identifier));
+        } else {
+            $response = $this->sendRequest($uri, self::REQUEST_GET, $params, $isBeta);
+            $this->cache()->save($this->serializer()->serialize($response), $identifier);
+        }
+        \Magento\Framework\Profiler::stop(__CLASS__ . '::' . __METHOD__ . '::' . $uri);
+        return $response;
+    }
+
+    /**
+     * @param string $uri
+     * @param array  $params
+     * @param bool   $isBeta
      * @return array
      * @throws ClientException
      * @throws ClientResponseException
@@ -104,7 +130,7 @@ abstract class AbstractResource
     }
 
     /**
-     * @param $uri
+     * @param       $uri
      * @param array $params
      * @return array
      * @throws ClientException
@@ -117,7 +143,7 @@ abstract class AbstractResource
     }
 
     /**
-     * @param $uri
+     * @param       $uri
      * @param array $params
      * @return Request
      */
@@ -125,15 +151,15 @@ abstract class AbstractResource
     {
         return $this->getRequest()
             ->setUri($uri)
-            ->setIsSandbox($this->isSandbox($this->isSandbox()))
+            ->setIsSandbox($this->isSandbox())
             ->setBody($params);
     }
 
     /**
-     * @param $uri
-     * @param $method
-     * @param array $params
-     * @param bool $isBeta
+     * @param string $uri
+     * @param string $method
+     * @param array  $params
+     * @param bool   $isBeta
      * @return mixed
      * @throws ClientException
      * @throws ClientResponseException
@@ -141,6 +167,7 @@ abstract class AbstractResource
      */
     private function sendRequest($uri, $method, array $params = [], $isBeta = false)
     {
+        \Magento\Framework\Profiler::start(__CLASS__ . '::' . __METHOD__);
         $token = $this->tokenProvider->getCurrent();
 
         $request = $this->request($uri, $params)->setMethod($method);
@@ -151,7 +178,10 @@ abstract class AbstractResource
             $request->setContentPublic();
         }
 
-        return $this->client->sendRequest($token, $request);
+        $response = $this->client->sendRequest($token, $request);
+
+        \Magento\Framework\Profiler::stop(__CLASS__ . '::' . __METHOD__);
+        return $response;
     }
 
     /**
@@ -162,8 +192,35 @@ abstract class AbstractResource
         return (bool)$this->scopeConfig->getValue(self::SANDBOX_CONFIG_KEY);
     }
 
+    /**
+     * @return Request
+     */
     private function getRequest()
     {
         return new Request();
+    }
+
+    /**
+     * @return \Magento\Framework\App\ObjectManager
+     */
+    private function objectManager()
+    {
+        return \Magento\Framework\App\ObjectManager::getInstance();
+    }
+
+    /**
+     * @return Type
+     */
+    private function cache()
+    {
+        return $this->objectManager()->get(Type::class);
+    }
+
+    /**
+     * @return Json
+     */
+    private function serializer()
+    {
+        return $this->objectManager()->get(Json::class);
     }
 }
