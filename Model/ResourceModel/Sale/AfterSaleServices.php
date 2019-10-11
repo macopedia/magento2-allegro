@@ -6,7 +6,6 @@ use Macopedia\Allegro\Model\ResourceModel\AbstractResource;
 
 class AfterSaleServices extends AbstractResource
 {
-
     /**
      * @return array
      * @throws \Macopedia\Allegro\Model\Api\ClientException
@@ -15,7 +14,7 @@ class AfterSaleServices extends AbstractResource
      */
     public function getImpliedWarrantiesList()
     {
-        $result = $this->requestGet('/after-sales-service-conditions/implied-warranties?seller.id=' . $this->getCurrentUserId());
+        $result = $this->cachedRequestGet('/after-sales-service-conditions/implied-warranties?seller.id=' . $this->getCurrentUserId());
         return $result['impliedWarranties'];
     }
 
@@ -27,7 +26,7 @@ class AfterSaleServices extends AbstractResource
      */
     public function getReturnPoliciesList()
     {
-        $result = $this->requestGet('/after-sales-service-conditions/return-policies?seller.id=' . $this->getCurrentUserId());
+        $result = $this->cachedRequestGet('/after-sales-service-conditions/return-policies?seller.id=' . $this->getCurrentUserId());
         return $result['returnPolicies'];
 
     }
@@ -40,7 +39,7 @@ class AfterSaleServices extends AbstractResource
      */
     public function getWarrantiesList()
     {
-        $result = $this->requestGet('/after-sales-service-conditions/warranties?seller.id=' . $this->getCurrentUserId());
+        $result = $this->cachedRequestGet('/after-sales-service-conditions/warranties?seller.id=' . $this->getCurrentUserId());
         return $result['warranties'];
     }
 }

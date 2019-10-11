@@ -70,7 +70,9 @@ class CreateDataProvider extends DataProvider
      */
     public function getData()
     {
+        \Magento\Framework\Profiler::start(__CLASS__ . '::' . __METHOD__);
         if (isset($this->_loadedData)) {
+            \Magento\Framework\Profiler::stop(__CLASS__ . '::' . __METHOD__);
             return $this->_loadedData;
         }
 
@@ -91,6 +93,7 @@ class CreateDataProvider extends DataProvider
             ]
         ];
 
+        \Magento\Framework\Profiler::stop(__CLASS__ . '::' . __METHOD__);
         return $this->_loadedData;
     }
 }

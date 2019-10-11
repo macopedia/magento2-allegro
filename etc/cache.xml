@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  @copyright  Vertex. All rights reserved.  https://www.vertexinc.com/
+  @author     Mediotype                     https://www.mediotype.com/
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Cache/etc/cache.xsd">
+    <type name="allegro" translate="label,description" instance="Macopedia\Allegro\Model\Cache\Type">
+        <label><![CDATA[Allegro]]></label>
+        <description><![CDATA[Allegro Api data]]></description>
+    </type>
+</config>

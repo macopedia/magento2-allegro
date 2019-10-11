@@ -6,6 +6,7 @@ use Macopedia\Allegro\Api\Data\WarrantyInterface;
 use Macopedia\Allegro\Api\Data\WarrantyInterfaceFactory;
 use Macopedia\Allegro\Api\WarrantyRepositoryInterface;
 use Macopedia\Allegro\Model\Api\ClientException;
+use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\ResourceModel\Sale\AfterSaleServices;
 
 class WarrantyRepository implements WarrantyRepositoryInterface

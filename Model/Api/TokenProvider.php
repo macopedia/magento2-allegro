@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Model\Api;
 
 use Macopedia\Allegro\Api\Data\TokenInterface;
 use Macopedia\Allegro\Logger\Logger;
-use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class to get current access token received from Allegro APO
@@ -38,6 +37,7 @@ class TokenProvider
     /**
      * @return TokenInterface
      * @throws ClientException
+     * @throws \Exception
      */
     public function getCurrent()
     {

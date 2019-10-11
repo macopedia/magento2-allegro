@@ -19,7 +19,7 @@ class DeliveryMethod extends AbstractResource
      */
     public function getList()
     {
-        $response = $this->requestGet('/sale/delivery-methods');
+        $response = $this->cachedRequestGet('/sale/delivery-methods');
         return $response['deliveryMethods'] ?? [];
     }
 }

@@ -2,10 +2,12 @@
 
 namespace Macopedia\Allegro\Model\Api;
 
-use Macopedia\Allegro\Model\Api\Auth\Data\Token;
-use Magento\Framework\HTTP\Client\CurlFactory;
+use Macopedia\Allegro\Api\Data\TokenInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 
+/**
+ * Class Client
+ */
 class Client
 {
     const CONTENT_TYPE_PUBLIC = 'application/vnd.allegro.public.v1+json';
@@ -26,13 +28,13 @@ class Client
     }
 
     /**
-     * @param Token $token
+     * @param TokenInterface $token
      * @param Request $request
      * @return mixed
      * @throws ClientResponseException
      * @throws ClientResponseErrorException
      */
-    public function sendRequest(Token $token, Request $request)
+    public function sendRequest(TokenInterface $token, Request $request)
     {
         $url = $this->getApiUrl($request) . $request->getUri();
         $headers = $this->prepareHeaders($token, $request);
@@ -62,11 +64,11 @@ class Client
     }
 
     /**
-     * @param Token $token
+     * @param TokenInterface $token
      * @param Request $request
      * @return array
      */
-    private function prepareHeaders(Token $token, Request $request)
+    private function prepareHeaders(TokenInterface $token, Request $request)
     {
         $contentType = $request->getContentType();
         $contentType = $contentType ? $contentType : self::CONTENT_TYPE_BETA;

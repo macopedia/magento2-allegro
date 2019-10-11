@@ -3,11 +3,9 @@
 namespace Macopedia\Allegro\Model\Api;
 
 use Macopedia\Allegro\Api\Data\TokenInterface;
-use Macopedia\Allegro\Model\Api\Auth\Data\Token;
 use Macopedia\Allegro\Model\Api\Auth\Data\TokenSerializer;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\FlagManager;
 
 /**
@@ -84,9 +82,9 @@ class Credentials
     }
 
     /**
-     * @param Token $token
+     * @param TokenInterface $token
      */
-    public function saveToken(Token $token)
+    public function saveToken(TokenInterface $token)
     {
         $this->flagManager->saveFlag(
             self::TOKEN_DATA_FLAG_NAME,
@@ -95,7 +93,7 @@ class Credentials
     }
 
     /**
-     *
+     * @return void
      */
     public function deleteToken()
     {

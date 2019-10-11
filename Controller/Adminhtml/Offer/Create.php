@@ -19,6 +19,7 @@ class Create extends Offer
     public function execute()
     {
         try {
+            \Magento\Framework\Profiler::start(__CLASS__ . '::' . __METHOD__);
             $productId = $this->getRequest()->getParam('product');
             if (!$productId) {
                 throw new LocalizedException(__('Requested product does not exists'));
@@ -36,6 +37,7 @@ class Create extends Offer
             }
 
             $this->registry->register('product', $product);
+            \Magento\Framework\Profiler::stop(__CLASS__ . '::' . __METHOD__);
 
             return $this->createPageResult();
         } catch (LocalizedException $e) {
