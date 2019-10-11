@@ -6,7 +6,7 @@ use Macopedia\Allegro\Api\Data\TokenInterface;
 use Macopedia\Allegro\Logger\Logger;
 
 /**
- * Class to get current access token received from Allegro APO
+ * Class to get current access token received from Allegro API
  */
 class TokenProvider
 {
@@ -48,6 +48,20 @@ class TokenProvider
         }
 
         return $token;
+    }
+
+    /**
+     * @return void
+     * @throws ClientException
+     * @throws \Exception
+     */
+    public function forceRefreshToken()
+    {
+        $this->credentials->saveToken(
+            $this->auth->refreshToken(
+                $this->credentials->getToken()
+            )
+        );
     }
 
     /**

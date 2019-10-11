@@ -4,5 +4,8 @@
         <job instance="Macopedia\Allegro\Cron\ImportOrders" method="execute" name="macopedia_allegro_order_import">
             <schedule>* * * * *</schedule>
         </job>
+        <job instance="Macopedia\Allegro\Cron\RefreshToken" method="execute" name="macopedia_allegro_refresh_token">
+            <schedule>0 */6 * * *</schedule>
+        </job>
     </group>
 </config>

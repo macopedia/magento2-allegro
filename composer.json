@@ -23,5 +23,11 @@
     "psr-4": {
       "Macopedia\\Allegro\\": ""
     }
+  },
+  "require": {
+    "php": "^7.1",
+    "guzzlehttp/guzzle": "*",
+    "ext-fileinfo": "*",
+    "ext-json": "*"
   }
 }

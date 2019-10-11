@@ -75,7 +75,6 @@ class Auth
     public function getNewToken($authCode)
     {
         try {
-
             $response = $this->client->post(
                 $this->getOauthUrl() . '/token',
                 $this->getNewTokenData($authCode)
@@ -97,7 +96,6 @@ class Auth
     public function refreshToken(TokenInterface $token)
     {
         try {
-
             $response = $this->client->post(
                 $this->getOauthUrl() . '/token',
                 $this->getRefreshTokenData($token)
@@ -115,6 +113,7 @@ class Auth
      * @param ResponseInterface $response
      * @return TokenInterface
      * @throws ClientException
+     * @throws \Exception
      */
     private function createTokenFromResponse(ResponseInterface $response): TokenInterface
     {
