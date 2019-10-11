@@ -7,7 +7,7 @@ use Magento\Framework\DataObject;
 
 class Image extends DataObject implements ImageInterface
 {
-
+    const PATH = 'path';
     const URL_FIELD_NAME = 'url';
     const STATUS_FIELD_NAME = 'status';
 
@@ -51,10 +51,8 @@ class Image extends DataObject implements ImageInterface
      */
     public function setRawData(array $rawData)
     {
-        if (isset($rawData['url'])) {
-            $this->setUrl($rawData['url']);
-        }
         $this->setStatus(self::STATUS_UPLOADED);
+        $this->setData($rawData);
     }
 
     /**
@@ -62,8 +60,23 @@ class Image extends DataObject implements ImageInterface
      */
     public function getRawData(): array
     {
-        return [
-            'url' => $this->getUrl()
-        ];
+        return $this->getData();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->getData(self::PATH);
+    }
+
+    /**
+     * @param string $path
+     * @return Image
+     */
+    public function setPath($path)
+    {
+        return $this->setData(self::PATH, $path);
     }
 }
