@@ -79,8 +79,7 @@ class CreateDataProvider extends DataProvider
         /** @var Product $product */
         $product = $this->registry->registry('product');
         $stock = $this->getSalableQuantityDataBySku->execute($product->getSku());
-
-        $imageUrl = $product->getMediaGalleryImages()->getFirstItem()->getUrl();
+        $images = $product->getMediaGalleryImages()->toArray();
 
         $this->_loadedData[$product->getId()] = [
             'allegro' => [
@@ -88,7 +87,7 @@ class CreateDataProvider extends DataProvider
                 'name' => $product->getName(),
                 'description' => $product->getDescription(),
                 'price' => $product->getPrice(),
-                'images' => $imageUrl ? [$imageUrl] : [],
+                'images' => isset($images['items']) ? $images['items'] : [],
                 'qty' => $stock[0]['qty']
             ]
         ];

@@ -10,9 +10,7 @@ use Magento\Framework\Serialize\Serializer\Json;
  */
 class Client
 {
-    const CONTENT_TYPE_PUBLIC = 'application/vnd.allegro.public.v1+json';
-    const CONTENT_TYPE_BETA = 'application/vnd.allegro.beta.v1+json';
-    const API_URL = 'https://api.allegro.pl/';
+    const API_URL         = 'https://api.allegro.pl/';
     const SANDBOX_API_URL = 'https://api.allegro.pl.allegrosandbox.pl/';
 
     /** @var Json */
@@ -36,10 +34,7 @@ class Client
      */
     public function sendRequest(TokenInterface $token, Request $request)
     {
-        $url = $this->getApiUrl($request) . $request->getUri();
-        $headers = $this->prepareHeaders($token, $request);
-
-        $json = $this->sendHttpRequest($url, $request->getMethod(), $headers, $request->getBody());
+        $json = $this->sendHttpRequest($token, $request);
 
         $response = $this->json->unserialize($json);
 
@@ -70,13 +65,10 @@ class Client
      */
     private function prepareHeaders(TokenInterface $token, Request $request)
     {
-        $contentType = $request->getContentType();
-        $contentType = $contentType ? $contentType : self::CONTENT_TYPE_BETA;
-
         return [
             'Authorization: Bearer ' . $token->getAccessToken(),
-            'Accept: ' . $contentType,
-            'Content-Type: ' . $contentType
+            'Accept: ' . $request->getAcceptType() ?: Request::TYPE_BETA,
+            'Content-Type: ' . $request->getContentType() ?: Request::TYPE_BETA
         ];
     }
 
@@ -100,18 +92,19 @@ class Client
      * @param string $data
      * @return bool|string
      */
-    private function sendHttpRequest($url, $method, $headers = [], $data = '')
+    private function sendHttpRequest(TokenInterface $token, Request $request)
     {
+        $isJson = preg_match('/application\/.*json/',$request->getContentType());
         $options = [
             'http' => [
-                'method' => $method,
-                'header' => implode("\r\n", $headers),
-                'content' => $this->json->serialize($data),
+                'method' => $request->getMethod(),
+                'header' => implode("\r\n", $this->prepareHeaders($token, $request)),
+                'content' => $isJson ? $this->json->serialize($request->getBody()) : $request->getBody(),
                 'ignore_errors' => true
             ]
         ];
         $context = stream_context_create($options);
 
-        return file_get_contents($url, false, $context);
+        return file_get_contents($this->getApiUrl($request) . $request->getUri(), false, $context);
     }
 }

@@ -11,14 +11,14 @@ use Macopedia\Allegro\Model\ResourceModel\AbstractResource;
 class Images extends AbstractResource
 {
     /**
-     * @param array $params
+     * @param string $imageUrl
      * @return array
      * @throws ClientException
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
      */
-    public function postImage($params)
+    public function postImage($imagePath)
     {
-        return $this->requestPost('sale/images', $params);
+        return $this->sendRawRequest('sale/images', self::REQUEST_POST, \file_get_contents($imagePath), \mime_content_type($imagePath));
     }
 }

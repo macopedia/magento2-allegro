@@ -7,8 +7,8 @@ namespace Macopedia\Allegro\Model\Api;
  */
 class Request
 {
-    const CONTENT_TYPE_PUBLIC = 'application/vnd.allegro.public.v1+json';
-    const CONTENT_TYPE_BETA = 'application/vnd.allegro.beta.v1+json';
+    const TYPE_PUBLIC = 'application/vnd.allegro.public.v1+json';
+    const TYPE_BETA   = 'application/vnd.allegro.beta.v1+json';
 
     /** @var string */
     private $uri;
@@ -21,6 +21,9 @@ class Request
 
     /** @var string */
     private $contentType;
+
+    /** @var string */
+    private $acceptType;
 
     /** @var string */
     private $method;
@@ -66,6 +69,16 @@ class Request
     }
 
     /**
+     * @param mixed $body
+     * @return Request
+     */
+    public function setRawBody($body)
+    {
+        $this->body = $body;
+        return $this;
+    }
+
+    /**
      * @return array|null
      */
     public function getQuery()
@@ -104,18 +117,20 @@ class Request
     /**
      * @return $this
      */
-    public function setContentPublic()
+    public function setIsPublic()
     {
-        $this->contentType = self::CONTENT_TYPE_PUBLIC;
+        $this->contentType = self::TYPE_PUBLIC;
+        $this->acceptType  = self::TYPE_PUBLIC;
         return $this;
     }
 
     /**
      * @return $this
      */
-    public function setContentBeta()
+    public function setIsBeta()
     {
-        $this->contentType = self::CONTENT_TYPE_BETA;
+        $this->contentType = self::TYPE_BETA;
+        $this->acceptType  = self::TYPE_BETA;
         return $this;
     }
 
@@ -170,5 +185,23 @@ class Request
         }
 
         return $uri;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAcceptType()
+    {
+        return $this->acceptType;
+    }
+
+    /**
+     * @param string $acceptType
+     * @return Request
+     */
+    public function setAcceptType(string $acceptType)
+    {
+        $this->acceptType = $acceptType;
+        return $this;
     }
 }

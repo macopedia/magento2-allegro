@@ -173,10 +173,40 @@ abstract class AbstractResource
         $request = $this->request($uri, $params)->setMethod($method);
 
         if ($isBeta) {
-            $request->setContentBeta();
+            $request->setIsBeta();
         } else {
-            $request->setContentPublic();
+            $request->setIsPublic();
         }
+
+        $response = $this->client->sendRequest($token, $request);
+
+        \Magento\Framework\Profiler::stop(__CLASS__ . '::' . __METHOD__);
+        return $response;
+    }
+
+    /**
+     * @param string $uri
+     * @param string $method
+     * @param mixed  $data
+     * @param string $mimeType
+     * @param bool   $isBeta
+     * @return mixed
+     * @throws ClientException
+     * @throws ClientResponseErrorException
+     * @throws ClientResponseException
+     */
+    protected function sendRawRequest($uri, $method, $data, $mimeType, $isBeta = false)
+    {
+        \Magento\Framework\Profiler::start(__CLASS__ . '::' . __METHOD__);
+        $token = $this->tokenProvider->getCurrent();
+
+        $request = $this->getRequest()
+            ->setUri($uri)
+            ->setIsSandbox($this->isSandbox())
+            ->setRawBody($data)
+            ->setMethod($method)
+            ->setAcceptType($isBeta ? Request::TYPE_BETA : Request::TYPE_PUBLIC)
+            ->setContentType($mimeType);
 
         $response = $this->client->sendRequest($token, $request);
 

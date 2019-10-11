@@ -169,7 +169,7 @@ class Save extends Offer
         foreach ($data as $imageData) {
             /** @var ImageInterface $image */
             $image = $this->imageFactory->create();
-            $image->setUrl($imageData);
+            $image->setRawData($imageData);
             $image->setStatus(ImageInterface::STATUS_LOCAL);
             $images[] = $image;
         }
