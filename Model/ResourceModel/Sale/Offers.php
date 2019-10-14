@@ -90,14 +90,43 @@ class Offers extends AbstractResource
     }
 
     /**
-     * @param string $commandId
      * @return array
      * @throws ClientException
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
      */
-    public function getOfferStatus($commandId)
+    public function getOfferStatus()
     {
-        return $this->requestGet('/sale/offer-publication-commands/' . $commandId);
+        return $this->requestGet('/sale/offer-publication-commands/' . $this->guid->getGuid());
+    }
+
+    /**
+     * @param string $allegroOfferId
+     * @param int $qty
+     * @return array
+     * @throws ClientException
+     * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
+     * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
+     */
+    public function changeQuantity($allegroOfferId, $qty)
+    {
+        $params = [
+            'modification'  => [
+                'changeType' => 'FIXED',
+                'value'      => $qty,
+            ],
+            'offerCriteria' => [
+                [
+                    'offers' => [
+                        [
+                            'id' => $allegroOfferId,
+                        ],
+                    ],
+                    'type'   => 'CONTAINS_OFFERS',
+                ],
+            ],
+        ];
+
+        return $this->requestPut('/sale/offer-quantity-change-commands/' . $this->guid->getGuid(), $params);
     }
 }

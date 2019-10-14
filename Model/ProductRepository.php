@@ -16,7 +16,10 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class ProductRepository extends \Magento\Catalog\Model\ProductRepository implements ProductRepositoryInterface
 {
-
+    /**
+     * @var \Macopedia\Allegro\Model\ResourceModel\Product
+     */
+    protected $resourceModel;
     /** @var array */
     private $instancesByOfferId = [];
 
@@ -153,5 +156,22 @@ class ProductRepository extends \Magento\Catalog\Model\ProductRepository impleme
     {
         $preparedAllegroOfferId = $this->prepareAllegroOfferId($product->getData('allegro_offer_id'));
         $this->instances[$preparedAllegroOfferId][$cacheKey] = $product;
+    }
+
+    /**
+     * @param $productId
+     * @return ProductInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getMinProductWithAllegro($productId): ?ProductInterface
+    {
+        $rawData = $this->resourceModel->getRawMinProductDataWithAllegro($productId);
+        if ($rawData) {
+            $product = $this->productFactory->create();
+            $product->setData($rawData);
+            return $product;
+        }
+
+        return null;
     }
 }
