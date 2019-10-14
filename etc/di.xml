@@ -10,6 +10,7 @@
     <preference for="Macopedia\Allegro\Api\CategoryRepositoryInterface" type="Macopedia\Allegro\Model\CategoryRepository" />
     <preference for="Macopedia\Allegro\Api\ParameterDefinitionRepositoryInterface" type="Macopedia\Allegro\Model\ParameterDefinitionRepository" />
     <preference for="Macopedia\Allegro\Api\PublicationCommandRepositoryInterface" type="Macopedia\Allegro\Model\PublicationCommandRepository" />
+    <preference for="Macopedia\Allegro\Api\QuantityCommandInterface" type="Macopedia\Allegro\Model\QuantityCommand" />
     <preference for="Macopedia\Allegro\Api\ImageRepositoryInterface" type="Macopedia\Allegro\Model\ImageRepository" />
     <preference for="Macopedia\Allegro\Api\EventRepositoryInterface" type="Macopedia\Allegro\Model\EventRepository" />
     <preference for="Macopedia\Allegro\Api\CheckoutFormRepositoryInterface" type="Macopedia\Allegro\Model\CheckoutFormRepository" />

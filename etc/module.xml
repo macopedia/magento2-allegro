@@ -3,6 +3,8 @@
     <module name="Macopedia_Allegro" setup_version="1.0.2">
         <sequence>
             <module name="Magento_Sales" />
+            <module name="Magento_CatalogInventory" />
+            <module name="Magento_InventorySalesAdminUi" />
         </sequence>
     </module>
 </config>
