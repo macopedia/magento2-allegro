@@ -100,7 +100,8 @@ class Client
                 'method' => $request->getMethod(),
                 'header' => implode("\r\n", $this->prepareHeaders($token, $request)),
                 'content' => $isJson ? $this->json->serialize($request->getBody()) : $request->getBody(),
-                'ignore_errors' => true
+                'ignore_errors' => false,
+                'timeout' => 120
             ]
         ];
         $context = stream_context_create($options);
