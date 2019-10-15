@@ -116,6 +116,9 @@ class Address extends DataObject implements AddressInterface
         $address->setCompany(
             $this->getCompany()->getName() ?? $deliveryAddress->getCompanyName()
         );
+        $address->setVatId(
+            $this->getCompany() ? ($this->getCompany()->getVatId() ?? '') : ''
+        );
         $address->setPostcode(
             $this->getZipCode() ?? $deliveryAddress->getZipCode() ?? '12345'
         );

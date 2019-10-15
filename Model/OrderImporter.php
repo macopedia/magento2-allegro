@@ -76,7 +76,7 @@ class OrderImporter
     }
 
     /**
-     * @return Info
+     * @return OrderImporter\Info
      */
     public function execute()
     {
@@ -163,7 +163,7 @@ class OrderImporter
     }
 
     /**
-     * @return Info
+     * @return OrderImporter\Info
      */
     private function prepareInfoResponse()
     {

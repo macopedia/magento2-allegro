@@ -217,6 +217,7 @@ class Creator extends AbstractAction
 
             $lineItemsIds[$product->getSku()] = $lineItem->getId();
             $product->setPrice($lineItem->getPrice()->getAmount());
+            $product->setSpecialPrice(null);
             $quote->addProduct($product, $lineItem->getQty());
         }
         return $lineItemsIds;
