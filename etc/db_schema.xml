@@ -1,33 +1,36 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
 
     <table name="sales_order">
-        <column xsi:type="text" name="order_from" nullable="true" comment="Where the order comes from"/>
-        <column xsi:type="text" name="external_id" nullable="true" comment="External order ID"/>
+        <column xsi:type="varchar" length="255" name="order_from" nullable="true" comment="Where the order comes from"/>
+        <column xsi:type="varchar" length="255" name="external_id" nullable="true" comment="External order ID"/>
+        <column xsi:type="varchar" length="255" name="external_guid" nullable="true" comment="External order GUID"/>
     </table>
 
     <table name="sales_order_grid">
-        <column xsi:type="text" name="order_from" nullable="true" comment="Where the order comes from"/>
-        <column xsi:type="text" name="external_id" nullable="true" comment="External order ID"/>
+        <column xsi:type="varchar" length="255" name="order_from" nullable="true" comment="Where the order comes from"/>
+        <column xsi:type="varchar" length="255" name="external_id" nullable="true" comment="External order ID"/>
+        <column xsi:type="varchar" length="255" name="external_guid" nullable="true" comment="External order GUID"/>
     </table>
 
     <table name="quote">
-        <column xsi:type="text" name="order_from" nullable="true" comment="Where the order comes from"/>
-        <column xsi:type="text" name="external_id" nullable="true" comment="External order ID"/>
+        <column xsi:type="varchar" length="255" name="order_from" nullable="true" comment="Where the order comes from"/>
+        <column xsi:type="varchar" length="255" name="external_id" nullable="true" comment="External order ID"/>
+        <column xsi:type="varchar" length="255" name="external_guid" nullable="true" comment="External order GUID"/>
     </table>
 
     <table name="sales_order_item">
-        <column xsi:type="text" name="allegro_line_item_id" nullable="true" comment="Allegro line item ID"/>
+        <column xsi:type="varchar" length="255" name="allegro_line_item_id" nullable="true" comment="Allegro line item ID"/>
     </table>
 
     <table name="sales_order_pickup_point" resource="default">
         <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
         <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="false" comment="Order ID"/>
-        <column xsi:type="text" name="point_id" nullable="true" comment="Allegro pickup point ID"/>
-        <column xsi:type="text" name="name" nullable="true" comment="Allegro pickup point name"/>
-        <column xsi:type="text" name="description" nullable="true" comment="Allegro pickup point description"/>
-        <column xsi:type="text" name="street" nullable="true" comment="Allegro pickup point address street"/>
-        <column xsi:type="text" name="zip_code" nullable="true" comment="Allegro pickup point address zip code"/>
-        <column xsi:type="text" name="city" nullable="true" comment="Allegro pickup point address city"/>
+        <column xsi:type="varchar" length="255" name="point_id" nullable="true" comment="Allegro pickup point ID"/>
+        <column xsi:type="varchar" length="255" name="name" nullable="true" comment="Allegro pickup point name"/>
+        <column xsi:type="varchar" length="255" name="description" nullable="true" comment="Allegro pickup point description"/>
+        <column xsi:type="varchar" length="255" name="street" nullable="true" comment="Allegro pickup point address street"/>
+        <column xsi:type="varchar" length="255" name="zip_code" nullable="true" comment="Allegro pickup point address zip code"/>
+        <column xsi:type="varchar" length="255" name="city" nullable="true" comment="Allegro pickup point address city"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>

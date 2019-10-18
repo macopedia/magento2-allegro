@@ -29,12 +29,7 @@ class ImpliedWarranty implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        $options = [
-            [
-                'value' => '',
-                'label' => __('--Please Select--'),
-            ]
-        ];
+        $options = [];
 
         try {
             $impliedWarranties = $this->impliedWarrantyRepository->getList();

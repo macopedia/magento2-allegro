@@ -51,8 +51,8 @@ class Image extends DataObject implements ImageInterface
      */
     public function setRawData(array $rawData)
     {
-        $this->setStatus(self::STATUS_UPLOADED);
         $this->setData($rawData);
+        $this->setStatus(self::STATUS_UPLOADED);
     }
 
     /**

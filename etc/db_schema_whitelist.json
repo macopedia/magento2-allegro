@@ -1,0 +1,45 @@
+{
+    "sales_order": {
+        "column": {
+            "order_from": true,
+            "external_id": true,
+            "external_guid": true
+        }
+    },
+    "sales_order_grid": {
+        "column": {
+            "order_from": true,
+            "external_id": true,
+            "external_guid": true
+        }
+    },
+    "quote": {
+        "column": {
+            "order_from": true,
+            "external_id": true,
+            "external_guid": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "allegro_line_item_id": true
+        }
+    },
+    "sales_order_pickup_point": {
+        "column": {
+            "entity_id": true,
+            "order_id": true,
+            "point_id": true,
+            "name": true,
+            "description": true,
+            "street": true,
+            "zip_code": true,
+            "city": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "SALES_ORDER_PICKUP_POINT_ORDER_ID": true,
+            "SALES_ORDER_PICKUP_POINT_ORDER_ID_SALES_ORDER_ENTITY_ID": true
+        }
+    }
+}
