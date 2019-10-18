@@ -30,12 +30,7 @@ class Warranty implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        $options = [
-            [
-                'value' => '',
-                'label' => __('--Please Select--'),
-            ]
-        ];
+        $options = [];
 
         try {
             $warranties = $this->warrantyRepository->getList();

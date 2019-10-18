@@ -31,12 +31,7 @@ class ReturnPolicy implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        $options = [
-            [
-                'value' => '',
-                'label' => __('--Please Select--'),
-            ]
-        ];
+        $options = [];
 
         try {
             $returnPolicies = $this->returnPolicyRepository->getList();

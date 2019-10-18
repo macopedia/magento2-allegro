@@ -128,6 +128,7 @@ abstract class AbstractAction
      */
     protected function processTotals(OrderInterface $order, CheckoutFormInterface $checkoutForm)
     {
+        return;
         // TODO: This functionality requires refactor
         $quote = $this->quoteFactory->create();
 
@@ -164,7 +165,7 @@ abstract class AbstractAction
                         [
                             'product' => $item->getProduct(),
                             'code' => 'additional_options',
-                            'value' => $this->serializer->serialize($additionalOptions)
+                            'value' => $this->jsonSerializer->serialize($additionalOptions),
                         ]
                     )
                 );

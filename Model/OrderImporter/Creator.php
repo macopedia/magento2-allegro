@@ -125,13 +125,10 @@ class Creator extends AbstractAction
     public function execute(CheckoutFormInterface $checkoutForm)
     {
         $this->registry->register('is_allegro_order', true, true);
-
-        $this->taxConfig->setShippingPriceIncludeTax(true);
-        $this->taxConfig->setPriceIncludesTax(true);
-
         /** @var Quote $quote */
         $quote = $this->quoteFactory->create();
         $quote->setStore($this->getStore());
+        $quote->setStoreId($this->getStore()->getId());
 
         // TODO use ExtensionAttributesInterface
         $quote->setData('order_from', 'Allegro');
@@ -149,17 +146,12 @@ class Creator extends AbstractAction
         $this->processBilling($quote, $checkoutForm);
 
         $order = $this->placeOrder($quote, $checkoutForm);
-
-        $this->taxConfig->setShippingPriceIncludeTax(false);
-        $this->taxConfig->setPriceIncludesTax(false);
-
         $order->setCanSendNewEmailFlag(false);
 
         foreach ($order->getItems() as $item) {
             $item->setData('allegro_line_item_id', $lineItemsIds[$item->getSku()]);
         }
 
-//        $this->processTotals($order, $checkoutForm);
         $this->processStatus($order, $checkoutForm);
         $this->processComments($order, $checkoutForm);
 
@@ -178,6 +170,17 @@ class Creator extends AbstractAction
      */
     private function processCustomer(Quote $quote, CheckoutFormInterface $checkoutForm)
     {
+        if (!$checkoutForm->getBuyer()->getFirstName()) {
+            $checkoutForm->getBuyer()->setFirstName(
+                $checkoutForm->getDelivery()->getAddress()->getFirstName()
+            );
+        }
+        if (!$checkoutForm->getBuyer()->getLastName()) {
+            $checkoutForm->getBuyer()->setLastName(
+                $checkoutForm->getDelivery()->getAddress()->getLastName()
+            );
+        }
+
         $customer = $this->customer->get(
             $checkoutForm->getBuyer(),
             $store = $this->getStore(),
@@ -245,6 +248,8 @@ class Creator extends AbstractAction
 
         $quote->getShippingAddress()
             ->setShippingMethod($shippingMethodCode)
+            ->setBaseDiscountAmount(0)
+            ->setDiscountAmount(0)
             ->setAllegroShippingPrice($checkoutForm->getDelivery()->getCost()->getAmount())
             ->setCollectShippingRates(true)
             ->collectShippingRates();
@@ -284,8 +289,6 @@ class Creator extends AbstractAction
                 'quote' => $quote
             ]
         );
-
-        $quote->collectTotals();
 
         $quote->collectTotals()->save();
         return $this->quoteManagement->submit($quote);
