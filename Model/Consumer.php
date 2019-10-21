@@ -103,7 +103,6 @@ class Consumer implements ConsumerInterface
         }
 
         try {
-            $this->credentials->getToken();
             if ($product = $this->productRepository->getMinProductWithAllegro($productId)) {
                 $allegroOfferId = $product->getData('allegro_offer_id');
                 if (!$allegroOfferId) {
