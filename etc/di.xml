@@ -100,4 +100,8 @@
         <plugin name="remove_discount_calculation" type="Macopedia\Allegro\Plugin\RemoveDiscountCalculation" />
     </type>
 
+    <type name="Magento\Inventory\Model\ResourceModel\SourceItem\SaveMultiple">
+        <plugin name="import_stocks_update" type="Macopedia\Allegro\Plugin\InventorySourceItemSaveMultiple" />
+    </type>
+
 </config>
