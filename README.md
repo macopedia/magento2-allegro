@@ -1,5 +1,5 @@
 # Magento 2 - Allegro Integration Module
-Magento 2 Allegro Integration module
+Magento 2 Allegro Integration module. Supports Magento 2 >= v2.3
 
 ## Partners
 Our partners helps to develop this project.
