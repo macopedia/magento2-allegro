@@ -1,0 +1,26 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div style="display: flex; align-items: center;">
+    <input class="admin__control-text admin__control-text--counter" type="text"
+            data-bind="
+        event: {change: userChanges},
+        value: value,
+        hasFocus: focused,
+        valueUpdate: 'input',
+        attr: {
+            name: inputName,
+            placeholder: placeholder,
+            'aria-describedby': noticeId,
+            id: uid,
+            disabled: disabled,
+            maxlength: 255
+    }"/>
+    <div data-bind="if: validation.max_text_length !== 'undefined'" style="margin-left: 15px;">
+        <span data-bind="text: allegroNameLength(value()) + '/50'"/>
+    </div>
+</div>
+    
