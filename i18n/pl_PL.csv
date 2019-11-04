@@ -140,3 +140,4 @@
 "Invalid max value format! Allowed format is decimal number","Niepoprawny format maksymalnej wartości! Dozwolony format to liczba dziesiętna"
 "Invalid min value format! Allowed format is decimal number","Niepoprawny format minimalnej wartości! Dozwolony format to liczba dziesiętna"
 "Fill second value","Wpisz drugą wartość"
+"Maximum name length cannot exceed 50 characters, but some characters are counted as longer: &, "", <, >","Maksymalna długość nazwy nie może przekraczać 50 znaków, jednak niektóre znaki są liczone jako dłuższe: &, "", <, >"
