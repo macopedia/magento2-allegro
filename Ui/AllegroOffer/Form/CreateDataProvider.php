@@ -80,6 +80,12 @@ class CreateDataProvider extends DataProvider
         $product = $this->registry->registry('product');
         $stock = $this->getSalableQuantityDataBySku->execute($product->getSku());
         $images = $product->getMediaGalleryImages()->toArray();
+        $allegroImage = $product->getAllegroImage();
+        foreach ($images['items'] as $key => $image) {
+            if ($image['file'] !== $allegroImage) {
+                unset($images['items'][$key]);
+            }
+        }
 
         $this->_loadedData[$product->getId()] = [
             'allegro' => [
