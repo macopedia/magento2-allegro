@@ -130,8 +130,12 @@ Za pomocą wtyczki możemy wystawiać produkty z Magento na Allegro. Aby to zrob
 2. Dodać informacje o [zwrotach](https://allegro.pl/dla-sprzedajacych/warunki-oferty-zwroty-a124GwdXZFA), [reklamacji](https://allegro.pl/dla-sprzedajacych/warunki-oferty-reklamacje-vKgeWL5GnHA) oraz [gwarancji](https://allegro.pl/dla-sprzedajacych/warunki-oferty-gwarancje-9dXYn0VeXHM) na Allegro (wymagane tylko dla konta firmowego)
 3. Uzupełnić informacje o loklizacji (Sklepy->Konfiguracja->Allegro->Konfiguracja->Pochodzenie)
     ![origin_configuration](README/originConfiguration.png)
+
 Po wprowadzeniu wymaganych danych można zacząć wystawiać oferty z poziomu Magento.
-Należy wybrać produkt, który chcemy wstawić, wejść na jego stronę i kliknąć przycisk "Dodaj na Allegro".
+Należy wybrać produkt, który chcemy wstawić, wejść na jego stronę i wybrać zdjęcie do oferty Allegro. Żeby, to zrobić wystarczy kliknąć zdjęcie, zaznaczyć rolę 'Allegro', a następnie zapisać produkt.
+![add_to_allegro](README/imageRole.png)
+
+Teraz wystarczy już kliknąć przycisk "Dodaj na Allegro".
 ![add_to_allegro](README/addToAllegroButton.png)
 
 Zostaniemy przekierowani na stronę formularza wystawiania aukcji, na którym znajdują się pola:
