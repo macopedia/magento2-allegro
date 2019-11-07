@@ -8,6 +8,9 @@ use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 
+/**
+ * Image role patch script
+ */
 class ImageRoles implements DataPatchInterface
 {
     /** @var EavSetupFactory  */

@@ -181,6 +181,7 @@
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Handling time</item>
                     <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="default" xsi:type="string">PT24H</item>
                     <item name="validation" xsi:type="array">
                         <item name="required-entry" xsi:type="boolean">true</item>
                     </item>
