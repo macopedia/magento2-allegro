@@ -89,11 +89,11 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">wysiwyg</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
                     <item name="label" xsi:type="string" translate="true">Description</item>
                     <item name="template" xsi:type="string">ui/form/field</item>
                     <item name="component" xsi:type="string">Macopedia_Allegro/js/allegro_offer/form/field/description</item>
-                    <item name="wysiwyg" xsi:type="boolean">true</item>
+                    <item name="wysiwyg" xsi:type="boolean">false</item>
                     <item name="rows" xsi:type="number">8</item>
                     <item name="validation" xsi:type="array">
                         <item name="required-entry" xsi:type="boolean">true</item>

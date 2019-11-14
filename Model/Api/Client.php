@@ -100,7 +100,7 @@ class Client
                 'method' => $request->getMethod(),
                 'header' => implode("\r\n", $this->prepareHeaders($token, $request)),
                 'content' => $isJson ? $this->json->serialize($request->getBody()) : $request->getBody(),
-                'ignore_errors' => false,
+                'ignore_errors' => true,
                 'timeout' => 120
             ]
         ];
