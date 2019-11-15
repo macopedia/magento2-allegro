@@ -21,7 +21,7 @@ class Updater extends AbstractAction
      */
     public function execute(OrderInterface $order, CheckoutFormInterface $checkoutForm)
     {
-        if (in_array($order->getState(), [Order::STATE_CANCELED, Order::STATE_CLOSED, Order::STATE_COMPLETE])) {
+        if ($order->getState() !== Order::STATE_NEW) {
             return;
         }
 
