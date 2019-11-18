@@ -18,9 +18,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class OrderImporter
 {
-    const BOUGHT_TYPE = 'BOUGHT';
     const STATUS_FILLED_IN = 'FILLED_IN';
-    const STATUS_BOUGHT = 'BOUGHT';
 
     private $errorsCount = 0;
     private $createdIds = [];
@@ -128,7 +126,7 @@ class OrderImporter
      */
     private function executeEvent(EventInterface $event)
     {
-        if ($event->getType() !== 'READY_FOR_PROCESSING') {
+        if ($event->getType() === self::STATUS_FILLED_IN) {
             return;
         }
 
