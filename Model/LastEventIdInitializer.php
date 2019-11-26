@@ -52,8 +52,10 @@ class LastEventIdInitializer
     {
         // TODO: Use EventRepositoryInterface
         $lastEvent = $this->eventStats->getLastEvent();
-        $lastEventId = $lastEvent['id'];
-        $this->configuration->setLastEventId($lastEventId);
+        if (!empty($lastEvent['id'])) {
+            $lastEventId = $lastEvent['id'];
+            $this->configuration->setLastEventId($lastEventId);
+        }
         $this->configuration->setLastUserId($currentUserId);
     }
 }

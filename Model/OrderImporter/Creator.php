@@ -22,6 +22,7 @@ use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Tax\Model\Config as TaxConfig;
 use Magento\Framework\Registry;
+use Magento\Quote\Api\Data\CartExtensionFactory;
 
 /**
  * Magento order creator
@@ -49,6 +50,10 @@ class Creator extends AbstractAction
     /** @var Registry */
     private $registry;
 
+    /** @var CartExtensionFactory */
+    private $cartExtensionFactory;
+
+
     /**
      * Creator constructor.
      * @param Shipping $shipping
@@ -70,6 +75,7 @@ class Creator extends AbstractAction
      * @param ScopeConfigInterface $scopeConfig
      * @param QuoteManagement $quoteManagement
      * @param Registry $registry
+     * @param CartExtensionFactory $cartExtensionFactory
      */
     public function __construct(
         Shipping $shipping,
@@ -85,6 +91,7 @@ class Creator extends AbstractAction
         Json $jsonSerializer,
         TaxConfig $taxConfig,
         SalesConfig $salesConfig,
+        CartExtensionFactory $cartExtensionFactory,
         ProductRepositoryInterface $productRepository,
         StoreManagerInterface $storeManager,
         Customer $customer,
@@ -105,7 +112,8 @@ class Creator extends AbstractAction
             $productFactory,
             $jsonSerializer,
             $salesConfig,
-            $taxConfig
+            $taxConfig,
+            $cartExtensionFactory
         );
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
@@ -130,9 +138,14 @@ class Creator extends AbstractAction
         $quote->setStore($this->getStore());
         $quote->setStoreId($this->getStore()->getId());
 
-        // TODO use ExtensionAttributesInterface
-        $quote->setData('order_from', 'Allegro');
-        $quote->setData('external_id', $checkoutForm->getId());
+        $cartExtension = $quote->getExtensionAttributes();
+        if ($cartExtension === null) {
+            $cartExtension = $this->cartExtensionFactory->create();
+        }
+        $cartExtension->setExternalId($checkoutForm->getId());
+        $cartExtension->setOrderFrom('Allegro');
+        $quote->setExtensionAttributes($cartExtension);
+
         $quote->setAllegroShippingPrice($checkoutForm->getDelivery()->getCost()->getAmount());
 
         $this->processCustomer($quote, $checkoutForm);

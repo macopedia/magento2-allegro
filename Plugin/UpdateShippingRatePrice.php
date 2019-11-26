@@ -27,7 +27,7 @@ class UpdateShippingRatePrice
 
         /** @var Quote $quote */
         $quote = reset($allItems)->getQuote();
-        if (!$quote->hasOrderFrom() || !$quote->hasExternalId() || !$quote->hasAllegroShippingPrice()) {
+        if (!$quote->getExtensionAttributes()->getOrderFrom() || !$quote->getExtensionAttributes()->getExternalId() || !$quote->hasAllegroShippingPrice()) {
             return $result;
         }
 

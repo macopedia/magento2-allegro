@@ -35,6 +35,12 @@ class CopyFieldsFromQuoteToOrderObserver implements ObserverInterface
         /* @var \Magento\Quote\Model\Quote $quote */
         $quote = $observer->getEvent()->getData('quote');
 
+        $cartExtensions = $quote->getExtensionAttributes();
+        if ($cartExtensions) {
+            $order->setData('external_id', $cartExtensions->getExternalId());
+            $order->setData('order_from', $cartExtensions->getOrderFrom());
+        }
+
         $this->objectCopyService->copyFieldsetToTarget('sales_convert_quote', 'to_order', $quote, $order);
 
         return $this;

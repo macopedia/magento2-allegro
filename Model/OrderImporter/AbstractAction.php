@@ -15,6 +15,7 @@ use Magento\Catalog\Model\ProductFactory;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Sales\Model\Config as SalesConfig;
 use Magento\Tax\Model\Config as TaxConfig;
+use Magento\Quote\Api\Data\CartExtensionFactory;
 
 abstract class AbstractAction
 {
@@ -58,6 +59,9 @@ abstract class AbstractAction
     /** @var TaxConfig */
     protected $taxConfig;
 
+    /** @var CartExtensionFactory */
+    private $cartExtensionFactory;
+
     /**
      * AbstractAction constructor.
      * @param Shipping $shipping
@@ -72,6 +76,8 @@ abstract class AbstractAction
      * @param ProductFactory $productFactory
      * @param Json $jsonSerializer
      * @param SalesConfig $salesConfig
+     * @param TaxConfig $taxConfig
+     * @param CartExtensionFactory $cartExtensionFactory
      */
     public function __construct(
         Shipping $shipping,
@@ -86,7 +92,8 @@ abstract class AbstractAction
         ProductFactory $productFactory,
         Json $jsonSerializer,
         SalesConfig $salesConfig,
-        TaxConfig $taxConfig
+        TaxConfig $taxConfig,
+        CartExtensionFactory $cartExtensionFactory
     ) {
         $this->shipping = $shipping;
         $this->payment = $payment;
@@ -101,6 +108,7 @@ abstract class AbstractAction
         $this->jsonSerializer = $jsonSerializer;
         $this->salesConfig = $salesConfig;
         $this->taxConfig = $taxConfig;
+        $this->cartExtensionFactory = $cartExtensionFactory;
     }
 
     /**
@@ -204,9 +212,14 @@ abstract class AbstractAction
             ['order' => $order, 'quote' => $quote]
         );
 
-        // TODO: Use ExtensionsAttributesInterface
-        $quote->setOrderFrom($order->getOrderFrom());
-        $quote->setExternalId($order->getExternalId());
+        $cartExtension = $quote->getExtensionAttributes();
+        if ($cartExtension === null) {
+            $cartExtension = $this->cartExtensionFactory->create();
+        }
+        $cartExtension->setExternalId($order->getExternalId());
+        $cartExtension->setOrderFrom($order->getOrderFrom());
+        $quote->setExtensionAttributes($cartExtension);
+
         $quote->setAllegroShippingPrice($checkoutForm->getDelivery()->getCost()->getAmount());
 
 
