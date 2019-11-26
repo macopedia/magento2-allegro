@@ -35,7 +35,8 @@ class CopyFieldsFromQuoteToOrderObserver implements ObserverInterface
         /* @var \Magento\Quote\Model\Quote $quote */
         $quote = $observer->getEvent()->getData('quote');
 
-        if ($cartExtensions = $quote->getExtensionAttributes()) {
+        $cartExtensions = $quote->getExtensionAttributes();
+        if ($cartExtensions) {
             $order->setData('external_id', $cartExtensions->getExternalId());
             $order->setData('order_from', $cartExtensions->getOrderFrom());
         }

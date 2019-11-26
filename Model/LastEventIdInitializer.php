@@ -52,7 +52,7 @@ class LastEventIdInitializer
     {
         // TODO: Use EventRepositoryInterface
         $lastEvent = $this->eventStats->getLastEvent();
-        if ($lastEvent) {
+        if (!empty($lastEvent['id'])) {
             $lastEventId = $lastEvent['id'];
             $this->configuration->setLastEventId($lastEventId);
         }
