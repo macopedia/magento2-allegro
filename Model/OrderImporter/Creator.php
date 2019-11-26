@@ -91,13 +91,13 @@ class Creator extends AbstractAction
         Json $jsonSerializer,
         TaxConfig $taxConfig,
         SalesConfig $salesConfig,
+        CartExtensionFactory $cartExtensionFactory,
         ProductRepositoryInterface $productRepository,
         StoreManagerInterface $storeManager,
         Customer $customer,
         ScopeConfigInterface $scopeConfig,
         QuoteManagement $quoteManagement,
-        Registry $registry,
-        CartExtensionFactory $cartExtensionFactory
+        Registry $registry
     ) {
         parent::__construct(
             $shipping,
@@ -112,7 +112,8 @@ class Creator extends AbstractAction
             $productFactory,
             $jsonSerializer,
             $salesConfig,
-            $taxConfig
+            $taxConfig,
+            $cartExtensionFactory
         );
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
@@ -120,7 +121,6 @@ class Creator extends AbstractAction
         $this->scopeConfig = $scopeConfig;
         $this->quoteManagement = $quoteManagement;
         $this->registry = $registry;
-        $this->cartExtensionFactory = $cartExtensionFactory;
     }
 
     /**
