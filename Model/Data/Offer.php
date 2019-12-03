@@ -17,6 +17,7 @@ class Offer extends DataObject implements OfferInterface
 {
 
     const ID_FIELD_NAME = 'id';
+    const EAN_FIELD_NAME = 'ean';
     const NAME_FIELD_NAME = 'name';
     const DESCRIPTION_FIELD_NAME = 'description';
     const QTY_FIELD_NAME = 'qty';
@@ -72,6 +73,14 @@ class Offer extends DataObject implements OfferInterface
     public function setId(string $id)
     {
         $this->setData(self::ID_FIELD_NAME, $id);
+    }
+
+    /**
+     * @param string $ean
+     */
+    public function setEan(string $ean)
+    {
+        $this->setData(self::EAN_FIELD_NAME, $ean);
     }
 
     /**
@@ -200,6 +209,14 @@ class Offer extends DataObject implements OfferInterface
     public function getId(): ?string
     {
         return $this->getData(self::ID_FIELD_NAME);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEan(): ?string
+    {
+        return $this->getData(self::EAN_FIELD_NAME);
     }
 
     /**
@@ -354,6 +371,9 @@ class Offer extends DataObject implements OfferInterface
         if (isset($rawData['id'])) {
             $this->setId($rawData['id']);
         }
+        if (isset($rawData['ean'])) {
+            $this->setEan($rawData['ean']);
+        }
         if (isset($rawData['name'])) {
             $this->setName($rawData['name']);
         }
@@ -402,7 +422,7 @@ class Offer extends DataObject implements OfferInterface
             ],
             'product' => null,
             'parameters' => $this->mapParameters($this->getParameters()),
-            'ean' => null,
+            'ean' => $this->getEan(),
             'description' => [
                 'sections' => [
                     0 => [

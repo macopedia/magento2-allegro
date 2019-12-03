@@ -2,6 +2,7 @@
 
 namespace Macopedia\Allegro\Ui\AllegroOffer\Form;
 
+use Macopedia\Allegro\Model\Configuration;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\ReportingInterface;
@@ -20,6 +21,9 @@ class CreateDataProvider extends DataProvider
 
     /** @var Registry */
     protected $registry;
+
+    /** @var Configuration */
+    protected $config;
 
     /**
      * CreateDataProvider constructor.
@@ -40,6 +44,7 @@ class CreateDataProvider extends DataProvider
         $requestFieldName,
         GetSalableQuantityDataBySku $getSalableQuantityDataBySku,
         Registry $registry,
+        Configuration $config,
         ReportingInterface $reporting,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         RequestInterface $request,
@@ -60,6 +65,7 @@ class CreateDataProvider extends DataProvider
         );
         $this->getSalableQuantityDataBySku = $getSalableQuantityDataBySku;
         $this->registry = $registry;
+        $this->config = $config;
     }
 
     /**
@@ -87,9 +93,12 @@ class CreateDataProvider extends DataProvider
             }
         }
 
+        $eanAttributeCode = $this->config->getEanAttributeCode();
+
         $this->_loadedData[$product->getId()] = [
             'allegro' => [
                 'product' => $product->getId(),
+                'ean' => $eanAttributeCode ? $product->getData($eanAttributeCode) : '',
                 'name' => $product->getName(),
                 'description' => $product->getDescription(),
                 'price' => $product->getPrice(),
