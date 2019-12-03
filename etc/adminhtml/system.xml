@@ -71,7 +71,7 @@
             </group>
             <group id="offer_create" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Offer create</label>
-                <field id="product_attributes" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="ean_attribute" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product attribute for getting EAN</label>
                     <source_model>Macopedia\Allegro\Model\Config\Source\ProductAttributes</source_model>
                 </field>

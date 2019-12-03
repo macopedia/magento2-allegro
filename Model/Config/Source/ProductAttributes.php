@@ -49,7 +49,7 @@ class ProductAttributes implements OptionSourceInterface
             $attributes = $this->attributesRepository->getList(Product::ENTITY, $searchCriteria);
         } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage('Can\'t get list of product attributes');
-            $this->messageManager->addErrorMessage($e);
+            $this->messageManager->addExceptionMessage($e);
             return [];
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage('Can\'t get list of product attributes');
