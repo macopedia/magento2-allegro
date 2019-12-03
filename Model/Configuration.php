@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\FlagManager;
-use Magento\Tests\NamingConvention\true\string;
 
 class Configuration
 {
