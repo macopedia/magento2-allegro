@@ -141,3 +141,6 @@
 "Invalid min value format! Allowed format is decimal number","Niepoprawny format minimalnej wartości! Dozwolony format to liczba dziesiętna"
 "Fill second value","Wpisz drugą wartość"
 "Maximum name length cannot exceed 50 characters, but some characters are counted as longer: &, "", <, >","Maksymalna długość nazwy nie może przekraczać 50 znaków, jednak niektóre znaki są liczone jako dłuższe: &, "", <, >"
+"Offer create","Tworzenie oferty"
+"Product attribute for getting EAN","Atrybut produktu do pobrania EAN"
+"Can't get list of product attributes,"Nie można pobrać listy atrybutów produktu"

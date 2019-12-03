@@ -4,12 +4,14 @@ namespace Macopedia\Allegro\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\FlagManager;
+use Magento\Tests\NamingConvention\true\string;
 
 class Configuration
 {
 
     const STOCK_SYNCHRONIZATION_ENABLED_CONFIG_PATH = 'allegro/order/stock_synchronization_enabled';
     const TRACKING_NUMBER_SENDING_ENABLED_CONFIG_PATH = 'allegro/order/tracking_number_sending_enabled';
+    const PRODUCT_ATTRIBUTES_CONFIG_PATH = 'allegro/offer_create/product_attributes';
     const LAST_EVENT_ID_FLAG_NAME = 'allegro_order_last_event_id';
     const LAST_USER_ID_FLAG_NAME = 'allegro_credentials_last_user_id';
 
@@ -66,6 +68,14 @@ class Configuration
     public function getLastUserId(): ?string
     {
         return $this->flagManager->getFlagData(self::LAST_USER_ID_FLAG_NAME);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEanAttributeCode(): ?string
+    {
+        return $this->scopeConfig->getValue(self::PRODUCT_ATTRIBUTES_CONFIG_PATH);
     }
 
     /**
