@@ -36,7 +36,9 @@ class ImageRolesNotFilterable implements DataPatchInterface
      */
     public static function getDependencies()
     {
-        return [];
+        return [
+            ImageRoles::class
+        ];
     }
 
     /**
