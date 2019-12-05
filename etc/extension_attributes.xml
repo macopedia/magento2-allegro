@@ -13,7 +13,7 @@
 
     <extension_attributes for="Magento\Sales\Api\Data\OrderInterface">
         <attribute code="pickup_point" type="Macopedia\Allegro\Api\Data\Sales\Order\PickupPointExtensionAttributesInterface">
-            <join reference_table="sales_order_pickup_point" reference_field="address_id" join_on_field="entity_id">
+            <join reference_table="sales_order_pickup_point" reference_field="order_id" join_on_field="entity_id">
                 <field>point_id</field>
                 <field>name</field>
                 <field>description</field>
