@@ -10,6 +10,7 @@ class Configuration
 
     const STOCK_SYNCHRONIZATION_ENABLED_CONFIG_PATH = 'allegro/order/stock_synchronization_enabled';
     const TRACKING_NUMBER_SENDING_ENABLED_CONFIG_PATH = 'allegro/order/tracking_number_sending_enabled';
+    const EAN_ATTRIBUTE_CONFIG_PATH = 'allegro/offer_create/ean_attribute';
     const LAST_EVENT_ID_FLAG_NAME = 'allegro_order_last_event_id';
     const LAST_USER_ID_FLAG_NAME = 'allegro_credentials_last_user_id';
 
@@ -66,6 +67,14 @@ class Configuration
     public function getLastUserId(): ?string
     {
         return $this->flagManager->getFlagData(self::LAST_USER_ID_FLAG_NAME);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEanAttributeCode(string $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, ?string $scopeCode = null): ?string
+    {
+        return $this->scopeConfig->getValue(self::EAN_ATTRIBUTE_CONFIG_PATH, $scopeType, $scopeCode);
     }
 
     /**

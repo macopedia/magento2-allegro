@@ -17,6 +17,9 @@
                 <stock_synchronization_enabled>1</stock_synchronization_enabled>
                 <tracking_number_sending_enabled>1</tracking_number_sending_enabled>
             </order>
+            <offer_create>
+                <ean_attribute>sku</ean_attribute>
+            </offer_create>
         </allegro>
     </default>
 </config>

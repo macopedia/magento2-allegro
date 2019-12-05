@@ -252,7 +252,7 @@ class Creator extends AbstractAction
      * @param Quote $quote
      * @param CheckoutFormInterface $checkoutForm
      */
-    private function processShipping(Quote $quote, CheckoutFormInterface $checkoutForm)
+    public function processShipping(Quote $quote, CheckoutFormInterface $checkoutForm)
     {
         $checkoutForm->getDelivery()->getAddress()->fillAddress($quote->getShippingAddress());
         $quote->getShippingAddress()->setCustomerId($quote->getCustomer()->getId());
@@ -272,7 +272,7 @@ class Creator extends AbstractAction
      * @param Quote $quote
      * @param CheckoutFormInterface $checkoutForm
      */
-    private function processBilling(Quote $quote, CheckoutFormInterface $checkoutForm)
+    public function processBilling(Quote $quote, CheckoutFormInterface $checkoutForm)
     {
         $checkoutForm->getInvoice()->getAddress()->fillAddress(
             $quote->getBillingAddress(),

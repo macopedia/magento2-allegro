@@ -41,7 +41,7 @@ class Updater extends AbstractAction
      * @param CheckoutFormInterface $checkoutForm
      * @throws ShippingAddressIdException
      */
-    private function processShipping(OrderInterface $order, CheckoutFormInterface $checkoutForm)
+    public function processShipping(OrderInterface $order, CheckoutFormInterface $checkoutForm)
     {
         $shippingAddress = $order->getShippingAddress();
         if (!$shippingAddress->getId()) {

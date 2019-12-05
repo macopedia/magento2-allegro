@@ -20,6 +20,12 @@ interface OfferInterface
     public function setId(string $id);
 
     /**
+     * @param string $ean
+     * @return void
+     */
+    public function setEan(string $ean);
+
+    /**
      * @param string $name
      * @return void
      */
@@ -107,6 +113,11 @@ interface OfferInterface
      * @return string|null
      */
     public function getId(): ?string;
+
+    /**
+     * @return string|null
+     */
+    public function getEan(): ?string;
 
     /**
      * @return LocationInterface
