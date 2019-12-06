@@ -19,6 +19,7 @@ class Status
     const STATE_KEY = 'state';
     const PAID_KEY = 'paid';
     const STATUS_STATE_SEPARATOR = ':';
+    const ALLEGRO_READY_FOR_PROCESSING = "READY_FOR_PROCESSING";
 
     /** @var ScopeConfigInterface */
     private $scopeConfig;
@@ -43,7 +44,7 @@ class Status
         }
 
         $totalPaidValue = $checkoutForm->getSummary()->getTotalToPay()->getAmount();
-        if ($paidAmountValue === $totalPaidValue) {
+        if ($paidAmountValue === $totalPaidValue && $checkoutForm->getStatus() == self::ALLEGRO_READY_FOR_PROCESSING) {
             return $this->arrayResponse(self::PROCESSING_STATUS, Order::STATE_PROCESSING, true);
         }
 
