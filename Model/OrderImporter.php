@@ -1,175 +1,103 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Macopedia\Allegro\Model;
 
 use Macopedia\Allegro\Api\CheckoutFormRepositoryInterface;
+use Macopedia\Allegro\Api\Data\CheckoutFormInterface;
 use Macopedia\Allegro\Api\Data\EventInterface;
 use Macopedia\Allegro\Api\EventRepositoryInterface;
-use Macopedia\Allegro\Api\OrderRepositoryInterface;
-use Macopedia\Allegro\Model\Api\ClientException;
-use Macopedia\Allegro\Model\OrderImporter\Creator;
-use Macopedia\Allegro\Model\OrderImporter\CreatorItemsException;
-use Macopedia\Allegro\Model\OrderImporter\Updater;
 use Macopedia\Allegro\Logger\Logger;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Macopedia\Allegro\Model\OrderImporter\Info;
+use Macopedia\Allegro\Model\OrderImporter\Processor;
 
 /**
  * Class responsible for handling events fetched from Allegro API
  */
-class OrderImporter
+class OrderImporter extends AbstractOrderImporter
 {
-    const STATUS_FILLED_IN = 'FILLED_IN';
-
-    private $errorsCount = 0;
-    private $createdIds = [];
-    private $updatedIds = [];
-
     /** @var EventRepositoryInterface */
     private $eventRepository;
-
-    /** @var OrderRepositoryInterface */
-    private $orderRepository;
-
-    /** @var CheckoutFormRepositoryInterface */
-    private $checkoutFormRepository;
 
     /** @var Configuration */
     private $configuration;
 
-    /** @var Creator */
-    private $creator;
-
-    /** @var Updater */
-    private $updater;
-
-    /** @var Logger */
-    private $logger;
-
     /**
      * OrderImporter constructor.
-     * @param EventRepositoryInterface $eventRepository
-     * @param OrderRepositoryInterface $orderRepository
-     * @param CheckoutFormRepositoryInterface $checkoutFormRepository
-     * @param Configuration $configuration
-     * @param Creator $creator
-     * @param Updater $updater
      * @param Logger $logger
+     * @param Processor $processor
+     * @param CheckoutFormRepositoryInterface $checkoutFormRepository
+     * @param Info $info
+     * @param Configuration $configuration
+     * @param EventRepositoryInterface $eventRepository
      */
     public function __construct(
-        EventRepositoryInterface $eventRepository,
-        OrderRepositoryInterface $orderRepository,
+        Logger $logger,
+        Processor $processor,
         CheckoutFormRepositoryInterface $checkoutFormRepository,
+        Info $info,
         Configuration $configuration,
-        Creator $creator,
-        Updater $updater,
-        Logger $logger
+        EventRepositoryInterface $eventRepository
+
     ) {
-        $this->eventRepository = $eventRepository;
-        $this->orderRepository = $orderRepository;
-        $this->checkoutFormRepository = $checkoutFormRepository;
+        parent::__construct($logger, $processor, $checkoutFormRepository, $info);
         $this->configuration = $configuration;
-        $this->creator = $creator;
-        $this->updater = $updater;
-        $this->logger = $logger;
+        $this->eventRepository = $eventRepository;
     }
 
     /**
-     * @return OrderImporter\Info
+     * @return Info
      */
-    public function execute()
+    public function execute() : Info
     {
-        try {
-            $lastEventId = $this->configuration->getLastEventId();
-            if ($lastEventId) {
-                $events = $this->eventRepository->getListFrom($lastEventId);
-            } else {
-                $events = $this->eventRepository->getList();
+        $processedCheckoutFormIds = [];
+
+        do {
+            try {
+                $events = $this->loadEvents();
+            } catch (\Exception $e) {
+                $this->logger->error('Wrong response received while fetching events data');
+                return $this->prepareInfoResponse();
             }
-        } catch (\Exception $e) {
-            $this->logger->error('Wrong response received while fetching events data');
-            $this->errorsCount++;
-            return $this->prepareInfoResponse();
-        }
 
-        if (count($events) < 1) {
-            return $this->prepareInfoResponse();
-        }
+            if (count($events) < 1) {
+                return $this->prepareInfoResponse();
+            }
 
-        try {
-
-            /** @var EventInterface $event */
+            /** @var CheckoutFormInterface $checkoutForm */
             foreach ($events as $event) {
-                $this->executeEvent($event);
-                $lastEventId = $event->getId();
-                $this->configuration->setLastEventId($lastEventId);
+
+                $checkoutFormId = $event->getCheckoutFormId();
+                $eventId = $event->getId();
+
+                if (in_array($event->getCheckoutFormId(), $processedCheckoutFormIds)) {
+                    continue;
+                }
+
+                $this->tryToProcessOrder($checkoutFormId);
+
+                $this->configuration->setLastEventId($eventId);
+                $processedCheckoutFormIds[] = $event->getCheckoutFormId();
             }
 
-        } catch (\Exception $e) {
-            $this->errorsCount++;
-            $lastEvent = $event ?? reset($events);
-            $this->logger->exception(
-                $e,
-                "Error while creating/updating order for checkout form with id [{$lastEvent->getCheckoutFormId()}]"
-            );
-        }
+        } while (count($events) >= 100);
 
         return $this->prepareInfoResponse();
     }
 
     /**
-     * @param EventInterface $event
-     * @throws ClientException
-     * @throws NoSuchEntityException
-     * @throws OrderImporter\BillingAddressIdException
-     * @throws OrderImporter\ShippingAddressIdException
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return array|EventInterface[]
+     * @throws Api\ClientException
      */
-    private function executeEvent(EventInterface $event)
+    public function loadEvents()
     {
-        if ($event->getType() === self::STATUS_FILLED_IN) {
-            return;
+        $lastEventId = $this->configuration->getLastEventId();
+        if ($lastEventId) {
+            $events = $this->eventRepository->getListFrom($lastEventId);
+        } else {
+            $events = $this->eventRepository->getList();
         }
-
-        $checkoutFormId = $event->getCheckoutFormId();
-        $checkoutForm = $this->checkoutFormRepository->get($checkoutFormId);
-
-        try {
-            $order = $this->orderRepository->getByExternalId($checkoutFormId);
-        } catch (NoSuchEntityException $e) {
-
-            try {
-                $orderId = $this->creator->execute($checkoutForm);
-                $this->logger->info("Order with id [$checkoutFormId] has been successfully created");
-                $this->createdIds[$orderId] = $checkoutFormId;
-            } catch (CreatorItemsException $e) {
-                $this->errorsCount++;
-                $this->logger->exception(
-                    $e,
-                    "Error while creating order for checkout form with id [{$checkoutFormId}]"
-                );
-            }
-            return;
-
-        }
-
-        $this->updater->execute($order, $checkoutForm);
-
-        $this->logger->info("Order with id [$checkoutFormId] has been successfully updated");
-        if (!isset($createdIds[$order->getEntityId()])) {
-            $this->updatedIds[$order->getEntityId()] = $checkoutFormId;
-        }
-    }
-
-    /**
-     * @return OrderImporter\Info
-     */
-    private function prepareInfoResponse()
-    {
-        $info = new OrderImporter\Info();
-
-        return $info
-            ->setImportedCount(count($this->createdIds))
-            ->setUpdatedCount(count($this->updatedIds))
-            ->setErrorsCount($this->errorsCount);
+        return $events;
     }
 }

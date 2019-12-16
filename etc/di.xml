@@ -19,6 +19,7 @@
     <preference for="Macopedia\Allegro\Api\ImpliedWarrantyRepositoryInterface" type="Macopedia\Allegro\Model\ImpliedWarrantyRepository" />
     <preference for="Macopedia\Allegro\Api\ReturnPolicyRepositoryInterface" type="Macopedia\Allegro\Model\ReturnPolicyRepository" />
     <preference for="Macopedia\Allegro\Api\WarrantyRepositoryInterface" type="Macopedia\Allegro\Model\WarrantyRepository" />
+    <preference for="Macopedia\Allegro\Api\OrderLogRepositoryInterface" type="Macopedia\Allegro\Model\OrderLogRepository" />
 
     <preference for="Macopedia\Allegro\Api\Data\OfferInterface" type="Macopedia\Allegro\Model\Data\Offer" />
     <preference for="Macopedia\Allegro\Api\Data\Offer\LocationInterface" type="Macopedia\Allegro\Model\Data\Offer\Location" />
@@ -57,6 +58,7 @@
     <preference for="Macopedia\Allegro\Api\Data\ReturnPolicyInterface" type="Macopedia\Allegro\Model\Data\ReturnPolicy" />
     <preference for="Macopedia\Allegro\Api\Data\WarrantyInterface" type="Macopedia\Allegro\Model\Data\Warranty" />
     <preference for="Macopedia\Allegro\Api\Data\Sales\Order\PickupPointExtensionAttributesInterface" type="Macopedia\Allegro\Model\Data\Sales\Order\PickupPointExtensionAttributes" />
+    <preference for="Macopedia\Allegro\Api\Data\OrderLogInterface" type="Macopedia\Allegro\Model\OrderLog" />
 
     <preference for="Magento\Sales\Block\Adminhtml\Order\View\Info" type="Macopedia\Allegro\Block\Adminhtml\HideAddressInformation" />
 
@@ -74,7 +76,9 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="OrderImport" xsi:type="object">Macopedia\Allegro\Console\Command\ImportOrders</item>
+                <item name="OrdersImport" xsi:type="object">Macopedia\Allegro\Console\Command\ImportOrders</item>
+                <item name="OrderImport" xsi:type="object">Macopedia\Allegro\Console\Command\ImportOrder</item>
+                <item name="OrdersWithErrorsImport" xsi:type="object">Macopedia\Allegro\Console\Command\ImportOrdersWithErrors</item>
             </argument>
         </arguments>
     </type>
@@ -104,5 +108,19 @@
     <type name="Magento\Inventory\Model\ResourceModel\SourceItem\SaveMultiple">
         <plugin name="import_stocks_update" type="Macopedia\Allegro\Plugin\InventorySourceItemSaveMultiple" />
     </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="allegro_orders_with_errors_listing_data_source" xsi:type="string">Macopedia\Allegro\Model\ResourceModel\OrderLog\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Macopedia\Allegro\Model\ResourceModel\OrderLog\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">allegro_orders_with_errors</argument>
+            <argument name="resourceModel" xsi:type="string">Macopedia\Allegro\Model\ResourceModel\OrderLog</argument>
+        </arguments>
+    </virtualType>
 
 </config>

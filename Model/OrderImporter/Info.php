@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Macopedia\Allegro\Model\OrderImporter;
 
 /**
@@ -7,66 +9,45 @@ namespace Macopedia\Allegro\Model\OrderImporter;
  */
 class Info
 {
-    /** @var int */
-    private $importedCount;
+    /** @var array */
+    private $successIds = [];
 
-    /** @var int */
-    private $updatedCount;
-
-    /** @var int */
-    private $errorsCount;
+    /** @var array */
+    private $errorsIds = [];
 
     /**
-     * @return int
+     * @return array
      */
-    public function getImportedCount()
+    public function getSuccessIds()
     {
-        return $this->importedCount;
+        return $this->successIds;
     }
 
     /**
-     * @param int $importedCount
+     * @param array $successIds
      * @return Info
      */
-    public function setImportedCount($importedCount)
+    public function setSuccessIds(array $successIds)
     {
-        $this->importedCount = $importedCount;
+        $this->successIds = $successIds;
         return $this;
     }
 
     /**
-     * @return int
+     * @return array
      */
-    public function getUpdatedCount()
+    public function getErrorsIds()
     {
-        return $this->updatedCount;
+        return $this->errorsIds;
     }
 
     /**
-     * @param int $updatedCount
+     * @param array $errorsIds
      * @return Info
      */
-    public function setUpdatedCount($updatedCount)
+    public function setErrorsIds(array $errorsIds)
     {
-        $this->updatedCount = $updatedCount;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getErrorsCount()
-    {
-        return $this->errorsCount;
-    }
-
-    /**
-     * @param int $errorsCount
-     * @return Info
-     */
-    public function setErrorsCount($errorsCount)
-    {
-        $this->errorsCount = $errorsCount;
+        $this->errorsIds = $errorsIds;
         return $this;
     }
 
@@ -76,10 +57,9 @@ class Info
     public function getMessage()
     {
         return sprintf(
-            '%s orders has been created, %s orders has been updated, %s errors has been occurred',
-            $this->importedCount,
-            $this->updatedCount,
-            $this->errorsCount
+            "Updated/created orders:\n%s\nOrders with errors:\n%s",
+            implode ("\n", $this->successIds),
+            implode ("\n", $this->errorsIds)
         );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Macopedia\Allegro\Cron;
 
 use Macopedia\Allegro\Logger\Logger;
@@ -17,23 +19,23 @@ class ImportOrders
     private $logger;
 
     /** @var OrderImporter */
-    private $orderImorter;
+    private $orderImporter;
 
     /** @var ScopeConfigInterface */
     private $scopeConfig;
 
     /**
      * @param Logger $logger
-     * @param ImportOrders $eventHandler
+     * @param OrderImporter $orderImporter
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         Logger $logger,
-        OrderImporter $orderImorter,
+        OrderImporter $orderImporter,
         ScopeConfigInterface $scopeConfig
     ) {
         $this->logger = $logger;
-        $this->orderImorter = $orderImorter;
+        $this->orderImporter = $orderImporter;
         $this->scopeConfig = $scopeConfig;
     }
 
@@ -44,7 +46,7 @@ class ImportOrders
     {
         if ($this->scopeConfig->getValue(self::ORDER_IMPORT_CONFIG_KEY)) {
             $this->logger->addInfo("Cronjob imported orders is executed.");
-            $this->orderImorter->execute();
+            $this->orderImporter->execute();
         }
     }
 }
