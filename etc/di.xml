@@ -66,6 +66,7 @@
             <argument name="handlers" xsi:type="array">
                 <item name="exception" xsi:type="object">Macopedia\Allegro\Logger\ExceptionHandler</item>
                 <item name="api" xsi:type="object">Macopedia\Allegro\Logger\ApiHandler</item>
+                <item name="request" xsi:type="object">Macopedia\Allegro\Logger\HttpRequestHandler</item>
             </argument>
         </arguments>
     </type>

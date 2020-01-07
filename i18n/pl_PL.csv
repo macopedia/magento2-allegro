@@ -145,3 +145,4 @@
 "Product attribute for getting EAN","Atrybut produktu do pobrania EAN"
 "Can't get list of product attributes,"Nie można pobrać listy atrybutów produktu"
 "This is not a valid EAN number","To nie jest poprawny numer EAN"
+"Debug mode enabled", "Tryb debugowania włączony"

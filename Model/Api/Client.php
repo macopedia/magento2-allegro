@@ -1,28 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Macopedia\Allegro\Model\Api;
 
 use Macopedia\Allegro\Api\Data\TokenInterface;
 use Magento\Framework\Serialize\Serializer\Json;
+use Macopedia\Allegro\Logger\Logger;
+use Macopedia\Allegro\Model\Configuration;
 
 /**
  * Class Client
  */
 class Client
 {
-    const API_URL         = 'https://api.allegro.pl/';
+    const API_URL = 'https://api.allegro.pl/';
     const SANDBOX_API_URL = 'https://api.allegro.pl.allegrosandbox.pl/';
 
     /** @var Json */
     private $json;
 
+    /** @var Logger */
+    private $logger;
+
+    /** @var Configuration */
+    private $config;
+
     /**
      * Client constructor.
      * @param Json $json
+     * @param Logger $logger
+     * @param Configuration $config
      */
-    public function __construct(Json $json)
-    {
+    public function __construct(
+        Json $json,
+        Logger $logger,
+        Configuration $config
+    ) {
         $this->json = $json;
+        $this->logger = $logger;
+        $this->config = $config;
     }
 
     /**
@@ -86,26 +103,37 @@ class Client
     }
 
     /**
-     * @param string $url
-     * @param string $method
-     * @param array $headers
-     * @param string $data
+     * @param TokenInterface $token
+     * @param Request $request
      * @return bool|string
      */
     private function sendHttpRequest(TokenInterface $token, Request $request)
     {
-        $isJson = preg_match('/application\/.*json/',$request->getContentType());
+        $isJson = preg_match('/application\/.*json/', $request->getContentType());
+        $content = $isJson ? $this->json->serialize($request->getBody()) : $request->getBody();
         $options = [
             'http' => [
                 'method' => $request->getMethod(),
                 'header' => implode("\r\n", $this->prepareHeaders($token, $request)),
-                'content' => $isJson ? $this->json->serialize($request->getBody()) : $request->getBody(),
+                'content' => $content,
                 'ignore_errors' => true,
                 'timeout' => 120
             ]
         ];
         $context = stream_context_create($options);
 
-        return file_get_contents($this->getApiUrl($request) . $request->getUri(), false, $context);
+        $requestId = uniqid('', true);
+
+        if ($this->config->isDebugModeEnabled()) {
+            $this->logger->debug($requestId . ': ' . $request->getMethod() . ' ' . $request->getUri() . $content);
+        }
+
+        $response = file_get_contents($this->getApiUrl($request) . $request->getUri(), false, $context);
+
+        if ($this->config->isDebugModeEnabled()) {
+            $this->logger->debug($requestId . ': ' . $response);
+        }
+
+        return $response;
     }
 }
