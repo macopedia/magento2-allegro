@@ -132,6 +132,10 @@ class Save extends Offer
             $offer->setImages($this->initializeImages($data['images']));
         }
 
+        if (isset($data['ean'])) {
+            $offer->setEan($data['ean']);
+        }
+
         return $offer;
     }
 
