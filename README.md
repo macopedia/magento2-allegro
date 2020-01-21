@@ -22,6 +22,12 @@ If you like to help our project - please let us know at [sales@macopedia.com](ma
 ## License 
 Magento 2 - Allegro Integration Module source code is completely free and released under the [MIT License](https://github.com/macopedia/magento2-allegro/blob/master/LICENSE).
 
+## Features
+1. Aktualizacja stanów magazynowych w Magento po sprzedaży produktu w Allegro oraz w Allegro po sprzedaży w Magento
+2. Import zamówień z Allegro do Magento
+3. Publikowanie ofert na Allegro z poziomu Magento
+4. Wystawianie numerów przesyłek dla zamówień na Allegro z poziomu Magento
+
 ## Kolejność działań po instalacji modułu
 1. Dodać konfiguracje kolejki w [MySQL MQ](https://github.com/macopedia/magento2-allegro#konfiguracja-mysql-mq) lub [RabbitMQ](https://github.com/macopedia/magento2-allegro#konfiguracja-rabbitmq)
 2. Przejść do konfiguracji wtyczki oraz wybrać odpowiedni typ konta (Sklepy->Konfiguracja->Allegro->Konfiguracja)
@@ -38,7 +44,7 @@ Import zamówień powinien zostać włączony, dopiero gdy wszystkie produkty s�
 ## Połączenie z kontem Allegro
 Aby połączyć sklep Magento z aplikacją Allegro należy wykonać następujące kroki:
 1. Zalogować się na koncie Allegro i przejść na adres https://apps.developer.allegro.pl lub https://apps.developer.allegro.pl.allegrosandbox.pl dla konta sandboxowego, aby zarejestrować nową aplikację.
-2. Wprowadzić nazwę aplikacji i adres URI do przekierowania - powinien on być w formacie {backend_url}/index.php/admin/allegro/system/authenticate/ - np. 'http://example.com/index.php/admin/allegro/system/authenticate/'.
+2. Wprowadzić nazwę aplikacji i adres URI do przekierowania - powinien on być w formacie http://{backend_url}/index.php/admin/allegro/system/authenticate/ oraz https://{backend_url}/index.php/admin/allegro/system/authenticate/ np.
 ![application_registration](README/applicationRegistration.png)
 3. Zalogować się w panelu admina w Magento i przejść do sekcji Sklepy -> Konfiguracja -> Allegro -> Konfiguracja
 ![connection_configuration](README/allegroConnectionConfiguration.png)
@@ -79,7 +85,7 @@ Synchronizację stanów magazynowych można włączać lub wyłączać w konfigu
 
 ## Integracja zamówień
 Po nawiązaniu połączenia sklepu z aplikacją Allegro możemy włączyć w konfiguracji import zamówień.
-![orders_configuration](README/orderImportConfiguration.png)
+![orders_configuration](README/allegroOrderImporterConfiguration.png)
 
 Po włączeniu tej opcji API Allegro będzie odpytywane co 5 minut o zdarzenia dotyczące zamówień. W ramach tego zapytania zamówienia będą importowane w sklepie Magento - dla nowych zamówień dodanych w Allegro będą tworzone zamówienia w sklepie Magento, a dla już istniejących będzie przeprowadzana ich aktualizacja.
 
@@ -88,6 +94,13 @@ W konfiguracji sklepu możemy również ustawić widok sklepu, do którego zamó
 W ramach importu zamówień z Allegro w sklepie Magento zapisywane są informacje o cenie i ilości zamówionego produktu, dane zamawiającego, dane o płatności i wysyłce oraz wiadomość do sprzedającego, która trafia do zakładki "Historia komentarzy" na stronie zamówienia.
 
 Moduł obsługuje standardową logikę dla składania zamówień w Magento. Dostosowanie importowanych produktów można w projekcie przeprowadzić poprzez utworzenie obserwera dla eventu z nazwą "allegro_order_import_before_quote_save". Obserwer ten ma przekazane w parametrze wszystkie informacje udostępniane przez API Allegro dla zapytania o szczegóły zamówienia (https://developer.allegro.pl/en/orders/#04).
+
+Jeżeli z jakiegoś powodu nie uda się zaimportować zamówienia, to informacja o niepowodzeniu trafia do tabeli `allegro_orders_with_errors`. Można ją podejrzeć wchodząc Sprzedaż->Allegro zamówienia z błędami
+![menu](README/allegroOrdersWithErrorsMenu.png)
+
+Znajdują się tam informacje na temat powodu błędu, ilości prób zaimportowania, daty pierwszej oraz ostatniej próby zaimportowania oraz ID zamówienia. Aby spróbować zaimportować ponownie zamówienia należy wybrać interesujące nas rekordy a następnie rozwinąć listę akcji i wybrać `Importuj`
+
+![grid](README/allegroOrdersWithErrorsGrid.png)
 
 ## Mapowanie metod dostawy i płatności
 W konfiguracji wtyczki możemy definiować mapowanie metod płatności dla zamówień przychodzących z Allegro do sklepu Magento.
@@ -130,6 +143,8 @@ Za pomocą wtyczki możemy wystawiać produkty z Magento na Allegro. Aby to zrob
 2. Dodać informacje o [zwrotach](https://allegro.pl/dla-sprzedajacych/warunki-oferty-zwroty-a124GwdXZFA), [reklamacji](https://allegro.pl/dla-sprzedajacych/warunki-oferty-reklamacje-vKgeWL5GnHA) oraz [gwarancji](https://allegro.pl/dla-sprzedajacych/warunki-oferty-gwarancje-9dXYn0VeXHM) na Allegro (wymagane tylko dla konta firmowego)
 3. Uzupełnić informacje o loklizacji (Sklepy->Konfiguracja->Allegro->Konfiguracja->Pochodzenie)
     ![origin_configuration](README/originConfiguration.png)
+4. (opcjonalnie) Wybrać atrybut produktu, z którego ma być pobierany kod EAN  (Sklepy->Konfiguracja->Allegro->Konfiguracja->Tworzenie oferty)
+    ![ean_select](README/allegroEanSelect.png)
 
 Po wprowadzeniu wymaganych danych można zacząć wystawiać oferty z poziomu Magento.
 Należy wybrać produkt, który chcemy wstawić, wejść na jego stronę i wybrać zdjęcie do oferty Allegro. Żeby, to zrobić wystarczy kliknąć zdjęcie, zaznaczyć rolę 'Allegro', a następnie zapisać produkt.
@@ -140,14 +155,15 @@ Teraz wystarczy już kliknąć przycisk "Dodaj na Allegro".
 
 Zostaniemy przekierowani na stronę formularza wystawiania aukcji, na którym znajdują się pola:
 1. Nazwa oferty - pobierana z produktu
-2. Opis oferty - pobierany z produktu
-3. Cena - pobierana z produktu
-4. Ilość - pobierana z produktu
+2. EAN - pobierany z produktu
+3. Opis oferty - pobierany z produktu
+4. Cena - pobierana z produktu
+5. Ilość - pobierana z produktu
     ![allegro_offer_form](README/allegroOfferForm.png)
-5. Cennik dostaw, warunki reklamacji, warunki zwrotów, warunki gwarancji - pobierane z podłączonego konta Allegro
-6. Czas wysyłki, opcje faktury - uniwersalne parametry Allegro
-7. Wybór kategorii
-8. Parametry zależne od wybranej kategorii
+6. Cennik dostaw, warunki reklamacji, warunki zwrotów, warunki gwarancji - pobierane z podłączonego konta Allegro
+7. Czas wysyłki, opcje faktury - uniwersalne parametry Allegro
+8. Wybór kategorii
+9. Parametry zależne od wybranej kategorii
     ![categories_and_parameters](README/categoriesAndParameters.png)
 
 Wszystkie pola w formularzu mają walidację, niektóre parametry mogą być wymagane do wystawienia aukcji.
@@ -155,6 +171,23 @@ Oferta wystawiana jest ze zdjęciami pobranymi z produktu.
 
 Po uzupełnieniu wszystkich pół i kliknięciu "Zapisz" - zostanie wystawiony szkic oferty na Allegro i zostaniemy przekierowani na stronę edycji oferty. Teraz wystarczy kliknąć "Opublikuj", aby oferta stała się aktywna. W każdej chwili możemy edytować ofertę, zakończyć ją, a potem następnie aktywować. Produkt jest już teraz powiązany z ofertą na Allegro.
 ![publish_offer](README/publishButton.png)
+
+## DEBUG MODE
+Wtyczka oferuje możliwość logowania wszystkich danych przesyłanych do i z API Allegro. Włączyć ją można na stronie konfiguracji (sklepy->Konfiguracja->Allegro->Konfiguracja->Import zamówień)
+![debug_mode](README/allegroDebugMode.png)
+
+Dane logowane są do pliku /var/log/allegro-http-request.log
+
+## Dostępne komendy
+
+Import konkretnego zamówienia o danym ID:
+``macopedia:allegro:order-import -c [CHECKOUT_FORM_ID]``
+
+Import wszystkich zamówień:
+``macopedia:allegro:orders-import``
+
+Import zamówień z błędami:
+``macopedia:allegro:orders-with-errors-import``
 
 ## Konfiguracja MYSQL MQ
 
