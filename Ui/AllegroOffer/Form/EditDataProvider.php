@@ -94,6 +94,7 @@ class EditDataProvider extends DataProvider
                 'id' => $offer->getId(),
                 'product' => $product->getId(),
                 'name' => $offer->getName(),
+                'ean' => $offer->getEan(),
                 'description' => $offer->getDescription(),
                 'images' => $offer->getImages(),
                 'delivery_shipping_rates_id' => $offer->getDeliveryShippingRatesId(),
