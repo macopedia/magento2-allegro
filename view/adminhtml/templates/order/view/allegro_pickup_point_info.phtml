@@ -7,10 +7,12 @@
 $order = $block->getOrder();
 $extensionAttributes = $order->getExtensionAttributes();
 $pickupPoint = $extensionAttributes->getPickupPoint();
- ?>
+?>
 
-<?php if ($order->getIsVirtual()) : return ''; endif; ?>
-<?php if ($pickupPoint === null) : return ''; endif; ?>
+<?php if ($order->getIsVirtual()): return '';
+endif; ?>
+<?php if ($pickupPoint === null): return '';
+endif; ?>
 
 <section class="admin__page-section">
     <div class="admin__page-section-title">

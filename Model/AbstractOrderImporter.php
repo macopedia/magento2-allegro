@@ -69,5 +69,4 @@ abstract class AbstractOrderImporter
             ->setSuccessIds($this->successIds)
             ->setErrorsIds($this->errorsIds);
     }
-
 }

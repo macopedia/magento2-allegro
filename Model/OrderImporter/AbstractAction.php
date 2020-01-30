@@ -248,7 +248,7 @@ abstract class AbstractAction
         }
         $totals = $this->totalsCollector->collect($quote);
         $order->addData($totals->getData());
-        foreach($quote->getAllItems() as $item) {
+        foreach ($quote->getAllItems() as $item) {
             $orderItem = $orderItems->getItemById($item->getOrderItemId());
             $orderItem->setPrice($item->getPrice());
             $orderItem->setBasePrice($item->getBasePrice());

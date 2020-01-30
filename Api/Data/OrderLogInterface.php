@@ -58,5 +58,4 @@ interface OrderLogInterface
      * @return int|null
      */
     public function getNumberOfTries() : ?int;
-
 }

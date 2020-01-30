@@ -61,8 +61,7 @@ class Processor
         OrderLogRepositoryInterface $orderLogRepository,
         OrderLogInterfaceFactory $orderLogFactory,
         DateTime $date
-    )
-    {
+    ) {
         $this->creator = $creator;
         $this->updater = $updater;
         $this->logger = $logger;

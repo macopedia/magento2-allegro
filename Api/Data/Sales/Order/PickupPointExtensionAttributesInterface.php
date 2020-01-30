@@ -17,5 +17,4 @@ interface PickupPointExtensionAttributesInterface
     public function getStreet(): ?string;
     public function getZipCode(): ?string;
     public function getCity(): ?string;
-
 }

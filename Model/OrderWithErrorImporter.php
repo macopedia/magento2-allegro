@@ -11,17 +11,23 @@ use Macopedia\Allegro\Model\OrderImporter\Info;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Macopedia\Allegro\Api\OrderLogRepositoryInterface;
 use Macopedia\Allegro\Model\OrderImporter\Processor;
+use Magento\Framework\Data\Collection;
 
 /**
  * Class responsible for processing orders with errors form Allegro
  */
 class OrderWithErrorImporter extends AbstractOrderImporter
 {
+    const PAGE_SIZE = 200;
+
     /** @var SearchCriteriaBuilder  */
     private $searchCriteriaBuilder;
 
     /** @var OrderLogRepositoryInterface */
     private $orderLogRepository;
+
+    /** @var Collection */
+    private $collection;
 
     /**
      * OrderWithErrorImporter constructor.
@@ -31,6 +37,7 @@ class OrderWithErrorImporter extends AbstractOrderImporter
      * @param Info $info
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrderLogRepositoryInterface $orderLogRepository
+     * @param Collection $collection
      */
     public function __construct(
         Logger $logger,
@@ -38,11 +45,13 @@ class OrderWithErrorImporter extends AbstractOrderImporter
         CheckoutFormRepositoryInterface $checkoutFormRepository,
         Info $info,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        OrderLogRepositoryInterface $orderLogRepository
+        OrderLogRepositoryInterface $orderLogRepository,
+        Collection $collection
     ) {
         parent::__construct($logger, $processor, $checkoutFormRepository, $info);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->orderLogRepository = $orderLogRepository;
+        $this->collection = $collection;
     }
 
     /**
@@ -50,8 +59,10 @@ class OrderWithErrorImporter extends AbstractOrderImporter
      */
     public function execute() : Info
     {
-        for ($i = 1; $i <= ceil($this->orderLogRepository->getCount() / 200 ); $i += 1) {
-            $orders = $this->getOrderLoadPage($i);
+        $lastPageNumber = ceil($this->orderLogRepository->getCount() / self::PAGE_SIZE);
+
+        for ($i = 1; $i <= $lastPageNumber; $i += 1) {
+            $orders = $this->getOrderLogPage($i);
             foreach ($orders as $order) {
                 $checkoutFormId = $order->getCheckoutFormId();
                 $this->tryToProcessOrder($checkoutFormId);
@@ -65,11 +76,11 @@ class OrderWithErrorImporter extends AbstractOrderImporter
      * @param int $pageNumber
      * @return OrderLogInterface[]
      */
-    private function getOrderLoadPage(int $pageNumber)
+    private function getOrderLogPage(int $pageNumber)
     {
         $searchCriteria = $this->searchCriteriaBuilder
             ->addFilter('number_of_tries', 10, 'lteq')
-            ->setPageSize(200)
+            ->setPageSize(self::PAGE_SIZE)
             ->setCurrentPage($pageNumber)
             ->create();
 
