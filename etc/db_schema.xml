@@ -48,4 +48,19 @@
         />
     </table>
 
+    <table name="allegro_orders_with_errors" resource="default" engine="innodb" comment="Table with orders that could not be imported because of an error">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="checkout_form_id" nullable="false" comment="Checkout form ID"/>
+        <column xsi:type="datetime" name="date_of_first_try" nullable="false" comment="Date of first import try"/>
+        <column xsi:type="datetime" name="date_of_last_try" nullable="false" comment="Date of last import try"/>
+        <column xsi:type="varchar" name="reason" nullable="false" comment="Error content"/>
+        <column xsi:type="int" name="number_of_tries" nullable="false" comment="Number of tries to import"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="UNIQUE">
+            <column name="checkout_form_id"/>
+        </constraint>
+    </table>
+
 </schema>

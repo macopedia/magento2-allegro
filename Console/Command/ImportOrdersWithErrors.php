@@ -5,26 +5,26 @@ declare(strict_types = 1);
 namespace Macopedia\Allegro\Console\Command;
 
 use Macopedia\Allegro\Model\AbstractOrderImporter;
-use Macopedia\Allegro\Model\OrderImporterFactory;
+use Macopedia\Allegro\Model\OrderWithErrorImporterFactory;
 use Magento\Framework\App\State;
 
 /**
- * ImportOrders command class
+ * ImportOrdersWithErrors command class
  */
-class ImportOrders extends AbstractImportOrders
+class ImportOrdersWithErrors extends AbstractImportOrders
 {
 
-    /** @var OrderImporterFactory */
+    /** @var OrderWithErrorImporterFactory */
     private $orderImporterFactory;
 
     /**
-     * ImportOrders constructor.
-     * @param OrderImporterFactory $orderImporterFactory
+     * ImportOrdersWithErrors constructor.
+     * @param OrderWithErrorImporterFactory $orderImporterFactory
      * @param State $state
      * @param null $name
      */
     public function __construct(
-        OrderImporterFactory $orderImporterFactory,
+        OrderWithErrorImporterFactory $orderImporterFactory,
         State $state,
         $name = null
     ) {
@@ -37,8 +37,8 @@ class ImportOrders extends AbstractImportOrders
      */
     protected function configure()
     {
-        $this->setName('macopedia:allegro:orders-import');
-        $this->setDescription("Import orders from Allegro account ");
+        $this->setName('macopedia:allegro:orders-with-errors-import');
+        $this->setDescription("Import orders with errors from Allegro account");
     }
 
     /**

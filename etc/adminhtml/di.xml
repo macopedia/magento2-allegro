@@ -4,6 +4,7 @@
         <arguments>
             <argument name="messages" xsi:type="array">
                 <item name="AllegroConnectionStatusMessage" xsi:type="string">Macopedia\Allegro\Model\System\Message\AllegroConnectionStatusMessage</item>
+                <item name="AllegroOrdersWithErrorsMessage" xsi:type="string">Macopedia\Allegro\Model\System\Message\AllegroOrdersWithErrorsMessage</item>
             </argument>
         </arguments>
     </type>

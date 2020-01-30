@@ -41,5 +41,20 @@
             "SALES_ORDER_PICKUP_POINT_ORDER_ID": true,
             "SALES_ORDER_PICKUP_POINT_ORDER_ID_SALES_ORDER_ENTITY_ID": true
         }
+    },
+    "allegro_orders_with_errors": {
+        "column": {
+            "checkout_form_id": true,
+            "date_of_first_try": true,
+            "date_of_last_try": true,
+            "reason": true,
+            "tries": true,
+            "entity_id": true,
+            "number_of_tries": true
+        },
+        "constraint": {
+            "ALLEGRO_ORDERS_WITH_ERRORS_CHECKOUT_FORM_ID": true,
+            "PRIMARY": true
+        }
     }
 }

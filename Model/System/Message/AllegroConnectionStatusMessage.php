@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Macopedia\Allegro\Model\System\Message;
 
 use Macopedia\Allegro\Model\Api\ClientException;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Notification\MessageInterface;
 use Macopedia\Allegro\Model\Api\Credentials;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
- * Allegro connection status message class
+ * Class responsible for viewing system message when Allegro account is not connected
  */
 class AllegroConnectionStatusMessage implements MessageInterface
 {
