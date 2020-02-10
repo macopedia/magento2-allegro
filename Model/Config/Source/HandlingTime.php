@@ -36,5 +36,4 @@ class HandlingTime implements OptionSourceInterface
             'PT1440H' => __('%1 days', 60),
         ];
     }
-
 }

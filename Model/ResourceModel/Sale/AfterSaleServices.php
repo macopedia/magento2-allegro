@@ -28,7 +28,6 @@ class AfterSaleServices extends AbstractResource
     {
         $result = $this->cachedRequestGet('/after-sales-service-conditions/return-policies?seller.id=' . $this->getCurrentUserId());
         return $result['returnPolicies'];
-
     }
 
     /**

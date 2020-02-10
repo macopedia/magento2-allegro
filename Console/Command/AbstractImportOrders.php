@@ -55,5 +55,4 @@ abstract class AbstractImportOrders extends Command
      * @return AbstractOrderImporter
      */
     abstract protected function createOrderImporter(): AbstractOrderImporter;
-
 }

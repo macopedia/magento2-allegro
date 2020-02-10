@@ -39,7 +39,6 @@ class OrderImporter extends AbstractOrderImporter
         Info $info,
         Configuration $configuration,
         EventRepositoryInterface $eventRepository
-
     ) {
         parent::__construct($logger, $processor, $checkoutFormRepository, $info);
         $this->configuration = $configuration;

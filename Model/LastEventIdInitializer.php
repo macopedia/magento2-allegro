@@ -39,7 +39,6 @@ class LastEventIdInitializer
             return;
         }
         $this->updateLastUserIdAndLastEventId($currentUserId);
-
     }
 
     /**

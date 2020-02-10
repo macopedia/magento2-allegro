@@ -51,5 +51,4 @@ interface AfterSalesServicesInterface
      * @return array
      */
     public function getRawData(): ?array;
-
 }

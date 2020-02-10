@@ -28,5 +28,4 @@ class PaymentsInvoice implements OptionSourceInterface
             'NO_INVOICE' => __('I don\'t issue invoices')
         ];
     }
-
 }

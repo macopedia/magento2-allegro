@@ -25,7 +25,7 @@
 "Errors returned in received from Allegro API response: %1","Błędy zwrócone przez Allegro API: %1"
 "Allegro account is not connected. Connect to Allegro account and try again","Konto Allegro nie jest połączone. Połącz się z kontem Allegro i spróbuj ponownie"
 "Something went wrong while decoding Allegro Api token","Coś poszło nie tak podczas dekodowania tokena API Allegro"
-"Requested category with id \'%1\' does not exist","Żądana kategoria o id \'%1\' nie instnieje"
+"Requested category with id %1 does not exist","Żądana kategoria o id %1 nie instnieje"
 "Requested checkout form with id %1 does not exist","Żądane zamówienie o id %1 nie istnieje"
 "Parameter type range is not supported","Parametry typu zakresowego nie są obsługiwane"
 "Requested parameter type does not exist","Żądany typ parametru nie istnieje"
@@ -157,3 +157,4 @@
 "%1 order/orders could not be imported. You can check details <a href=""%2"">here</a>","Nie udało się zaimportować %1 zamówienia/zamówień. Możesz sprawdzić szczegóły <a href=""%2"">tutaj</a>"
 "Import orders","Importuj zamówienia"
 "Are you sure to import selected orders?","Czy na pewno chcesz zaimportować wybrane zamówienia?"
+"You have entered credentials to Allegro account. Now you have to click /"Connect with Allegro account/" button","Wprowadziłeś dane dostępowe do konta Allegro. Teraz kliknij przycisk /"Połącz z kontem Allegro/""
