@@ -44,12 +44,11 @@
     },
     "allegro_orders_with_errors": {
         "column": {
+            "entity_id": true,
             "checkout_form_id": true,
             "date_of_first_try": true,
             "date_of_last_try": true,
             "reason": true,
-            "tries": true,
-            "entity_id": true,
             "number_of_tries": true
         },
         "constraint": {

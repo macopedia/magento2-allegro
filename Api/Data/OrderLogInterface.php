@@ -55,7 +55,7 @@ interface OrderLogInterface
     public function getReason() : ?string;
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getNumberOfTries() : ?int;
+    public function getNumberOfTries() : int;
 }

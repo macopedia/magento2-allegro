@@ -8,6 +8,7 @@ use Macopedia\Allegro\Api\CheckoutFormRepositoryInterface;
 use Macopedia\Allegro\Logger\Logger;
 use Macopedia\Allegro\Model\OrderImporter\Info;
 use Macopedia\Allegro\Model\OrderImporter\Processor;
+use Magento\Framework\Exception\LocalizedException;
 
 abstract class AbstractOrderImporter
 {
@@ -56,6 +57,7 @@ abstract class AbstractOrderImporter
             $this->processor->processOrder($checkoutForm);
             $this->successIds[] = $checkoutFormId;
         } catch (\Exception $e) {
+            $this->logger->exception($e);
             $this->errorsIds[] = $checkoutFormId;
         }
     }

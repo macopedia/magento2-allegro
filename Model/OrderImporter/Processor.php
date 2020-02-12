@@ -78,21 +78,12 @@ class Processor
      */
     public function processOrder(CheckoutFormInterface $checkoutForm)
     {
-        $order = null;
-
         try {
-            $order = $this->orderRepository->getByExternalId($checkoutForm->getId());
-        } catch (NoSuchEntityException $e) {
-        }
-
-        try {
-
-            if ($order !== null) {
+            if ($order = $this->tryToGetOrder($checkoutForm->getId())) {
                 $this->tryUpdateOrder($order, $checkoutForm);
             } else {
                 $this->tryCreateOrder($checkoutForm);
             }
-
             $this->removeErrorLogIfExist($checkoutForm);
 
         } catch (\Exception $e) {
@@ -102,9 +93,22 @@ class Processor
     }
 
     /**
+     * @param $id
+     * @return OrderInterface|null
+     */
+    protected function tryToGetOrder($id)
+    {
+        try {
+            return $this->orderRepository->getByExternalId($id);
+        } catch (NoSuchEntityException $e) {
+            return null;
+        }
+    }
+
+    /**
      * @param CheckoutFormInterface $checkoutForm
      * @param \Exception $e
-     * @throws CouldNotSaveException
+     * @throws \Exception
      */
     private function addOrderWithErrorToTable(CheckoutFormInterface $checkoutForm, \Exception $e)
     {
@@ -127,12 +131,8 @@ class Processor
 
         try {
             $this->orderLogRepository->save($orderLog);
-        } catch (CouldNotSaveException $couldNotSaveException) {
-            $this->logger->exception(
-                $couldNotSaveException,
-                "Error while adding order with id [{$checkoutFormId}] to allegro_orders_with_errors table"
-            );
-            throw $couldNotSaveException;
+        } catch (CouldNotSaveException $e) {
+            throw new \Exception("Error while adding order with id [{$checkoutFormId}] to allegro_orders_with_errors table", 0, $e);
         }
     }
 
@@ -147,11 +147,7 @@ class Processor
             $this->creator->execute($checkoutForm);
             $this->logger->info("Order with id [$checkoutFormId] has been successfully created");
         } catch (\Exception $e) {
-            $this->logger->exception(
-                $e,
-                "Error while creating order with id [{$checkoutFormId}]"
-            );
-            throw $e;
+            throw new \Exception("Error while creating order with id [{$checkoutFormId}]", 0, $e);
         }
     }
 
@@ -167,27 +163,21 @@ class Processor
             $this->updater->execute($order, $checkoutForm);
             $this->logger->info("Order with id [$checkoutFormId] has been successfully updated");
         } catch (\Exception $e) {
-            $this->logger->exception(
-                $e,
-                "Error while updating order with id [{$checkoutFormId}]"
-            );
-            throw $e;
+            throw new \Exception("Error while updating order with id [{$checkoutFormId}]", 0, $e);
         }
     }
 
     /**
      * @param CheckoutFormInterface $checkoutForm
+     * @throws \Exception
      */
     private function removeErrorLogIfExist(CheckoutFormInterface $checkoutForm): void
     {
         $checkoutFormId = $checkoutForm->getId();
         try {
             $this->orderLogRepository->deleteByCheckoutFormId($checkoutFormId);
-        } catch (CouldNotDeleteException $couldNotDeleteException) {
-            $this->logger->exception(
-                $couldNotDeleteException,
-                "Error while deleting order with id [{$checkoutFormId}] from allegro_orders_with_errors table"
-            );
+        } catch (CouldNotDeleteException $e) {
+            throw new \Exception("Error while deleting order with id [{$checkoutFormId}] from allegro_orders_with_errors table", 0, $e);
         }
     }
 }
