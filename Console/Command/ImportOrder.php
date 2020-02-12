@@ -98,6 +98,7 @@ class ImportOrder extends Command
             $this->processor->processOrder($checkoutForm);
         } catch (\Exception $e) {
             $output->writeln("Error while creating/updating order with id '{$checkoutFormId}'");
+            $output->writeln($e);
             return;
         }
 

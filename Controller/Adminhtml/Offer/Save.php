@@ -117,24 +117,21 @@ class Save extends Offer
         $location->setPostCode($this->scopeConfig->getValue('allegro/origin/post_code'));
         $offer->setLocation($location);
 
-        $offer->setName($data['name']);
-        $offer->setCategory($data['category']);
-        $offer->setDescription($data['description']);
-        $offer->setQty($data['qty']);
-        $offer->setPrice($data['price']);
-        $offer->setParameters($this->initializeParameters($data));
-        $offer->setDeliveryShippingRatesId($data['delivery_shipping_rates_id']);
-        $offer->setAfterSalesServices($this->initializeAfterSalesServices($data));
-        $offer->setDeliveryHandlingTime($data['delivery_handling_time']);
-        $offer->setPaymentsInvoice($data['payments_invoice']);
-
         if (isset($data['images'])) {
             $offer->setImages($this->initializeImages($data['images']));
         }
 
-        if (isset($data['ean'])) {
-            $offer->setEan($data['ean']);
-        }
+        $offer->setName($data['name']);
+        $offer->setEan($data['ean']);
+        $offer->setDescription($data['description']);
+        $offer->setPrice($data['price']);
+        $offer->setQty($data['qty']);
+        $offer->setDeliveryShippingRatesId($data['delivery_shipping_rates_id']);
+        $offer->setAfterSalesServices($this->initializeAfterSalesServices($data));
+        $offer->setDeliveryHandlingTime($data['delivery_handling_time']);
+        $offer->setPaymentsInvoice($data['payments_invoice']);
+        $offer->setCategory($data['category']);
+        $offer->setParameters($this->initializeParameters($data));
 
         return $offer;
     }

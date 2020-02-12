@@ -109,9 +109,11 @@ class Client
      */
     private function sendHttpRequest(TokenInterface $token, Request $request)
     {
-        $isJson = preg_match('/application\/.*json/', $request->getContentType());
-        $content = $isJson ? $this->json->serialize($request->getBody()) : $request->getBody();
-        $options = [
+        $content = preg_match('/application\/.*json/', $request->getContentType())
+            ? $this->json->serialize($request->getBody())
+            : $request->getBody();
+        $url = $this->getApiUrl($request) . $request->getUri();
+        $context = stream_context_create([
             'http' => [
                 'method' => $request->getMethod(),
                 'header' => implode("\r\n", $this->prepareHeaders($token, $request)),
@@ -119,21 +121,28 @@ class Client
                 'ignore_errors' => true,
                 'timeout' => 120
             ]
-        ];
-        $context = stream_context_create($options);
+        ]);
+
+        if (!$this->config->isDebugModeEnabled()) {
+            return $this->fileGetContents($url, $context);
+        }
 
         $requestId = uniqid('', true);
-
-        if ($this->config->isDebugModeEnabled()) {
-            $this->logger->debug($requestId . ': ' . $request->getMethod() . ' ' . $request->getUri() . $content);
-        }
-
-        $response = file_get_contents($this->getApiUrl($request) . $request->getUri(), false, $context);
-
-        if ($this->config->isDebugModeEnabled()) {
-            $this->logger->debug($requestId . ': ' . $response);
-        }
+        $this->logger->debug('ALLEGRO API HTTP REQUEST ' . $requestId . ': ' . $request->getMethod() . ' ' . $request->getUri() . $content);
+        $response = $this->fileGetContents($url, $context);
+        $this->logger->debug('ALLEGRO API HTTP RESPONSE ' . $requestId . ': ' . $response);
 
         return $response;
     }
+
+    /**
+     * @param string $url
+     * @param $context
+     * @return false|string
+     */
+    private function fileGetContents(string $url, $context)
+    {
+        return file_get_contents($url, false, $context);
+    }
+
 }

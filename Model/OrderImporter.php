@@ -45,44 +45,49 @@ class OrderImporter extends AbstractOrderImporter
         $this->eventRepository = $eventRepository;
     }
 
+    protected $processedCheckoutFormIds = [];
+
     /**
      * @return Info
      */
     public function execute() : Info
     {
-        $processedCheckoutFormIds = [];
-
-        do {
-            try {
-                $events = $this->loadEvents();
-            } catch (\Exception $e) {
-                $this->logger->error('Wrong response received while fetching events data');
-                return $this->prepareInfoResponse();
-            }
-
-            if (count($events) < 1) {
-                return $this->prepareInfoResponse();
-            }
-
+        $this->processedCheckoutFormIds = [];
+        while ($events = $this->fetchEvents()) {
             /** @var CheckoutFormInterface $checkoutForm */
             foreach ($events as $event) {
-
-                $checkoutFormId = $event->getCheckoutFormId();
-                $eventId = $event->getId();
-
-                if (in_array($event->getCheckoutFormId(), $processedCheckoutFormIds)) {
-                    continue;
-                }
-
-                $this->tryToProcessOrder($checkoutFormId);
-
-                $this->configuration->setLastEventId($eventId);
-                $processedCheckoutFormIds[] = $event->getCheckoutFormId();
+                $this->processEvent($event);
             }
-
-        } while (count($events) >= 100);
-
+        }
         return $this->prepareInfoResponse();
+    }
+
+    /**
+     * @param EventInterface $event
+     */
+    protected function processEvent(EventInterface $event)
+    {
+        $checkoutFormId = $event->getCheckoutFormId();
+
+        if (!in_array($checkoutFormId, $this->processedCheckoutFormIds)) {
+            $this->processedCheckoutFormIds[] = $checkoutFormId;
+            $this->tryToProcessOrder($checkoutFormId);
+        }
+
+        $this->configuration->setLastEventId($event->getId());
+    }
+
+    /**
+     * @return array|EventInterface[]
+     */
+    protected function fetchEvents()
+    {
+        try {
+            return $this->loadEvents();
+        } catch (\Exception $e) {
+            $this->logger->error('Wrong response received while fetching events data');
+            return [];
+        }
     }
 
     /**

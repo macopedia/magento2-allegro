@@ -6,6 +6,7 @@ namespace Macopedia\Allegro\Ui\Component\Listing\Columns;
 
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
+use Magento\Tests\NamingConvention\true\string;
 use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
 
@@ -43,21 +44,28 @@ class OrdersActions extends Column
      */
     public function prepareDataSource(array $dataSource)
     {
-        if (isset($dataSource['data']['items'])) {
+        if (!isset($dataSource['data']['items'])) {
+            return $dataSource;
+        }
 
-            foreach ($dataSource['data']['items'] as &$item) {
-                $item[$this->getData('name')]['import'] = [
-                    'href' => $this->urlBuilder->getUrl(
-                        'allegro/orders/import',
-                        ['id' => $item['checkout_form_id']]
-                    ),
-                    'label' => __('Import'),
-                    'hidden' => false,
-                    '__disableTmpl' => true
-                ];
-            }
+        foreach ($dataSource['data']['items'] as &$item) {
+            $item[$this->getData('name')]['import'] = [
+                'href' => $this->getOrdersImportUrl($item['checkout_form_id']),
+                'label' => __('Import'),
+                'hidden' => false,
+                '__disableTmpl' => true
+            ];
         }
 
         return $dataSource;
+    }
+
+    /**
+     * @param string $checkoutFormId
+     * @return string
+     */
+    private function getOrdersImportUrl(string $checkoutFormId)
+    {
+        return $this->urlBuilder->getUrl('allegro/orders/import', ['id' => $checkoutFormId]);
     }
 }

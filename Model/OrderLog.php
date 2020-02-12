@@ -97,9 +97,9 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getNumberOfTries(): ?int
+    public function getNumberOfTries(): int
     {
         return (int)$this->getData(self::NUMBER_OF_TRIES_FIELD);
     }

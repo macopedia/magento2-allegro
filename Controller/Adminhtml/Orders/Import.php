@@ -65,12 +65,15 @@ class Import extends Action
      */
     public function execute()
     {
+        $result = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT);
+        $result->setPath('*/*/');
+
         try {
             /** @var Collection $collection */
             $collection = $this->filter->getCollection($this->collectionFactory->create());
+            $collection->addFieldToSelect('checkout_form_id');
         } catch (LocalizedException $e) {
-            $result = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT);
-            $result->setPath('noroute');
+            $this->messageManager->addExceptionMessage($e);
             return $result;
         }
         /** @var \Macopedia\Allegro\Model\OrderLog $item */
@@ -90,9 +93,6 @@ class Import extends Action
                 $this->messageManager->addErrorMessage(__("Something went wrong while trying to import order with checkout form ID: %1", $checkoutFormId));
             }
         }
-
-        $result = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT);
-        $result->setPath('*/*/');
         return $result;
     }
 }
