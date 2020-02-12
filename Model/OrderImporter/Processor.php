@@ -79,7 +79,8 @@ class Processor
     public function processOrder(CheckoutFormInterface $checkoutForm)
     {
         try {
-            if ($order = $this->tryToGetOrder($checkoutForm->getId())) {
+            $order = $this->tryToGetOrder($checkoutForm->getId());
+            if ($order) {
                 $this->tryUpdateOrder($order, $checkoutForm);
             } else {
                 $this->tryCreateOrder($checkoutForm);
