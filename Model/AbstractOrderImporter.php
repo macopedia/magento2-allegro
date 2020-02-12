@@ -8,7 +8,6 @@ use Macopedia\Allegro\Api\CheckoutFormRepositoryInterface;
 use Macopedia\Allegro\Logger\Logger;
 use Macopedia\Allegro\Model\OrderImporter\Info;
 use Macopedia\Allegro\Model\OrderImporter\Processor;
-use Magento\Framework\Exception\LocalizedException;
 
 abstract class AbstractOrderImporter
 {
