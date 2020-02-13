@@ -9,13 +9,13 @@ use Magento\Framework\FlagManager;
 
 class Configuration
 {
-
     const STOCK_SYNCHRONIZATION_ENABLED_CONFIG_PATH = 'allegro/order/stock_synchronization_enabled';
     const TRACKING_NUMBER_SENDING_ENABLED_CONFIG_PATH = 'allegro/order/tracking_number_sending_enabled';
     const DEBUG_MODE_ENABLED_CONFIG_PATH = 'allegro/order/debug_mode_enabled';
     const EAN_ATTRIBUTE_CONFIG_PATH = 'allegro/offer_create/ean_attribute';
     const LAST_EVENT_ID_FLAG_NAME = 'allegro_order_last_event_id';
     const LAST_USER_ID_FLAG_NAME = 'allegro_credentials_last_user_id';
+    const INITIALIZATION_TIME_FLAG_NAME = 'allegro_initialization_time';
 
     /** @var ScopeConfigInterface */
     private $scopeConfig;
@@ -101,6 +101,14 @@ class Configuration
     }
 
     /**
+     * @return int
+     */
+    public function getInitializationTime(): int
+    {
+        return (int) $this->flagManager->getFlagData(self::INITIALIZATION_TIME_FLAG_NAME);
+    }
+
+    /**
      * @param string $value
      */
     public function setLastEventId(string $value)
@@ -114,5 +122,13 @@ class Configuration
     public function setLastUserId(string $value)
     {
         $this->flagManager->saveFlag(self::LAST_USER_ID_FLAG_NAME, $value);
+    }
+
+    /**
+     * @param $time
+     */
+    public function setInitializationTime($time)
+    {
+        $this->flagManager->saveFlag(self::INITIALIZATION_TIME_FLAG_NAME, $time);
     }
 }

@@ -13,6 +13,7 @@ abstract class AbstractOrderImporter
 {
     protected $errorsIds = [];
     protected $successIds = [];
+    protected $skippedIds = [];
 
     /** @var Processor */
     protected $processor;
@@ -53,8 +54,11 @@ abstract class AbstractOrderImporter
     {
         try {
             $checkoutForm = $this->checkoutFormRepository->get($checkoutFormId);
-            $this->processor->processOrder($checkoutForm);
-            $this->successIds[] = $checkoutFormId;
+            if ($this->processor->processOrder($checkoutForm)) {
+                $this->successIds[] = $checkoutFormId;
+            } else {
+                $this->skippedIds[] = $checkoutFormId;
+            }
         } catch (\Exception $e) {
             $this->logger->exception($e);
             $this->errorsIds[] = $checkoutFormId;
@@ -68,6 +72,7 @@ abstract class AbstractOrderImporter
     {
         return $this->info
             ->setSuccessIds($this->successIds)
-            ->setErrorsIds($this->errorsIds);
+            ->setErrorsIds($this->errorsIds)
+            ->setSkippedIds($this->skippedIds);
     }
 }

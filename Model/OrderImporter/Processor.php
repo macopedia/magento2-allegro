@@ -18,6 +18,7 @@ use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Macopedia\Allegro\Model\Configuration;
 
 class Processor
 {
@@ -43,6 +44,9 @@ class Processor
     /** @var DateTime  */
     private $date;
 
+    /** @var Configuration  */
+    private $configuration;
+
     /**
      * Processor constructor.
      * @param Creator $creator
@@ -52,6 +56,7 @@ class Processor
      * @param OrderLogRepositoryInterface $orderLogRepository
      * @param OrderLogInterfaceFactory $orderLogFactory
      * @param DateTime $date
+     * @param Configuration $configuration
      */
     public function __construct(
         Creator $creator,
@@ -60,7 +65,8 @@ class Processor
         OrderRepositoryInterface $orderRepository,
         OrderLogRepositoryInterface $orderLogRepository,
         OrderLogInterfaceFactory $orderLogFactory,
-        DateTime $date
+        DateTime $date,
+        Configuration $configuration
     ) {
         $this->creator = $creator;
         $this->updater = $updater;
@@ -69,15 +75,20 @@ class Processor
         $this->orderLogRepository = $orderLogRepository;
         $this->orderLogFactory = $orderLogFactory;
         $this->date = $date;
+        $this->configuration = $configuration;
     }
-
 
     /**
      * @param CheckoutFormInterface $checkoutForm
+     * @return bool
      * @throws \Exception
      */
-    public function processOrder(CheckoutFormInterface $checkoutForm)
+    public function processOrder(CheckoutFormInterface $checkoutForm): bool
     {
+        if (!$this->validateCheckoutFormBoughtAtDate($checkoutForm)) {
+            return false;
+        }
+
         try {
             $order = $this->tryToGetOrder($checkoutForm->getId());
             if ($order) {
@@ -86,6 +97,8 @@ class Processor
                 $this->tryCreateOrder($checkoutForm);
             }
             $this->removeErrorLogIfExist($checkoutForm);
+
+            return true;
 
         } catch (\Exception $e) {
             $this->addOrderWithErrorToTable($checkoutForm, $e);
@@ -97,7 +110,7 @@ class Processor
      * @param $id
      * @return OrderInterface|null
      */
-    protected function tryToGetOrder($id)
+    protected function tryToGetOrder($id): ?OrderInterface
     {
         try {
             return $this->orderRepository->getByExternalId($id);
@@ -111,7 +124,7 @@ class Processor
      * @param \Exception $e
      * @throws \Exception
      */
-    private function addOrderWithErrorToTable(CheckoutFormInterface $checkoutForm, \Exception $e)
+    private function addOrderWithErrorToTable(CheckoutFormInterface $checkoutForm, \Exception $e): void
     {
         $checkoutFormId = $checkoutForm->getId();
 
@@ -141,7 +154,7 @@ class Processor
      * @param CheckoutFormInterface $checkoutForm
      * @throws \Exception
      */
-    private function tryCreateOrder(CheckoutFormInterface $checkoutForm)
+    private function tryCreateOrder(CheckoutFormInterface $checkoutForm): void
     {
         $checkoutFormId = $checkoutForm->getId();
         try {
@@ -157,7 +170,7 @@ class Processor
      * @param CheckoutFormInterface $checkoutForm
      * @throws \Exception
      */
-    private function tryUpdateOrder(OrderInterface $order, CheckoutFormInterface $checkoutForm)
+    private function tryUpdateOrder(OrderInterface $order, CheckoutFormInterface $checkoutForm): void
     {
         $checkoutFormId = $checkoutForm->getId();
         try {
@@ -180,5 +193,20 @@ class Processor
         } catch (CouldNotDeleteException $e) {
             throw new \Exception("Error while deleting order with id [{$checkoutFormId}] from allegro_orders_with_errors table", 0, $e);
         }
+    }
+
+    /**
+     * @param CheckoutFormInterface $checkoutForm
+     * @return bool
+     */
+    private function validateCheckoutFormBoughtAtDate(CheckoutFormInterface $checkoutForm): bool
+    {
+        foreach ($checkoutForm->getLineItems() as $lineItem) {
+            if ($lineItem->getBoughtAt() < $this->configuration->getInitializationTime()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

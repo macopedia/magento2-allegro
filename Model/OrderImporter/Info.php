@@ -15,39 +15,36 @@ class Info
     /** @var array */
     private $errorsIds = [];
 
-    /**
-     * @return array
-     */
-    public function getSuccessIds()
-    {
-        return $this->successIds;
-    }
+    /** @var array */
+    private $skippedIds = [];
 
     /**
      * @param array $successIds
      * @return Info
      */
-    public function setSuccessIds(array $successIds)
+    public function setSuccessIds(array $successIds): Info
     {
         $this->successIds = $successIds;
         return $this;
     }
 
     /**
-     * @return array
-     */
-    public function getErrorsIds()
-    {
-        return $this->errorsIds;
-    }
-
-    /**
      * @param array $errorsIds
      * @return Info
      */
-    public function setErrorsIds(array $errorsIds)
+    public function setErrorsIds(array $errorsIds): Info
     {
         $this->errorsIds = $errorsIds;
+        return $this;
+    }
+
+    /**
+     * @param array $skippedIds
+     * @return Info
+     */
+    public function setSkippedIds(array $skippedIds): Info
+    {
+        $this->skippedIds = $skippedIds;
         return $this;
     }
 
@@ -57,9 +54,10 @@ class Info
     public function getMessage()
     {
         return sprintf(
-            "Updated/created orders:\n%s\nOrders with errors:\n%s",
+            "Updated/created orders:\n%s\nOrders with errors:\n%s\nSkipped orders:\n%s",
             implode("\n", $this->successIds),
-            implode("\n", $this->errorsIds)
+            implode("\n", $this->errorsIds),
+            implode("\n", $this->skippedIds)
         );
     }
 }

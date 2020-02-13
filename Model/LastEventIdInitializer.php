@@ -3,26 +3,34 @@
 namespace Macopedia\Allegro\Model;
 
 use Macopedia\Allegro\Model\ResourceModel\Order\EventStats;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
 
 class LastEventIdInitializer
 {
     /** @var EventStats */
-    protected $eventStats;
+    private $eventStats;
 
     /** @var Configuration */
-    protected $configuration;
+    private $configuration;
+
+    /** @var DateTimeFactory */
+    private $dateTimeFactory;
 
     /**
      * LastEventIdInitializer constructor.
      * @param EventStats $eventStats
      * @param Configuration $configuration
+     * @param DateTimeFactory $dateTimeFactory
      */
     public function __construct(
         EventStats $eventStats,
-        Configuration $configuration
+        Configuration $configuration,
+        DateTimeFactory $dateTimeFactory
     ) {
         $this->eventStats = $eventStats;
         $this->configuration = $configuration;
+        $this->dateTimeFactory = $dateTimeFactory;
     }
 
     /**
@@ -55,6 +63,10 @@ class LastEventIdInitializer
             $lastEventId = $lastEvent['id'];
             $this->configuration->setLastEventId($lastEventId);
         }
+        /** @var DateTime $dateTime */
+        $dateTime = $this->dateTimeFactory->create();
+
         $this->configuration->setLastUserId($currentUserId);
+        $this->configuration->setInitializationTime($dateTime->timestamp());
     }
 }
