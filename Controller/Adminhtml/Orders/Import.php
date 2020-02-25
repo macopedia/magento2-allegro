@@ -82,7 +82,7 @@ class Import extends Action
             try {
                 $checkoutForm = $this->checkoutFormRepository->get($checkoutFormId);
                 $this->processor->processOrder($checkoutForm);
-                $this->logger->info("Order with id '{$checkoutFormId}' has been successfully created/updated");
+                $this->logger->info("Order with id '{$checkoutFormId}' has been successfully created");
                 $this->messageManager->addSuccessMessage(__("Order with checkout form ID: %1 has been successfully imported", $checkoutFormId));
 
             } catch (LocalizedException $e) {

@@ -226,7 +226,7 @@ class Creator extends AbstractAction
                 );
             }
             try {
-                $product = $this->productRepository->getByAllegroOfferId($offerId);
+                $product = $this->productRepository->getByAllegroOfferId($offerId, false, null, true);
             } catch (NoSuchEntityException $e) {
                 throw new CreatorItemsException(__('Product for requested offer id "%1" does not exist', $offerId));
             }

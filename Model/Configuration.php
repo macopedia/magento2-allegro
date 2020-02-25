@@ -13,6 +13,7 @@ class Configuration
     const TRACKING_NUMBER_SENDING_ENABLED_CONFIG_PATH = 'allegro/order/tracking_number_sending_enabled';
     const DEBUG_MODE_ENABLED_CONFIG_PATH = 'allegro/order/debug_mode_enabled';
     const EAN_ATTRIBUTE_CONFIG_PATH = 'allegro/offer_create/ean_attribute';
+    const STORE_ID_CONFIG_PATH = 'allegro/order/store';
     const LAST_EVENT_ID_FLAG_NAME = 'allegro_order_last_event_id';
     const LAST_USER_ID_FLAG_NAME = 'allegro_credentials_last_user_id';
     const INITIALIZATION_TIME_FLAG_NAME = 'allegro_initialization_time';
@@ -105,7 +106,15 @@ class Configuration
      */
     public function getInitializationTime(): int
     {
-        return (int) $this->flagManager->getFlagData(self::INITIALIZATION_TIME_FLAG_NAME);
+        return (int)$this->flagManager->getFlagData(self::INITIALIZATION_TIME_FLAG_NAME);
+    }
+
+    /**
+     * @return int
+     */
+    public function getStoreId(): int
+    {
+        return (int)$this->scopeConfig->getValue(self::STORE_ID_CONFIG_PATH);
     }
 
     /**

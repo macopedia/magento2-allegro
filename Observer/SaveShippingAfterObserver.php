@@ -9,7 +9,6 @@ use Magento\Catalog\Model\ResourceModel\Product;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Model\Order\Shipment;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Save shipping after observer
@@ -114,9 +113,6 @@ class SaveShippingAfterObserver implements ObserverInterface
                 $this->checkoutFrom->shipment($orderId, $shipmentData);
             } catch (\Exception $exception) {
                 $this->logger->exception($exception);
-                $this->managerInterface->addErrorMessage(
-                    __('Can\'t send tracking information to Allegro for this order')
-                );
             }
         }
     }

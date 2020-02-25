@@ -52,7 +52,19 @@
             "number_of_tries": true
         },
         "constraint": {
-            "ALLEGRO_ORDERS_WITH_ERRORS_CHECKOUT_FORM_ID": true,
+            "PRIMARY": true,
+            "ALLEGRO_ORDERS_WITH_ERRORS_CHECKOUT_FORM_ID": true
+        }
+    },
+    "allegro_reservations": {
+        "column": {
+            "entity_id": true,
+            "reservation_id": true,
+            "checkout_form_id": true,
+            "sku": true
+        },
+        "constraint": {
+            "FK_0DF36C9A02B0CEA1AF96F370F2C37537": true,
             "PRIMARY": true
         }
     }

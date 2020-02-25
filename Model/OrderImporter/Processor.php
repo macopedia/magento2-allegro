@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Macopedia\Allegro\Model\OrderImporter;
 
@@ -12,22 +12,20 @@ use Macopedia\Allegro\Model\OrderLogRepository;
 use Macopedia\Allegro\Api\OrderRepositoryInterface;
 use Macopedia\Allegro\Logger\Logger;
 use Macopedia\Allegro\Model\OrderImporter\Creator;
-use Macopedia\Allegro\Model\OrderImporter\Updater;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Macopedia\Allegro\Model\Configuration;
+use Magento\Framework\App\ResourceConnection;
 
 class Processor
 {
-
     /** @var Creator */
     private $creator;
-
-    /** @var Updater */
-    private $updater;
 
     /** @var Logger */
     private $logger;
@@ -41,41 +39,50 @@ class Processor
     /** @var OrderRepositoryInterface */
     private $orderRepository;
 
-    /** @var DateTime  */
+    /** @var DateTime */
     private $date;
 
-    /** @var Configuration  */
+    /** @var Configuration */
     private $configuration;
+
+    /** @var AllegroReservation */
+    private $allegroReservation;
+
+    /** @var ResourceConnection */
+    private $resource;
 
     /**
      * Processor constructor.
      * @param Creator $creator
-     * @param Updater $updater
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
      * @param OrderLogRepositoryInterface $orderLogRepository
      * @param OrderLogInterfaceFactory $orderLogFactory
      * @param DateTime $date
      * @param Configuration $configuration
+     * @param AllegroReservation $allegroReservation
+     * @param ResourceConnection $resource
      */
     public function __construct(
         Creator $creator,
-        Updater $updater,
         Logger $logger,
         OrderRepositoryInterface $orderRepository,
         OrderLogRepositoryInterface $orderLogRepository,
         OrderLogInterfaceFactory $orderLogFactory,
         DateTime $date,
-        Configuration $configuration
+        Configuration $configuration,
+        AllegroReservation $allegroReservation,
+        ResourceConnection $resource
     ) {
         $this->creator = $creator;
-        $this->updater = $updater;
         $this->logger = $logger;
         $this->orderRepository = $orderRepository;
         $this->orderLogRepository = $orderLogRepository;
         $this->orderLogFactory = $orderLogFactory;
         $this->date = $date;
         $this->configuration = $configuration;
+        $this->allegroReservation = $allegroReservation;
+        $this->resource = $resource;
     }
 
     /**
@@ -89,18 +96,25 @@ class Processor
             return false;
         }
 
+        $connection = $this->resource->getConnection();
         try {
-            $order = $this->tryToGetOrder($checkoutForm->getId());
-            if ($order) {
-                $this->tryUpdateOrder($order, $checkoutForm);
-            } else {
-                $this->tryCreateOrder($checkoutForm);
-            }
-            $this->removeErrorLogIfExist($checkoutForm);
+            $connection->beginTransaction();
 
+            if ($checkoutForm->getStatus() !== 'READY_FOR_PROCESSING') {
+                $this->allegroReservation->placeReservation($checkoutForm);
+            } else {
+                if (!$this->tryToGetOrder($checkoutForm->getId())) {
+                    $this->allegroReservation->compensateReservation($checkoutForm);
+                    $this->tryCreateOrder($checkoutForm);
+                    $this->removeErrorLogIfExist($checkoutForm);
+                }
+            }
+
+            $connection->commit();
             return true;
 
         } catch (\Exception $e) {
+            $connection->rollBack();
             $this->addOrderWithErrorToTable($checkoutForm, $e);
             throw $e;
         }
@@ -141,12 +155,20 @@ class Processor
 
         $orderLog->setCheckoutFormId($checkoutFormId);
         $orderLog->setDateOfLastTry($date);
-        $orderLog->setReason($e->getMessage());
+
+        $reason = [$e->getMessage()];
+        while ($e->getPrevious()) {
+            $e = $e->getPrevious();
+            $reason[] = $e->getMessage();
+        }
+
+        $orderLog->setReason(implode("\n", $reason));
 
         try {
             $this->orderLogRepository->save($orderLog);
         } catch (CouldNotSaveException $e) {
-            throw new \Exception("Error while adding order with id [{$checkoutFormId}] to allegro_orders_with_errors table", 0, $e);
+            throw new \Exception("Error while adding order with id [{$checkoutFormId}] to allegro_orders_with_errors table",
+                0, $e);
         }
     }
 
@@ -166,22 +188,6 @@ class Processor
     }
 
     /**
-     * @param OrderInterface $order
-     * @param CheckoutFormInterface $checkoutForm
-     * @throws \Exception
-     */
-    private function tryUpdateOrder(OrderInterface $order, CheckoutFormInterface $checkoutForm): void
-    {
-        $checkoutFormId = $checkoutForm->getId();
-        try {
-            $this->updater->execute($order, $checkoutForm);
-            $this->logger->info("Order with id [$checkoutFormId] has been successfully updated");
-        } catch (\Exception $e) {
-            throw new \Exception("Error while updating order with id [{$checkoutFormId}]", 0, $e);
-        }
-    }
-
-    /**
      * @param CheckoutFormInterface $checkoutForm
      * @throws \Exception
      */
@@ -191,7 +197,8 @@ class Processor
         try {
             $this->orderLogRepository->deleteByCheckoutFormId($checkoutFormId);
         } catch (CouldNotDeleteException $e) {
-            throw new \Exception("Error while deleting order with id [{$checkoutFormId}] from allegro_orders_with_errors table", 0, $e);
+            throw new \Exception("Error while deleting order with id [{$checkoutFormId}] from allegro_orders_with_errors table",
+                0, $e);
         }
     }
 

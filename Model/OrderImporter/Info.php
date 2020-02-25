@@ -54,7 +54,7 @@ class Info
     public function getMessage()
     {
         return sprintf(
-            "Updated/created orders:\n%s\nOrders with errors:\n%s\nSkipped orders:\n%s",
+            "Created orders:\n%s\nOrders with errors:\n%s\nSkipped orders:\n%s",
             implode("\n", $this->successIds),
             implode("\n", $this->errorsIds),
             implode("\n", $this->skippedIds)

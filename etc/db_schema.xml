@@ -63,4 +63,15 @@
         </constraint>
     </table>
 
+    <table name="allegro_reservations" resource="default" engine="innodb" comment="Table with info about reservations for orders from Allegro that aren't paid yet">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="int" name="reservation_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Reservation ID"/>
+        <column xsi:type="varchar" name="checkout_form_id" nullable="false" comment="Checkout form ID"/>
+        <column xsi:type="varchar" name="sku" nullable="false" comment="Product SKU"/>
+        <constraint xsi:type="foreign" referenceId="FOREIGN" table="allegro_reservations" column="reservation_id" referenceTable="inventory_reservation" referenceColumn="reservation_id" onDelete="CASCADE"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+
 </schema>
