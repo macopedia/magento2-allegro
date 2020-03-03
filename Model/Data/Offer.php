@@ -422,7 +422,6 @@ class Offer extends DataObject implements OfferInterface
             ],
             'product' => null,
             'parameters' => $this->mapParameters($this->getParameters()),
-            'ean' => $this->getEan(),
             'description' => [
                 'sections' => [
                     0 => [
@@ -462,6 +461,10 @@ class Offer extends DataObject implements OfferInterface
             ],
             'afterSalesServices' => $this->mapAfterSalesServices($this->getAfterSalesServices())
         ];
+
+        if ($this->getEan() != '') {
+            $rawData['ean'] = $this->getEan();
+        }
 
         return $rawData;
     }
