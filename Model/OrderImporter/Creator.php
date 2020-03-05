@@ -1,36 +1,56 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Macopedia\Allegro\Model\OrderImporter;
 
 use Macopedia\Allegro\Api\Data\CheckoutForm\LineItemInterface;
 use Macopedia\Allegro\Api\Data\CheckoutFormInterface;
 use Macopedia\Allegro\Api\ProductRepositoryInterface;
-use Magento\Catalog\Model\ProductFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\DataObject\Copy;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Quote\Model\Quote;
-use Magento\Quote\Model\Quote\TotalsCollector;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Quote\Model\QuoteManagement;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Model\Config as SalesConfig;
+use Magento\Sales\Model\Order;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Tax\Model\Config as TaxConfig;
 use Magento\Framework\Registry;
 use Magento\Quote\Api\Data\CartExtensionFactory;
 
 /**
  * Magento order creator
  */
-class Creator extends AbstractAction
+class Creator
 {
     const STORE_ID_CONFIG_KEY = 'allegro/order/store';
     const EVENT_NAME = 'allegro_order_import_before_quote_save';
+
+    /** @var Status */
+    protected $status;
+
+    /** @var Invoice */
+    protected $invoice;
+
+    /** @var Shipping */
+    protected $shipping;
+
+    /** @var Payment */
+    protected $payment;
+
+    /** @var OrderRepositoryInterface */
+    protected $orderRepository;
+
+    /** @var QuoteFactory */
+    protected $quoteFactory;
+
+    /** @var ManagerInterface */
+    protected $eventManager;
 
     /** @var ProductRepositoryInterface */
     private $productRepository;
@@ -53,7 +73,6 @@ class Creator extends AbstractAction
     /** @var CartExtensionFactory */
     private $cartExtensionFactory;
 
-
     /**
      * Creator constructor.
      * @param Shipping $shipping
@@ -62,20 +81,14 @@ class Creator extends AbstractAction
      * @param Invoice $invoice
      * @param OrderRepositoryInterface $orderRepository
      * @param QuoteFactory $quoteFactory
-     * @param Copy $objectCopyService
-     * @param TotalsCollector $totalsCollector
      * @param ManagerInterface $eventManager
-     * @param ProductFactory $productFactory
-     * @param Json $jsonSerializer
-     * @param TaxConfig $taxConfig
-     * @param SalesConfig $salesConfig
+     * @param CartExtensionFactory $cartExtensionFactory
      * @param ProductRepositoryInterface $productRepository
      * @param StoreManagerInterface $storeManager
      * @param Customer $customer
      * @param ScopeConfigInterface $scopeConfig
      * @param QuoteManagement $quoteManagement
      * @param Registry $registry
-     * @param CartExtensionFactory $cartExtensionFactory
      */
     public function __construct(
         Shipping $shipping,
@@ -84,13 +97,7 @@ class Creator extends AbstractAction
         Invoice $invoice,
         OrderRepositoryInterface $orderRepository,
         QuoteFactory $quoteFactory,
-        Copy $objectCopyService,
-        TotalsCollector $totalsCollector,
         ManagerInterface $eventManager,
-        ProductFactory $productFactory,
-        Json $jsonSerializer,
-        TaxConfig $taxConfig,
-        SalesConfig $salesConfig,
         CartExtensionFactory $cartExtensionFactory,
         ProductRepositoryInterface $productRepository,
         StoreManagerInterface $storeManager,
@@ -99,22 +106,14 @@ class Creator extends AbstractAction
         QuoteManagement $quoteManagement,
         Registry $registry
     ) {
-        parent::__construct(
-            $shipping,
-            $payment,
-            $status,
-            $invoice,
-            $orderRepository,
-            $quoteFactory,
-            $objectCopyService,
-            $totalsCollector,
-            $eventManager,
-            $productFactory,
-            $jsonSerializer,
-            $salesConfig,
-            $taxConfig,
-            $cartExtensionFactory
-        );
+        $this->shipping = $shipping;
+        $this->payment = $payment;
+        $this->status = $status;
+        $this->invoice = $invoice;
+        $this->orderRepository = $orderRepository;
+        $this->quoteFactory = $quoteFactory;
+        $this->eventManager = $eventManager;
+        $this->cartExtensionFactory = $cartExtensionFactory;
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
         $this->customer = $customer;
@@ -128,7 +127,7 @@ class Creator extends AbstractAction
      * @return bool
      * @throws CreatorItemsException
      * @throws NoSuchEntityException
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function execute(CheckoutFormInterface $checkoutForm)
     {
@@ -179,7 +178,7 @@ class Creator extends AbstractAction
      * @param Quote $quote
      * @param CheckoutFormInterface $checkoutForm
      * @throws NoSuchEntityException
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     private function processCustomer(Quote $quote, CheckoutFormInterface $checkoutForm)
     {
@@ -207,7 +206,7 @@ class Creator extends AbstractAction
      * @param CheckoutFormInterface $checkoutForm
      * @return array
      * @throws CreatorItemsException
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     private function processItems(Quote $quote, CheckoutFormInterface $checkoutForm)
     {
@@ -219,7 +218,7 @@ class Creator extends AbstractAction
                 );
             }
 
-            $offerId = $lineItem->getOfferId();
+            $offerId = (int)$lineItem->getOfferId();
             if (!$offerId) {
                 throw new CreatorItemsException(
                     __('Invalid offer id "%1" in received from Allegro API response', $offerId)
@@ -290,8 +289,8 @@ class Creator extends AbstractAction
     /**
      * @param Quote $quote
      * @param CheckoutFormInterface $checkoutForm
-     * @return \Magento\Sales\Api\Data\OrderInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return OrderInterface
+     * @throws LocalizedException
      */
     private function placeOrder(Quote $quote, CheckoutFormInterface $checkoutForm)
     {
@@ -309,7 +308,7 @@ class Creator extends AbstractAction
 
     /**
      * @return StoreInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     private function getStore()
     {
@@ -319,5 +318,41 @@ class Creator extends AbstractAction
         }
 
         return $this->storeManager->getStore($storeId);
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @param CheckoutFormInterface $checkoutForm
+     */
+    protected function processStatus(OrderInterface $order, CheckoutFormInterface $checkoutForm)
+    {
+        $status = $this->status->get($checkoutForm);
+
+        if ($status[Status::STATE_KEY] != Order::STATE_NEW) {
+            $order
+                ->setStatus($status[Status::STATUS_KEY])
+                ->setState($status[Status::STATE_KEY]);
+        }
+
+        if ($status[Status::PAID_KEY]) {
+            $this->invoice->create($order);
+        }
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @param CheckoutFormInterface $checkoutForm
+     */
+    protected function processComments(OrderInterface $order, CheckoutFormInterface $checkoutForm)
+    {
+        $messageToSeller = $checkoutForm->getMessageToSeller();
+        if ($messageToSeller == null) {
+            return;
+        }
+
+        $statusHistories = $order->getStatusHistories();
+        if (array_search($messageToSeller, $statusHistories) === false) {
+            $order->addStatusHistoryComment($messageToSeller);
+        }
     }
 }
