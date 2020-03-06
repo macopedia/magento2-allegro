@@ -11,9 +11,10 @@ class Configuration
 {
     const STOCK_SYNCHRONIZATION_ENABLED_CONFIG_PATH = 'allegro/order/stock_synchronization_enabled';
     const TRACKING_NUMBER_SENDING_ENABLED_CONFIG_PATH = 'allegro/order/tracking_number_sending_enabled';
-    const DEBUG_MODE_ENABLED_CONFIG_PATH = 'allegro/order/debug_mode_enabled';
+    const DEBUG_MODE_ENABLED_CONFIG_PATH = 'allegro/debug_mode/debug_mode_enabled';
     const EAN_ATTRIBUTE_CONFIG_PATH = 'allegro/offer_create/ean_attribute';
     const STORE_ID_CONFIG_PATH = 'allegro/order/store';
+    const RESERVATIONS_ENABLED_CONFIG_PATH = 'allegro/order/reservations_enabled';
     const LAST_EVENT_ID_FLAG_NAME = 'allegro_order_last_event_id';
     const LAST_USER_ID_FLAG_NAME = 'allegro_credentials_last_user_id';
     const INITIALIZATION_TIME_FLAG_NAME = 'allegro_initialization_time';
@@ -71,6 +72,18 @@ class Configuration
         ?string $scopeCode = null
     ): bool {
         return $this->scopeConfig->isSetFlag(self::DEBUG_MODE_ENABLED_CONFIG_PATH, $scopeType, $scopeCode);
+    }
+
+    /**
+     * @param string $scopeType
+     * @param string|null $scopeCode
+     * @return bool
+     */
+    public function areReservationsEnabled(
+        string $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+        ?string $scopeCode = null
+    ): bool {
+        return $this->scopeConfig->isSetFlag(self::RESERVATIONS_ENABLED_CONFIG_PATH, $scopeType, $scopeCode);
     }
 
     /**

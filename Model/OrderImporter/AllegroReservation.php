@@ -105,6 +105,9 @@ class AllegroReservation implements AllegroReservationsInterface
     public function placeReservation(CheckoutFormInterface $checkoutForm): void
     {
         try {
+            if (!$this->configuration->areReservationsEnabled()) {
+                return;
+            }
             $this->placeReservationsForSalesEvent->execute(
                 $this->getItemsToSell($checkoutForm, false),
                 $this->getSalesChannel(),
@@ -125,6 +128,9 @@ class AllegroReservation implements AllegroReservationsInterface
     public function compensateReservation(CheckoutFormInterface $checkoutForm): void
     {
         try {
+            if (!$this->configuration->areReservationsEnabled()) {
+                return;
+            }
             $this->placeReservationsForSalesEvent->execute(
                 $this->getItemsToSell($checkoutForm, true),
                 $this->getSalesChannel(),
