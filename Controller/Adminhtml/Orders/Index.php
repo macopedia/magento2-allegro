@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Macopedia\Allegro\Controller\Adminhtml\Orders;
 
@@ -9,7 +9,7 @@ use Magento\Backend\App\Action;
 /**
  * Index controller class
  */
-abstract class Index extends Action
+class Index extends Action
 {
 
     /**

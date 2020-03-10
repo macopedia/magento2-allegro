@@ -4,6 +4,8 @@ namespace Macopedia\Allegro\Setup;
 
 use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
@@ -24,20 +26,29 @@ class UpgradeData implements UpgradeDataInterface
     /** @var EavSetupFactory */
     private $eavSetupFactory;
 
+    /** @var ResourceConnection */
+    private $resource;
+
     /**
+     * @param Status $statusResource
      * @param EavSetupFactory $eavSetupFactory
+     * @param ResourceConnection $resource
      */
     public function __construct(
         Status $statusResource,
-        EavSetupFactory $eavSetupFactory
+        EavSetupFactory $eavSetupFactory,
+        ResourceConnection $resource
     ) {
         $this->statusResource = $statusResource;
         $this->eavSetupFactory = $eavSetupFactory;
+        $this->resource = $resource;
     }
 
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
+     * @throws LocalizedException
+     * @throws \Zend_Validate_Exception
      */
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
@@ -47,6 +58,9 @@ class UpgradeData implements UpgradeDataInterface
             foreach ([self::OVERPAYMENT_STATE_CODE, self::UNDERPAYMENT_STATE_CODE] as $state) {
                 $this->statusResource->assignState(self::PENDING_STATUS, $state, false);
             }
+
+            $this->resource->getConnection()
+                ->insert($this->resource->getTableName('queue'), ['name' => 'allegro.api']);
 
             $attribute = 'allegro_offer_id';
             $eavSetup = $this->createEavSetup($setup);

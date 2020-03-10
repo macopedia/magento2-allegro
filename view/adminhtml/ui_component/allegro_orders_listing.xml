@@ -5,9 +5,8 @@
             <item name="deps" xsi:type="string">allegro_orders_listing.allegro_orders_with_errors_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">spinner_columns</item>
-
     </argument>
-    <dataSource name="nameOfDataSource">
+    <dataSource name="allegro_orders_with_errors_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
             <argument name="name" xsi:type="string">allegro_orders_with_errors_listing_data_source</argument>
@@ -51,6 +50,19 @@
                         <item name="confirm" xsi:type="array">
                             <item name="title" xsi:type="string" translate="true">Import orders</item>
                             <item name="message" xsi:type="string" translate="true">Are you sure to import selected orders?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="*/*/delete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete orders</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure to delete selected orders?</item>
                         </item>
                     </item>
                 </argument>

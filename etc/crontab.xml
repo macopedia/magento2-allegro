@@ -2,7 +2,10 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
         <job instance="Macopedia\Allegro\Cron\ImportOrders" method="execute" name="macopedia_allegro_order_import">
-            <schedule>* * * * *</schedule>
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job instance="Macopedia\Allegro\Cron\ImportOrdersWithErrors" method="execute" name="macopedia_allegro_order_with_errors_import">
+            <schedule>0 * * * *</schedule>
         </job>
         <job instance="Macopedia\Allegro\Cron\RefreshToken" method="execute" name="macopedia_allegro_refresh_token">
             <schedule>0 */6 * * *</schedule>
