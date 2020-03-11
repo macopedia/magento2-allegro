@@ -87,16 +87,19 @@ Synchronizację stanów magazynowych można włączać lub wyłączać w konfigu
 Po nawiązaniu połączenia sklepu z aplikacją Allegro możemy włączyć w konfiguracji import zamówień.
 ![orders_configuration](README/allegroOrderImporterConfiguration.png)
 
-Po włączeniu tej opcji API Allegro będzie odpytywane co 5 minut o zdarzenia dotyczące zamówień. W ramach tego zapytania zamówienia będą importowane w sklepie Magento - dla nowych zamówień dodanych w Allegro będą tworzone zamówienia w sklepie Magento, a dla już istniejących będzie przeprowadzana ich aktualizacja.
+Po włączeniu tej opcji API Allegro będzie odpytywane co 5 minut o zdarzenia dotyczące zamówień. W ramach tego zapytania wszystkie opłacone zamówienia będą importowane do Magento. Jeżeli zamówienie nie zostało  jeszcze zapłacone, to zostanie dla niego złożona rezerwacja. Aktualne rezerwacje można zobaczyć, wchodząc na Sprzedaż->Rezerwacje Allegro. Jeśli istnieje już rezerwacja dla danego zamówienia i zostanie ono opłacone, to importer usunie rezerwacje oraz złoży zamówienie w Magento.  
+![menu](README/allegroOrdersMenu.png)
+![menu](README/allegroReservationsGrid.png)
 
-W konfiguracji sklepu możemy również ustawić widok sklepu, do którego zamówienia z Allegro będą importowane.
+Proces składania rezerwacji można w dowolnym momencie włączyć oraz wyłączyć w konfiguracji wtyczki (sklepy->Konfiguracja->Allegro->Konfiguracja->Import zamówień).
+
+W konfiguracji możemy również ustawić widok sklepu, do którego zamówienia z Allegro będą importowane.
 
 W ramach importu zamówień z Allegro w sklepie Magento zapisywane są informacje o cenie i ilości zamówionego produktu, dane zamawiającego, dane o płatności i wysyłce oraz wiadomość do sprzedającego, która trafia do zakładki "Historia komentarzy" na stronie zamówienia.
 
 Moduł obsługuje standardową logikę dla składania zamówień w Magento. Dostosowanie importowanych produktów można w projekcie przeprowadzić poprzez utworzenie obserwera dla eventu z nazwą "allegro_order_import_before_quote_save". Obserwer ten ma przekazane w parametrze wszystkie informacje udostępniane przez API Allegro dla zapytania o szczegóły zamówienia (https://developer.allegro.pl/en/orders/#04).
 
-Jeżeli z jakiegoś powodu nie uda się zaimportować zamówienia, to informacja o niepowodzeniu trafia do tabeli `allegro_orders_with_errors`. Można ją podejrzeć wchodząc Sprzedaż->Allegro zamówienia z błędami
-![menu](README/allegroOrdersWithErrorsMenu.png)
+Jeżeli z jakiegoś powodu nie uda się zaimportować zamówienia, to informacja o niepowodzeniu trafia do tabeli `allegro_orders_with_errors`. Można ją podejrzeć wchodząc Sprzedaż->Allegro zamówienia z błędami.
 
 Znajdują się tam informacje na temat powodu błędu, ilości prób zaimportowania, daty pierwszej oraz ostatniej próby zaimportowania oraz ID zamówienia. Aby spróbować zaimportować ponownie zamówienia należy wybrać interesujące nas rekordy a następnie rozwinąć listę akcji i wybrać `Importuj`
 
@@ -173,7 +176,7 @@ Po uzupełnieniu wszystkich pół i kliknięciu "Zapisz" - zostanie wystawiony s
 ![publish_offer](README/publishButton.png)
 
 ## DEBUG MODE
-Wtyczka oferuje możliwość logowania wszystkich danych przesyłanych do i z API Allegro. Włączyć ją można na stronie konfiguracji (sklepy->Konfiguracja->Allegro->Konfiguracja->Import zamówień)
+Wtyczka oferuje możliwość logowania wszystkich danych przesyłanych do i z API Allegro. Włączyć ją można na stronie konfiguracji (sklepy->Konfiguracja->Allegro->Konfiguracja->Debug mode)
 ![debug_mode](README/allegroDebugMode.png)
 
 Dane logowane są do pliku /var/log/allegro-http-request.log
