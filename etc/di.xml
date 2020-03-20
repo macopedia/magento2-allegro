@@ -20,6 +20,7 @@
     <preference for="Macopedia\Allegro\Api\ReturnPolicyRepositoryInterface" type="Macopedia\Allegro\Model\ReturnPolicyRepository" />
     <preference for="Macopedia\Allegro\Api\WarrantyRepositoryInterface" type="Macopedia\Allegro\Model\WarrantyRepository" />
     <preference for="Macopedia\Allegro\Api\OrderLogRepositoryInterface" type="Macopedia\Allegro\Model\OrderLogRepository" />
+    <preference for="Macopedia\Allegro\Api\ReservationRepositoryInterface" type="Macopedia\Allegro\Model\ReservationRepository" />
 
     <preference for="Macopedia\Allegro\Api\Data\OfferInterface" type="Macopedia\Allegro\Model\Data\Offer" />
     <preference for="Macopedia\Allegro\Api\Data\Offer\LocationInterface" type="Macopedia\Allegro\Model\Data\Offer\Location" />
@@ -59,8 +60,11 @@
     <preference for="Macopedia\Allegro\Api\Data\WarrantyInterface" type="Macopedia\Allegro\Model\Data\Warranty" />
     <preference for="Macopedia\Allegro\Api\Data\Sales\Order\PickupPointExtensionAttributesInterface" type="Macopedia\Allegro\Model\Data\Sales\Order\PickupPointExtensionAttributes" />
     <preference for="Macopedia\Allegro\Api\Data\OrderLogInterface" type="Macopedia\Allegro\Model\OrderLog" />
+    <preference for="Macopedia\Allegro\Api\Data\ReservationInterface" type="Macopedia\Allegro\Model\Reservation" />
+    <preference for="Macopedia\Allegro\Api\Data\AllegroReservationsInterface" type="Macopedia\Allegro\Model\OrderImporter\AllegroReservation" />
 
     <preference for="Magento\Sales\Block\Adminhtml\Order\View\Info" type="Macopedia\Allegro\Block\Adminhtml\HideAddressInformation" />
+    <preference for="Magento\InventoryReservations\Model\ResourceModel\SaveMultiple" type="Macopedia\Allegro\Preference\Model\ResourceModel\SaveMultiple" />
 
     <type name="Macopedia\Allegro\Logger\Logger">
         <arguments>
@@ -113,9 +117,11 @@
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="allegro_orders_with_errors_listing_data_source" xsi:type="string">Macopedia\Allegro\Model\ResourceModel\OrderLog\Collection</item>
+                <item name="allegro_reservations_listing_data_source" xsi:type="string">Macopedia\Allegro\Model\ResourceModel\Reservation\Collection\Grid</item>
             </argument>
         </arguments>
     </type>
+
     <virtualType name="Macopedia\Allegro\Model\ResourceModel\OrderLog\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">allegro_orders_with_errors</argument>

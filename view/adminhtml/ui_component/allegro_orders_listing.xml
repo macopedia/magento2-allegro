@@ -5,9 +5,8 @@
             <item name="deps" xsi:type="string">allegro_orders_listing.allegro_orders_with_errors_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">spinner_columns</item>
-
     </argument>
-    <dataSource name="nameOfDataSource">
+    <dataSource name="allegro_orders_with_errors_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
             <argument name="name" xsi:type="string">allegro_orders_with_errors_listing_data_source</argument>

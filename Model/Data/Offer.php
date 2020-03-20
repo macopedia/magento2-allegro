@@ -264,7 +264,7 @@ class Offer extends DataObject implements OfferInterface
      */
     public function getParameters(): array
     {
-        return (array) $this->getData(self::PARAMETERS_FIELD_NAME);
+        return (array)$this->getData(self::PARAMETERS_FIELD_NAME);
     }
 
     /**
@@ -272,7 +272,7 @@ class Offer extends DataObject implements OfferInterface
      */
     public function getImages(): array
     {
-        return (array) $this->getData(self::IMAGES_FIELD_NAME);
+        return (array)$this->getData(self::IMAGES_FIELD_NAME);
     }
 
     /**
@@ -402,7 +402,7 @@ class Offer extends DataObject implements OfferInterface
             $this->setPaymentsInvoice($rawData['payments']['invoice']);
         }
 
-        $this->setParameters($this->mapParametersData($rawData['parameters']?? []));
+        $this->setParameters($this->mapParametersData($rawData['parameters'] ?? []));
         $this->setImages($this->mapImagesData($rawData['images'] ?? []));
         $this->setLocation($this->mapLocationData($rawData['location'] ?? []));
         $this->setValidationErrors($this->mapValidationErrorsData($rawData['validation']['errors'] ?? []));
@@ -507,7 +507,7 @@ class Offer extends DataObject implements OfferInterface
             if ($parameter->isValueEmpty()) {
                 continue;
             }
-            $result[] =  $parameter->getRawData();
+            $result[] = $parameter->getRawData();
         }
         return $result;
     }

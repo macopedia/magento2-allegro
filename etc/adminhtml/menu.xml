@@ -2,5 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Macopedia_Allegro::orders_with_errors" title="Allegro orders with errors" module="Macopedia_Allegro" sortOrder="200" action="allegro/orders" resource="Macopedia_Allegro::config_macopedia_allegro" parent="Magento_Sales::sales"/>
+        <add id="Macopedia_Allegro::reservations" title="Allegro reservations" module="Macopedia_Allegro" sortOrder="210" action="allegro/reservations" resource="Macopedia_Allegro::config_macopedia_allegro" parent="Magento_Sales::sales"/>
     </menu>
 </config>

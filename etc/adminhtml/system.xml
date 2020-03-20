@@ -56,8 +56,8 @@
                     <label>Tracking number sending enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="debug_mode_enabled" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Debug mode enabled</label>
+                <field id="reservations_enabled" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reservations enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="store" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -73,14 +73,21 @@
                     <source_model>Macopedia\Allegro\Model\Config\Source\State</source_model>
                 </field>
             </group>
-            <group id="offer_create" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="debug_mode" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Debug mode</label>
+                <field id="debug_mode_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Debug mode enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="offer_create" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Offer create</label>
                 <field id="ean_attribute" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product attribute for getting EAN</label>
                     <source_model>Macopedia\Allegro\Model\Config\Source\ProductAttributes</source_model>
                 </field>
             </group>
-            <group id="delivery" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="delivery" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Delivery</label>
                 <field id="mapping" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Delivery methods - methods guid mapping</label>
@@ -93,7 +100,7 @@
                     <source_model>Macopedia\Allegro\Model\Config\Source\ActiveSippingMethods</source_model>
                 </field>
             </group>
-            <group id="payment" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="payment" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Payment</label>
                 <field id="method_online" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Payment method for online payments</label>
@@ -104,7 +111,7 @@
                     <source_model>Macopedia\Allegro\Model\Config\Source\ActivePaymentMethods</source_model>
                 </field>
             </group>
-            <group id="origin" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="origin" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Origin</label>
                 <field id="country_id" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Country</label>

@@ -9,7 +9,6 @@ use Magento\Catalog\Model\ResourceModel\Product;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Model\Order\Shipment;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Save shipping after observer
