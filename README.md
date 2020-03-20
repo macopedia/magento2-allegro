@@ -194,11 +194,6 @@ Import zamówień z błędami:
 
 ## Konfiguracja MYSQL MQ
 
-dodać kolejkę w tabeli `queue` w bazie danych
-
-`` INSERT INTO queue (name) VALUES ('allegro.api'); ``
-
-
 konfiguracja w pliku config.php
 ````
 <?php

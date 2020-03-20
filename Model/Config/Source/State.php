@@ -1,25 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Macopedia\Allegro\Model\Config\Source;
 
 use Macopedia\Allegro\Model\OrderImporter\Status;
 use Magento\Framework\Data\OptionSourceInterface;
-use Magento\Sales\Model\Order\Config;
+use Magento\Sales\Model\ResourceModel\Order\Status\CollectionFactory;
 
 /**
  * Order state source model
  */
 class State implements OptionSourceInterface
 {
-    /** @var Config */
-    private $orderConfig;
+    /**
+     * @var CollectionFactory
+     */
+    private $orderStatusCollectionFactory;
 
     /**
-     * @param Config $orderConfig
+     * @param CollectionFactory $orderStatusCollectionFactory
      */
-    public function __construct(Config $orderConfig)
+    public function __construct(CollectionFactory $orderStatusCollectionFactory)
     {
-        $this->orderConfig = $orderConfig;
+        $this->orderStatusCollectionFactory = $orderStatusCollectionFactory;
     }
 
     /**
@@ -27,12 +31,12 @@ class State implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        $states = $this->orderConfig->getStates();
+        $collection = $this->orderStatusCollectionFactory->create()->joinStates();
         $options = [];
-        foreach ($states as $state => $status) {
+        foreach ($collection as $item) {
             $options[] = [
-                'value' => $status . Status::STATUS_STATE_SEPARATOR . $state,
-                'label' => $state
+                'value' => __($item->getData('label')) . Status::STATUS_STATE_SEPARATOR . $item->getState(),
+                'label' => $item->getState()
             ];
         }
 
