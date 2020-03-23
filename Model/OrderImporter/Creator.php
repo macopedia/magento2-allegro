@@ -213,21 +213,17 @@ class Creator
         $lineItemsIds = [];
         foreach ($checkoutForm->getLineItems() as $lineItem) {
             if (!$this->isValidLineItem($lineItem)) {
-                throw new CreatorItemsException(
-                    __('Invalid item data in received from Allegro API response')
-                );
+                throw new CreatorItemsException('Invalid item data in received from Allegro API response');
             }
 
             $offerId = (int)$lineItem->getOfferId();
             if (!$offerId) {
-                throw new CreatorItemsException(
-                    __('Invalid offer id "%1" in received from Allegro API response', $offerId)
-                );
+                throw new CreatorItemsException("Invalid offer id {$offerId} in received from Allegro API response");
             }
             try {
                 $product = $this->productRepository->getByAllegroOfferId($offerId, false, null, true);
             } catch (NoSuchEntityException $e) {
-                throw new CreatorItemsException(__('Product for requested offer id "%1" does not exist', $offerId));
+                throw new CreatorItemsException("Product for requested offer id {$offerId} does not exist");
             }
 
             $lineItemsIds[$product->getSku()] = $lineItem->getId();
