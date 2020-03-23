@@ -228,7 +228,7 @@ class AllegroReservation implements AllegroReservationsInterface
                 $product = $this->productRepository->getByAllegroOfferId($offerId);
                 $sku = $product->getSku();
             } catch (NoSuchEntityException $e) {
-                throw new CreatorItemsException(__('Product for requested offer id "%1" does not exist', $offerId));
+                throw new CreatorItemsException("Product for requested offer id {$offerId} does not exist");
             }
 
             if (in_array($sku, $productsSku) === $compensate) {
