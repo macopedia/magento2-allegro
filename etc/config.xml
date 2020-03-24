@@ -12,12 +12,15 @@
             </credentials>
             <order>
                 <enabled>1</enabled>
-                <overpayment_status>Pending:allegro_overpayment</overpayment_status>
-                <underpayment_status>Pending:allegro_underpayment</underpayment_status>
                 <stock_synchronization_enabled>1</stock_synchronization_enabled>
                 <tracking_number_sending_enabled>1</tracking_number_sending_enabled>
-                <debug_mode_enabled>0</debug_mode_enabled>
+                <reservations_enabled>1</reservations_enabled>
+                <overpayment_status>Pending:allegro_overpayment</overpayment_status>
+                <underpayment_status>Pending:allegro_underpayment</underpayment_status>
             </order>
+            <debug_mode>
+                <debug_mode_enabled>0</debug_mode_enabled>
+            </debug_mode>
             <offer_create>
                 <ean_attribute>sku</ean_attribute>
             </offer_create>
