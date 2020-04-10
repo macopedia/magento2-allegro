@@ -59,9 +59,6 @@ class UpgradeData implements UpgradeDataInterface
                 $this->statusResource->assignState(self::PENDING_STATUS, $state, false);
             }
 
-            $this->resource->getConnection()
-                ->insert($this->resource->getTableName('queue'), ['name' => 'allegro.api']);
-
             $attribute = 'allegro_offer_id';
             $eavSetup = $this->createEavSetup($setup);
             $entityTypeId = $eavSetup->getEntityTypeId('catalog_product');
