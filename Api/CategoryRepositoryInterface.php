@@ -10,21 +10,21 @@ interface CategoryRepositoryInterface
 {
 
     /**
-     * @return CategoryInterface[]
+     * @return \Macopedia\Allegro\Api\Data\CategoryInterface[]
      * @throws ClientException
      */
     public function getRootList(): array;
 
     /**
      * @param string $parentCategoryId
-     * @return CategoryInterface[]
+     * @return \Macopedia\Allegro\Api\Data\CategoryInterface[]
      * @throws ClientException
      */
     public function getList(string $parentCategoryId): array;
 
     /**
      * @param string $categoryId
-     * @return CategoryInterface
+     * @return \Macopedia\Allegro\Api\Data\CategoryInterface
      * @throws ClientException
      * @throws NoSuchEntityException
      */
@@ -32,7 +32,7 @@ interface CategoryRepositoryInterface
 
     /**
      * @param string $categoryId
-     * @return CategoryInterface[]
+     * @return \Macopedia\Allegro\Api\Data\CategoryInterface[]
      * @throws ClientException
      * @throws NoSuchEntityException
      */

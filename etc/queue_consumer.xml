@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
     <consumer name="AllegroApiQueue" queue="allegro.api.queue" connection="amqp" handler="Macopedia\Allegro\Model\Consumer::processMessage"/>
     <consumer name="AllegroApiQueueDb" queue="allegro.api" connection="db" handler="Macopedia\Allegro\Model\Consumer::processMessage"/>

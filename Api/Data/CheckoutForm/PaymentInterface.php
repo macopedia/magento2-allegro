@@ -4,6 +4,10 @@ namespace Macopedia\Allegro\Api\Data\CheckoutForm;
 
 interface PaymentInterface
 {
+    /**
+     * @param string $id
+     */
+    public function setId(string $id);
 
     /**
      * @param string $type
@@ -16,6 +20,11 @@ interface PaymentInterface
      * @return void
      */
     public function setPaidAmount(AmountInterface $paidAmount);
+
+    /**
+     * @return string
+     */
+    public function getId();
 
     /**
      * @return string
