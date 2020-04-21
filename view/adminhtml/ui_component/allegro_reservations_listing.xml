@@ -30,7 +30,6 @@
             </item>
         </argument>
         <bookmark name="bookmarks"/>
-        <filterSearch name="fulltext"/>
         <filters name="listing_filters" />
         <paging name="listing_paging"/>
         <exportButton name="export_button"/>
@@ -39,6 +38,7 @@
         <column name="entity_id" sortOrder="10">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
                     <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
                 </item>
@@ -47,6 +47,7 @@
         <column name="reservation_id" sortOrder="20">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
                     <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">Reservation ID</item>
                 </item>
@@ -56,7 +57,6 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">Checkout form ID</item>
                 </item>
             </argument>
@@ -65,7 +65,6 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
-                    <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">Product SKU</item>
                 </item>
             </argument>
@@ -73,7 +72,6 @@
         <column name="quantity" sortOrder="50">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">Quantity</item>
                 </item>
             </argument>

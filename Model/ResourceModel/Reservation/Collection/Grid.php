@@ -57,6 +57,15 @@ class Grid extends SearchResult
         return parent::_beforeLoad();
     }
 
+    protected function _initSelect()
+    {
+        $this
+            ->addFilterToMap("reservation_id", "main_table.reservation_id")
+            ->addFilterToMap("sku", "main_table.sku");
+
+        return parent::_initSelect();
+    }
+
     /**
      *
      */
