@@ -110,7 +110,11 @@ class Consumer implements ConsumerInterface
                     return;
                 }
                 // refresh stock index to have current stock data
-                $this->indexerProcessor->reindexList([$product->getId()], true);
+                try {
+                    $this->indexerProcessor->reindexList([$product->getId()], true);
+                } catch (\Exception $exception) {
+                    // ignore elastic-suite indexer exception related to not set area code
+                }
                 $productStock = $this->getSalableQuantityDataBySku->execute($product->getSku());
                 if (isset($productStock[0]) && isset($productStock[0]['qty'])) {
                     $qty = $productStock[0]['qty'];
