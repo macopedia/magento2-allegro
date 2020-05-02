@@ -118,13 +118,13 @@
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="allegro_orders_with_errors_listing_data_source" xsi:type="string">Macopedia\Allegro\Model\ResourceModel\OrderLog\Collection</item>
+                <item name="allegro_orders_with_errors_listing_data_source" xsi:type="string">Macopedia\Allegro\Model\ResourceModel\OrderLog\Collection\Grid</item>
                 <item name="allegro_reservations_listing_data_source" xsi:type="string">Macopedia\Allegro\Model\ResourceModel\Reservation\Collection\Grid</item>
             </argument>
         </arguments>
     </type>
 
-    <virtualType name="Macopedia\Allegro\Model\ResourceModel\OrderLog\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+    <virtualType name="Macopedia\Allegro\Model\ResourceModel\OrderLog\Collection\Grid" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">allegro_orders_with_errors</argument>
             <argument name="resourceModel" xsi:type="string">Macopedia\Allegro\Model\ResourceModel\OrderLog</argument>
