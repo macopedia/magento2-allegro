@@ -9,9 +9,6 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
 
-/**
- * OrdersActions Class
- */
 class OrdersActions extends Column
 {
     /** @var UrlInterface */

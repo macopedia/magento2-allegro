@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Macopedia\Allegro\Model\Api;
 
 use Macopedia\Allegro\Api\Data\TokenInterface;
-use Magento\Framework\Serialize\Serializer\Json;
 use Macopedia\Allegro\Logger\Logger;
 use Macopedia\Allegro\Model\Configuration;
+use Magento\Framework\Serialize\Serializer\Json;
 
-/**
- * Class Client
- */
 class Client
 {
     const API_URL = 'https://api.allegro.pl/';

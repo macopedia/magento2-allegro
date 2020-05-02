@@ -61,7 +61,7 @@ class OrderWithErrorImporter extends AbstractOrderImporter
     {
         $lastPageNumber = ceil($this->orderLogRepository->getCount() / self::PAGE_SIZE);
 
-        for ($i = 1; $i <= $lastPageNumber; $i += 1) {
+        for ($i = 1; $i <= $lastPageNumber; ++$i) {
             $orders = $this->getOrderLogPage($i);
             foreach ($orders as $order) {
                 $checkoutFormId = $order->getCheckoutFormId();

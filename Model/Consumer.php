@@ -13,9 +13,6 @@ use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\Credentials;
 use Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku;
 
-/**
- * Consumer class
- */
 class Consumer implements ConsumerInterface
 {
     /**
