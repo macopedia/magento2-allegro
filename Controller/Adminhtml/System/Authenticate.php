@@ -23,7 +23,7 @@ class Authenticate extends Action
     /** @var Credentials */
     protected $credentials;
 
-    /** @var LastEventIdInitializer  */
+    /** @var LastEventIdInitializer */
     protected $lastEventIdInitializer;
 
     /**
@@ -62,7 +62,10 @@ class Authenticate extends Action
                 $this->getMessageManager()->addErrorMessage(__('Something went wrong while authorization in Allegro.'));
                 $this->getMessageManager()->addExceptionMessage($exception);
             } catch (\Exception $exception) {
-                $this->getMessageManager()->addErrorMessage(__('Something went wrong while authorization in Allegro. Please check credentials and try again'));
+                $this->getMessageManager()
+                    ->addErrorMessage(
+                        __('Something went wrong while authorization in Allegro. Please check credentials and try again')//phpcs:ignore
+                    );
             }
         }
 

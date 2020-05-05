@@ -19,7 +19,7 @@ class CheckoutForm extends AbstractResource
      */
     public function getCheckoutForm($checkoutFormId)
     {
-        return $this->requestGet('order/checkout-forms/' . $checkoutFormId, [], true);
+        return $this->requestGet('order/checkout-forms/' . $checkoutFormId, []);
     }
 
     /**
@@ -32,6 +32,6 @@ class CheckoutForm extends AbstractResource
      */
     public function shipment($checkoutFormId, array $shippingData)
     {
-        return $this->requestPost('order/checkout-forms/' . $checkoutFormId . '/shipments', $shippingData, true);
+        return $this->requestPost('order/checkout-forms/' . $checkoutFormId . '/shipments', $shippingData);
     }
 }

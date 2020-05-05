@@ -3,7 +3,6 @@
 
 namespace Macopedia\Allegro\Model\ResourceModel\Reservation\Collection;
 
-
 use Macopedia\Allegro\Model\ResourceModel\Reservation;
 use Magento\Framework\Data\Collection\Db\FetchStrategyInterface as FetchStrategy;
 use Magento\Framework\Data\Collection\EntityFactoryInterface as EntityFactory;
@@ -21,9 +20,9 @@ class Grid extends SearchResult
      * @param FetchStrategy $fetchStrategy
      * @param EventManager $eventManager
      * @param string $mainTable
-     * @param string $resourceModel
-     * @param null $identifierName
-     * @param null $connectionName
+     * @param null|string $resourceModel
+     * @param null|string $identifierName
+     * @param null|string $connectionName
      * @throws LocalizedException
      */
     public function __construct(
@@ -31,11 +30,19 @@ class Grid extends SearchResult
         Logger $logger,
         FetchStrategy $fetchStrategy,
         EventManager $eventManager,
-        $mainTable = 'allegro_reservations',
-        $resourceModel = Reservation::class,
+        $mainTable = '',
+        $resourceModel = null,
         $identifierName = null,
         $connectionName = null
     ) {
+        if ($mainTable === '') {
+            $mainTable = 'allegro_reservations';
+        }
+
+        if ($resourceModel === null) {
+            $resourceModel = Reservation::class;
+        }
+
         parent::__construct(
             $entityFactory,
             $logger,

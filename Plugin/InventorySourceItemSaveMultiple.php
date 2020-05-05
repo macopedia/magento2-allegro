@@ -8,8 +8,7 @@ use Magento\Framework\App\ResourceConnection;
 use Magento\InventoryApi\Api\Data\SourceItemInterface;
 
 /**
- * Class InventorySourceItemSaveMultiple
- * @package Macopedia\Allegro\Plugin
+ * Puts message in a queue after save multiple action
  */
 class InventorySourceItemSaveMultiple
 {

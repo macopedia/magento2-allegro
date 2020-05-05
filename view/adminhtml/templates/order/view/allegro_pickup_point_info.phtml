@@ -21,27 +21,27 @@ endif; ?>
     <div class="admin__page-section-content">
         <p>
             <strong><?= $block->escapeHtml(__('ID')) ?>:</strong>
-            <span><?= $pickupPoint->getPointId() ?></span>
+            <span><?= $block->escapeHtml($pickupPoint->getPointId()) ?></span>
         </p>
         <p>
             <strong><?= $block->escapeHtml(__('Name')) ?>:</strong>
-            <span><?= $pickupPoint->getName() ?></span>
+            <span><?= $block->escapeHtml($pickupPoint->getName()) ?></span>
         </p>
         <p>
             <strong><?= $block->escapeHtml(__('Description')) ?>:</strong>
-            <span><?= $pickupPoint->getDescription() ?></span>
+            <span><?= $block->escapeHtml($pickupPoint->getDescription()) ?></span>
         </p>
         <p>
             <strong><?= $block->escapeHtml(__('Street')) ?>:</strong>
-            <span><?= $pickupPoint->getStreet() ?></span>
+            <span><?= $block->escapeHtml($pickupPoint->getStreet()) ?></span>
         </p>
         <p>
             <strong><?= $block->escapeHtml(__('Zip Code')) ?>:</strong>
-            <span><?= $pickupPoint->getZipCode() ?></span>
+            <span><?= $block->escapeHtml($pickupPoint->getZipCode()) ?></span>
         </p>
         <p>
             <strong><?= $block->escapeHtml(__('City')) ?>:</strong>
-            <span><?= $pickupPoint->getCity() ?></span>
+            <span><?= $block->escapeHtml($pickupPoint->getCity()) ?></span>
         </p>
     </div>
 </section>

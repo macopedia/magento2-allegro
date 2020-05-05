@@ -12,7 +12,7 @@ use Macopedia\Allegro\Logger\Logger;
 use Magento\Framework\Module\Manager;
 
 /**
- * Order Observer
+ * Puts message in a queue after product stock change
  */
 class OrderObserver implements ObserverInterface
 {

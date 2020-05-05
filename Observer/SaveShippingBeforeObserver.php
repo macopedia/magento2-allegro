@@ -13,7 +13,7 @@ use Magento\Framework\MessageQueue\ConnectionLostException;
 use Magento\Sales\Model\Order\Shipment;
 
 /**
- * Save shipping before observer
+ * Checks if an order is paid before sending a shipment to Allegro
  */
 class SaveShippingBeforeObserver implements ObserverInterface
 {
@@ -76,7 +76,7 @@ class SaveShippingBeforeObserver implements ObserverInterface
             } catch (ClientException $e) {
                 $this->logger->exception($e);
                 $this->managerInterface->addErrorMessage(
-                    __('Can\'t set tracking information for this order - Allegro account is not connected. Connect to Allegro account and try again')
+                    __('Can\'t set tracking information for this order - Allegro account is not connected. Connect to Allegro account and try again')//phpcs:ignore
                 );
             }
 

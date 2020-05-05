@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Macopedia\Allegro\Model;
 
@@ -82,7 +82,10 @@ class OrderLogRepository implements OrderLogRepositoryInterface
         try {
             $this->resource->save($orderLog);
         } catch (\Exception $e) {
-            throw new CouldNotSaveException(__('Could not save order log with id %1', $orderLog->getCheckoutFormId()), $e);
+            throw new CouldNotSaveException(
+                __('Could not save order log with id %1', $orderLog->getCheckoutFormId()),
+                $e
+            );
         }
     }
 
@@ -95,7 +98,10 @@ class OrderLogRepository implements OrderLogRepositoryInterface
         try {
             $this->resource->delete($orderLog);
         } catch (\Exception $e) {
-            throw new CouldNotDeleteException(__('Could not delete order log with id %1', $orderLog->getCheckoutFormId()), $e);
+            throw new CouldNotDeleteException(
+                __('Could not delete order log with id %1', $orderLog->getCheckoutFormId()),
+                $e
+            );
         }
     }
 
@@ -109,7 +115,11 @@ class OrderLogRepository implements OrderLogRepositoryInterface
         /** @var OrderLogInterface $orderLog */
         $orderLog = $this->orderLogFactory->create();
 
-        $this->resource->load($orderLog, $checkoutFormId, \Macopedia\Allegro\Model\OrderLog::CHECKOUT_FORM_ID_FIELD);
+        $this->resource->load(
+            $orderLog,
+            $checkoutFormId,
+            \Macopedia\Allegro\Model\OrderLog::CHECKOUT_FORM_ID_FIELD
+        );
         if ($orderLog->getCheckoutFormId() === null) {
             throw new NoSuchEntityException(__('Could not load order log with id %1', $checkoutFormId));
         }

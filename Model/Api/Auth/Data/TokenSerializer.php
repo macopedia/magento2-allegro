@@ -4,7 +4,7 @@ namespace Macopedia\Allegro\Model\Api\Auth\Data;
 
 use Macopedia\Allegro\Api\Data\TokenInterface;
 use Macopedia\Allegro\Api\Data\TokenInterfaceFactory;
-use Macopedia\Allegro\Model\Api\Auth\Data\TokenSerializer\TokenSerializerException;
+use Macopedia\Allegro\Model\Api\Auth\Data\TokenSerializerException;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 
@@ -54,7 +54,7 @@ class TokenSerializer
     /**
      * @param string $tokenString
      * @return TokenInterface
-     * @throws \Macopedia\Allegro\Model\Api\Auth\Data\TokenSerializer\TokenSerializerException
+     * @throws TokenSerializerException
      */
     public function decode(string $tokenString)
     {

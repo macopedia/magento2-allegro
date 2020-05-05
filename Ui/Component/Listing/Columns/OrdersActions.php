@@ -10,7 +10,7 @@ use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
 
 /**
- * OrdersActions Class
+ * Import column
  */
 class OrdersActions extends Column
 {

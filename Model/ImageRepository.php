@@ -26,19 +26,24 @@ class ImageRepository implements ImageRepositoryInterface
 
     /**
      * @param ImageInterface $image
-     * @throws ClientException
      * @throws CouldNotSaveException
      */
     public function save(ImageInterface $image)
     {
         if ($image->getStatus() == ImageInterface::STATUS_UPLOADED) {
-            throw new CouldNotSaveException(__('Image with url "%1" is already uploaded to allegro', $image->getPath()));
+            throw new CouldNotSaveException(__(
+                'Image with url "%1" is already uploaded to allegro',
+                $image->getPath()
+            ));
         }
 
         try {
             $response = $this->images->postImage($image->getPath());
-        } catch (ClientResponseException $e) {
-            throw new CouldNotSaveException(__('Image with url "%1" could not be saved Reason: %2', $image->getPath(), $e->getMessage()), $e);
+        } catch (\Exception $e) {
+            throw new CouldNotSaveException(
+                __('Image with url "%1" could not be saved Reason: %2', $image->getPath(), $e->getMessage()),
+                $e
+            );
         }
 
         $image->setUrl($response['location']);

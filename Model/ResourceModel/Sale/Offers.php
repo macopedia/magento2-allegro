@@ -3,7 +3,6 @@
 namespace Macopedia\Allegro\Model\ResourceModel\Sale;
 
 use Macopedia\Allegro\Logger\Logger;
-use Macopedia\Allegro\Model\Api\Auth\Data\TokenDecoder;
 use Macopedia\Allegro\Model\Api\Client;
 use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\TokenProvider;
@@ -31,11 +30,10 @@ class Offers extends AbstractResource
         ScopeConfigInterface $scopeConfig,
         Client $client,
         TokenProvider $tokenProvider,
-        TokenDecoder $tokenDecoder,
         Logger $logger,
         Guid $guid
     ) {
-        parent::__construct($scopeConfig, $client, $tokenProvider, $tokenDecoder, $logger);
+        parent::__construct($scopeConfig, $client, $tokenProvider, $logger);
         $this->guid = $guid;
     }
 

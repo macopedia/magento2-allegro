@@ -82,7 +82,10 @@ class Auth
 
         } catch (HttpClientException $e) {
             $this->logger->exception($e, "Error while getting new token: " . $e->getMessage());
-            throw new ClientException(__('Error while getting new access token. Received response: "%1"', $e->getResponse()->getBody()), $e);
+            throw new ClientException(
+                __('Error while getting new access token. Received response: "%1"', $e->getResponse()->getBody()),
+                $e
+            );
         }
 
         return $this->createTokenFromResponse($response);
@@ -103,7 +106,10 @@ class Auth
 
         } catch (HttpClientException $e) {
             $this->logger->exception($e, "Error while refreshing access token" . $e->getMessage());
-            throw new ClientException(__('Error while refreshing access token. Received response: "%1"', $e->getResponse()->getBody()), $e);
+            throw new ClientException(
+                __('Error while refreshing access token. Received response: "%1"', $e->getResponse()->getBody()),
+                $e
+            );
         }
 
         return $this->createTokenFromResponse($response);

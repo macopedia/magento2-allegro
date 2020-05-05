@@ -11,7 +11,7 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Model\Order\Shipment;
 
 /**
- * Save shipping after observer
+ * Sends shipment to Allegro after save shipping event
  */
 class SaveShippingAfterObserver implements ObserverInterface
 {

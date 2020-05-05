@@ -5,7 +5,7 @@ namespace Macopedia\Allegro\Model\Consumer;
 use Macopedia\Allegro\Api\Consumer\MessageInterface;
 
 /**
- * Message class
+ * Represents a message about change stock of product with the given id
  */
 class Message implements MessageInterface
 {

@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace Macopedia\Allegro\Model\Api;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Macopedia\Allegro\Api\Data\TokenInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Macopedia\Allegro\Logger\Logger;
 use Macopedia\Allegro\Model\Configuration;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\ClientFactory;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\ResponseFactory;
+use Magento\Framework\Webapi\Rest\Request as MagentoRequest;
 
 /**
- * Class Client
+ * Processes API requests and responses
  */
 class Client
 {
@@ -27,37 +33,52 @@ class Client
     private $config;
 
     /**
+     * @var ResponseFactory
+     */
+    private $responseFactory;
+
+    /**
+     * @var ClientFactory
+     */
+    private $clientFactory;
+
+    /**
      * Client constructor.
      * @param Json $json
      * @param Logger $logger
      * @param Configuration $config
+     * @param ClientFactory $clientFactory
+     * @param ResponseFactory $responseFactory
      */
     public function __construct(
         Json $json,
         Logger $logger,
-        Configuration $config
+        Configuration $config,
+        ClientFactory $clientFactory,
+        ResponseFactory $responseFactory
     ) {
         $this->json = $json;
         $this->logger = $logger;
         $this->config = $config;
+        $this->clientFactory = $clientFactory;
+        $this->responseFactory = $responseFactory;
     }
 
     /**
      * @param TokenInterface $token
      * @param Request $request
      * @return mixed
-     * @throws ClientResponseException
      * @throws ClientResponseErrorException
+     * @throws ClientResponseException
      */
     public function sendRequest(TokenInterface $token, Request $request)
     {
-        $json = $this->sendHttpRequest($token, $request);
-
-        $response = $this->json->unserialize($json);
-
-        if (!$response) {
-            throw new ClientResponseException(__('Error while receiving response from Allegro API'));
+        try {
+            $json = $this->sendHttpRequest($token, $request);
+        } catch (GuzzleException $e) {
+            throw new ClientResponseException(__('Error while receiving response from Allegro API'), $e, $e->getCode());
         }
+        $response = $this->json->unserialize($json);
 
         if (isset($response['errors'])) {
             $errors = [];
@@ -83,9 +104,9 @@ class Client
     private function prepareHeaders(TokenInterface $token, Request $request)
     {
         return [
-            'Authorization: Bearer ' . $token->getAccessToken(),
-            'Accept: ' . $request->getAcceptType() ?: Request::TYPE_BETA,
-            'Content-Type: ' . $request->getContentType() ?: Request::TYPE_BETA
+            'Authorization' => 'Bearer ' . $token->getAccessToken(),
+            'Accept' => $request->getAcceptType() ?: Request::TYPE_BETA,
+            'Content-Type' => $request->getContentType() ?: Request::TYPE_BETA
         ];
     }
 
@@ -106,43 +127,38 @@ class Client
      * @param TokenInterface $token
      * @param Request $request
      * @return bool|string
+     * @throws GuzzleException
      */
     private function sendHttpRequest(TokenInterface $token, Request $request)
     {
-        $content = preg_match('/application\/.*json/', $request->getContentType())
-            ? $this->json->serialize($request->getBody())
-            : $request->getBody();
-        $url = $this->getApiUrl($request) . $request->getUri();
-        $context = stream_context_create([
-            'http' => [
-                'method' => $request->getMethod(),
-                'header' => implode("\r\n", $this->prepareHeaders($token, $request)),
-                'content' => $content,
-                'ignore_errors' => true,
-                'timeout' => 120
-            ]
+        $params['headers'] = $this->prepareHeaders($token, $request);
+
+        $content = preg_match('/image\/.*jpeg/', $request->getContentType())
+            ? 'body'
+            : 'json';
+
+        if ($request->getMethod() !== MagentoRequest::HTTP_METHOD_GET) {
+            $params[$content] = $request->getBody();
+        }
+        $client = $this->clientFactory->create([
+            'config' =>
+                [
+                    'base_uri' => $this->getApiUrl($request),
+                    'timeout' => 120
+                ],
         ]);
 
+        $response = $client->request($request->getMethod(), $request->getUri(), $params);
+
         if (!$this->config->isDebugModeEnabled()) {
-            return $this->fileGetContents($url, $context);
+            return $response->getBody()->getContents();
         }
 
         $requestId = uniqid('', true);
-        $this->logger->debug('ALLEGRO API HTTP REQUEST ' . $requestId . ': ' . $request->getMethod() . ' ' . $request->getUri() . $content);
-        $response = $this->fileGetContents($url, $context);
+        $this->logger->debug('ALLEGRO API HTTP REQUEST ' . $requestId . ': ' . $request->getMethod() . ' ' . $request->getUri() . $this->json->serialize($request->getMethod()));//phpcs:ignore
+        $response = $response->getBody()->getContents();
         $this->logger->debug('ALLEGRO API HTTP RESPONSE ' . $requestId . ': ' . $response);
 
         return $response;
     }
-
-    /**
-     * @param string $url
-     * @param $context
-     * @return false|string
-     */
-    private function fileGetContents(string $url, $context)
-    {
-        return file_get_contents($url, false, $context);
-    }
-
 }
