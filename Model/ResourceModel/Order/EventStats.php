@@ -19,7 +19,7 @@ class EventStats extends AbstractResource
      */
     public function getLastEvent()
     {
-        $response = $this->requestGet('/order/event-stats', [], false);
+        $response = $this->requestGet('/order/event-stats', []);
         return $response['latestEvent'] ?? [];
     }
 }

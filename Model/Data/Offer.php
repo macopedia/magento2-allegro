@@ -331,7 +331,6 @@ class Offer extends DataObject implements OfferInterface
         return $this->getData(self::AFTER_SALES_SERVICES_FIELD_NAME);
     }
 
-
     /**
      * @return bool
      */

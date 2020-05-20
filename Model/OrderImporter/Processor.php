@@ -167,8 +167,11 @@ class Processor
         try {
             $this->orderLogRepository->save($orderLog);
         } catch (CouldNotSaveException $e) {
-            throw new \Exception("Error while adding order with id [{$checkoutFormId}] to allegro_orders_with_errors table",
-                0, $e);
+            throw new OrderProcessingException(
+                "Error while adding order with id [{$checkoutFormId}] to allegro_orders_with_errors table",
+                1589540670,
+                $e
+            );
         }
     }
 
@@ -183,7 +186,11 @@ class Processor
             $this->creator->execute($checkoutForm);
             $this->logger->info("Order with id [$checkoutFormId] has been successfully created");
         } catch (\Exception $e) {
-            throw new \Exception("Error while creating order with id [{$checkoutFormId}]", 0, $e);
+            throw new OrderProcessingException(
+                "Error while creating order with id [{$checkoutFormId}]",
+                1589540684,
+                $e
+            );
         }
     }
 
@@ -197,8 +204,11 @@ class Processor
         try {
             $this->orderLogRepository->deleteByCheckoutFormId($checkoutFormId);
         } catch (CouldNotDeleteException $e) {
-            throw new \Exception("Error while deleting order with id [{$checkoutFormId}] from allegro_orders_with_errors table",
-                0, $e);
+            throw new OrderProcessingException(
+                "Error while deleting order with id [{$checkoutFormId}] from allegro_orders_with_errors table",
+                1589540677,
+                $e
+            );
         }
     }
 

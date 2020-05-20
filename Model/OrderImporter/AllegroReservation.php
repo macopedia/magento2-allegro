@@ -111,11 +111,12 @@ class AllegroReservation implements AllegroReservationsInterface
             $this->placeReservationsForSalesEvent->execute(
                 $this->getItemsToSell($checkoutForm, false),
                 $this->getSalesChannel(),
-                $this->getSalesEvent(self::ALLEGRO_EVENT_RESERVATION_PLACED, $checkoutForm->getId()));
+                $this->getSalesEvent(self::ALLEGRO_EVENT_RESERVATION_PLACED, $checkoutForm->getId())
+            );
         } catch (\Exception $e) {
-            throw new \Exception(
+            throw new ReservationPlacingException(
                 "Error while placing reservation for order with id [{$checkoutForm->getId()}]",
-                0,
+                1589540246,
                 $e
             );
         }
@@ -137,9 +138,9 @@ class AllegroReservation implements AllegroReservationsInterface
                 $this->getSalesEvent(self::ALLEGRO_EVENT_RESERVATION_COMPENSATED, $checkoutForm->getId())
             );
         } catch (\Exception $e) {
-            throw new \Exception(
+            throw new ReservationPlacingException(
                 "Error while compensating reservation for order with id [{$checkoutForm->getId()}]",
-                0,
+                1589540303,
                 $e
             );
         }
@@ -172,7 +173,8 @@ class AllegroReservation implements AllegroReservationsInterface
             $storeId = Store::DEFAULT_STORE_ID;
         }
 
-        $websiteCode = $this->storeManager->getWebsite($this->storeManager->getStore($storeId)->getWebsiteId())->getCode();
+        $websiteCode =
+            $this->storeManager->getWebsite($this->storeManager->getStore($storeId)->getWebsiteId())->getCode();
 
         return $salesChannel = $this->salesChannelFactory->create([
             'data' => [

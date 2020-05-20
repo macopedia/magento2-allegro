@@ -61,9 +61,9 @@ class ConfigCredentialsChangeObserver implements ObserverInterface
             try {
                 $this->credentials->getToken();
                 $this->credentials->deleteToken();
-                $this->messageManager->addNoticeMessage(__('You have changed credentials to Allegro account. Your current connection has been lost and you have to connect with Allegro account again'));
+                $this->messageManager->addNoticeMessage(__('You have changed credentials to Allegro account. Your current connection has been lost and you have to connect with Allegro account again'));//phpcs:ignore
             } catch (ClientException $e) {
-                $this->messageManager->addNoticeMessage(__('You have entered credentials to Allegro account. Now you have to click "Connect with Allegro account" button'));
+                $this->messageManager->addNoticeMessage(__('You have entered credentials to Allegro account. Now you have to click "Connect with Allegro account" button'));//phpcs:ignore
             }
         }
     }

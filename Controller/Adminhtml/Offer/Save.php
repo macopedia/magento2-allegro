@@ -67,15 +67,21 @@ class Save extends Offer
                     $this->productRepository->save($product);
                 } catch (CouldNotSaveException $e) {
                     $this->messageManager->addWarningMessage(
-                        __('Could not assign offer id to product. Please update product data with proper offer ID manually')
+                        __('Could not assign offer id to product. Please update product data with proper offer ID manually')//phpcs:ignore
                     );
                 }
             }
-            
+
             if ($offer->isValid()) {
                 $this->messageManager->addSuccessMessage(__('Offer saved successfully'));
             } else {
-                $this->messageManager->addWarningMessage(__('Offer saved successfully but contains invalid data. Validation errors: %1', sprintf(implode(' ', $offer->getValidationErrors()))));
+                $this->messageManager
+                    ->addWarningMessage(
+                        __(
+                            'Offer saved successfully but contains invalid data. Validation errors: %1',
+                            sprintf(implode(' ', $offer->getValidationErrors()))
+                        )
+                    );
             }
 
             return $this->createRedirectEditResult($offer->getId());

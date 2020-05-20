@@ -14,7 +14,7 @@ use Macopedia\Allegro\Model\Api\Credentials;
 use Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku;
 
 /**
- * Consumer class
+ * Consumes messages from Allegro queue
  */
 class Consumer implements ConsumerInterface
 {
@@ -113,7 +113,7 @@ class Consumer implements ConsumerInterface
                 try {
                     $this->indexerProcessor->reindexList([$product->getId()], true);
                 } catch (\Exception $exception) {
-                    // ignore elastic-suite indexer exception related to not set area code
+                    $this->logger->error($exception->getMessage(), $exception->getTrace());
                 }
                 $productStock = $this->getSalableQuantityDataBySku->execute($product->getSku());
                 if (isset($productStock[0]) && isset($productStock[0]['qty'])) {

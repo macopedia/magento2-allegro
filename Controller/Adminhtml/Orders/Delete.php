@@ -76,12 +76,16 @@ class Delete extends Action
             try {
                 $this->orderLogRepository->deleteByCheckoutFormId($checkoutFormId);
                 $this->logger->info("Order log with id '{$checkoutFormId}' has been successfully deleted");
-                $this->messageManager->addSuccessMessage(__("Order log with checkout form ID: %1 has been successfully deleted",
-                    $checkoutFormId));
+                $this->messageManager->addSuccessMessage(__(
+                    "Order log with checkout form ID: %1 has been successfully deleted",
+                    $checkoutFormId
+                ));
             } catch (CouldNotDeleteException $e) {
                 $this->logger->exception($e);
-                $this->messageManager->addErrorMessage(__("Something went wrong while trying to delete order log with checkout form ID: %1",
-                    $checkoutFormId));
+                $this->messageManager->addErrorMessage(__(
+                    "Something went wrong while trying to delete order log with checkout form ID: %1",
+                    $checkoutFormId
+                ));
             }
         }
         return $result;

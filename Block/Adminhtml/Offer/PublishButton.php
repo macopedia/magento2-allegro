@@ -6,7 +6,7 @@ use Macopedia\Allegro\Api\Data\OfferInterface;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
 /**
- * Publish button class
+ * Publish button configuration provider
  */
 class PublishButton implements ButtonProviderInterface
 {

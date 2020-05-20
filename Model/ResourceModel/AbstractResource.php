@@ -3,8 +3,6 @@
 namespace Macopedia\Allegro\Model\ResourceModel;
 
 use Macopedia\Allegro\Logger\Logger;
-use Macopedia\Allegro\Model\Api\Auth\Data\TokenDecoder;
-use Macopedia\Allegro\Model\Api\Auth\Data\TokenDecoderException;
 use Macopedia\Allegro\Model\Api\Client;
 use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\ClientResponseErrorException;
@@ -14,16 +12,13 @@ use Macopedia\Allegro\Model\Api\TokenProvider;
 use Macopedia\Allegro\Model\Cache\Type;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Webapi\Rest\Request as MagentoRequest;
 
 /**
  * Base class for resource models to send requests for Allegro API
  */
 abstract class AbstractResource
 {
-    const REQUEST_GET  = 'GET';
-    const REQUEST_POST = 'POST';
-    const REQUEST_PUT  = 'PUT';
-
     const SANDBOX_CONFIG_KEY = 'allegro/general/sandbox';
 
     /** @var ScopeConfigInterface */
@@ -35,45 +30,41 @@ abstract class AbstractResource
     /** @var TokenProvider */
     private $tokenProvider;
 
-    /** @var TokenDecoder */
-    private $tokenDecoder;
-
     /** @var Logger */
     private $logger;
 
     /**
      * @param ScopeConfigInterface $scopeConfig
-     * @param Client               $client
-     * @param TokenProvider        $tokenProvider
-     * @param Logger               $logger
+     * @param Client $client
+     * @param TokenProvider $tokenProvider
+     * @param Logger $logger
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         Client $client,
         TokenProvider $tokenProvider,
-        TokenDecoder $tokenDecoder,
         Logger $logger
     ) {
         $this->scopeConfig   = $scopeConfig;
         $this->client        = $client;
         $this->tokenProvider = $tokenProvider;
-        $this->tokenDecoder  = $tokenDecoder;
         $this->logger        = $logger;
     }
 
     /**
      * @return string|null
      * @throws ClientException
-     * @throws ClientResponseErrorException
-     * @throws ClientResponseException
      */
     public function getCurrentUserId(): ?string
     {
-        $token = $this->tokenProvider->getCurrent();
         try {
-            return $this->tokenDecoder->getSellerId($token);
-        } catch (TokenDecoderException $e) {
-            throw new ClientException(__('Could not decode token'), $e);
+            $userInfo = $this->requestGet('/me');
+            if (!isset($userInfo['id'])) {
+                throw new ClientException(__('Field id is not set'));
+            }
+            return $userInfo['id'];
+        } catch (\Exception $e) {
+            throw new ClientException(__('Could not get user id'), $e);
         }
     }
 
@@ -88,8 +79,7 @@ abstract class AbstractResource
      */
     protected function requestGet($uri, array $params = [], $isBeta = false)
     {
-        $response = $this->sendRequest($uri, self::REQUEST_GET, $params, $isBeta);
-        return $response;
+        return $this->sendRequest($uri, MagentoRequest::HTTP_METHOD_GET, $params, $isBeta);
     }
 
     /**
@@ -104,11 +94,11 @@ abstract class AbstractResource
     protected function cachedRequestGet($uri, array $params = [], $isBeta = false)
     {
         \Magento\Framework\Profiler::start(__CLASS__ . '::' . __METHOD__ . '::' . $uri);
-        $identifier = sha1($this->serializer()->serialize([$uri, self::REQUEST_GET, $params, $isBeta]));
+        $identifier = sha1($this->serializer()->serialize([$uri, MagentoRequest::HTTP_METHOD_GET, $params, $isBeta]));
         if ($this->cache()->test($identifier)) {
             $response = $this->serializer()->unserialize($this->cache()->load($identifier));
         } else {
-            $response = $this->sendRequest($uri, self::REQUEST_GET, $params, $isBeta);
+            $response = $this->sendRequest($uri, MagentoRequest::HTTP_METHOD_GET, $params, $isBeta);
             $this->cache()->save($this->serializer()->serialize($response), $identifier);
         }
         \Magento\Framework\Profiler::stop(__CLASS__ . '::' . __METHOD__ . '::' . $uri);
@@ -126,7 +116,7 @@ abstract class AbstractResource
      */
     protected function requestPost($uri, array $params = [], $isBeta = false)
     {
-        return $this->sendRequest($uri, self::REQUEST_POST, $params, $isBeta);
+        return $this->sendRequest($uri, MagentoRequest::HTTP_METHOD_POST, $params, $isBeta);
     }
 
     /**
@@ -139,7 +129,7 @@ abstract class AbstractResource
      */
     protected function requestPut($uri, array $params = [])
     {
-        return $this->sendRequest($uri, self::REQUEST_PUT, $params);
+        return $this->sendRequest($uri, MagentoRequest::HTTP_METHOD_PUT, $params);
     }
 
     /**

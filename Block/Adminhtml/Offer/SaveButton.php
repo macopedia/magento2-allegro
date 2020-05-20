@@ -5,7 +5,7 @@ namespace Macopedia\Allegro\Block\Adminhtml\Offer;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
 /**
- * Publish button class
+ * Save button configuration provider
  */
 class SaveButton implements ButtonProviderInterface
 {

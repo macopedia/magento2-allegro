@@ -67,8 +67,8 @@ class Authenticate extends Field
 
         }
 
-        $html = '<div style="background-color: '.$color.'; padding: 20px 30px;">' . __('Connection status:') . ' ' . $statusLabel . '</div>'
-              . '<a href="' . $this->auth->getAuthUrl() . '"><button type="button">' . $buttonLabel . '</button></a>';
+        $html = '<div style="background-color: ' . $color . '; padding: 20px 30px;">' . __('Connection status:') . ' ' . $statusLabel . '</div>'//phpcs:ignore
+            . '<a href="' . $this->auth->getAuthUrl() . '"><button type="button">' . $buttonLabel . '</button></a>';
 
         return $html;
     }

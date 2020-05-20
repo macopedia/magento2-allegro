@@ -14,9 +14,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Macopedia\Allegro\Model\ResourceModel\Reservation as ResourceModel;
-use Macopedia\Allegro\Model\Reservation;
 
 class ReservationRepository implements ReservationRepositoryInterface
 {
@@ -79,8 +77,10 @@ class ReservationRepository implements ReservationRepositoryInterface
         try {
             $this->resource->save($reservation);
         } catch (\Exception $e) {
-            throw new CouldNotSaveException(__('Could not save reservation for order with id %1',
-                $reservation->getCheckoutFormId()), $e);
+            throw new CouldNotSaveException(__(
+                'Could not save reservation for order with id %1',
+                $reservation->getCheckoutFormId()
+            ), $e);
         }
     }
 
@@ -92,8 +92,10 @@ class ReservationRepository implements ReservationRepositoryInterface
         try {
             $this->resource->delete($reservation);
         } catch (\Exception $e) {
-            throw new CouldNotDeleteException(__('Could not delete reservation for order with id %1',
-                $reservation->getCheckoutFormId()), $e);
+            throw new CouldNotDeleteException(__(
+                'Could not delete reservation for order with id %1',
+                $reservation->getCheckoutFormId()
+            ), $e);
         }
     }
 
@@ -129,8 +131,10 @@ class ReservationRepository implements ReservationRepositoryInterface
         try {
             $this->resource->deleteBySkuAndCheckoutFormId($sku, $checkoutFormId);
         } catch (\Exception $e) {
-            throw new CouldNotDeleteException(__('Could not delete reservation for order with id %1', $checkoutFormId),
-                $e);
+            throw new CouldNotDeleteException(
+                __('Could not delete reservation for order with id %1', $checkoutFormId),
+                $e
+            );
         }
     }
 }

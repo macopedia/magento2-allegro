@@ -43,10 +43,12 @@ class CheckoutFormRepository implements CheckoutFormRepositoryInterface
             $checkoutFormData = $this->checkoutForm->getCheckoutForm($checkoutFormId);
 
         } catch (ClientResponseException $e) {
-            throw new NoSuchEntityException(__('Requested checkout form with id "%1" does not exist', $checkoutFormId), $e);
+            throw new NoSuchEntityException(
+                __('Requested checkout form with id "%1" does not exist', $checkoutFormId),
+                $e
+            );
         }
 
-        /** @var CheckoutFormInterface $checkoutForm */
         $checkoutForm = $this->checkoutFormFactory->create();
         $checkoutForm->setRawData($checkoutFormData);
         return $checkoutForm;

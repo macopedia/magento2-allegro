@@ -8,7 +8,7 @@ use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 use Magento\Framework\DataObject;
 
 /**
- * Class DeliveryMethods
+ * Prepares array with delivery methods
  */
 class DeliveryMethods extends AbstractFieldArray
 {

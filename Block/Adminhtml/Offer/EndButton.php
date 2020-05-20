@@ -6,7 +6,7 @@ use Macopedia\Allegro\Api\Data\OfferInterface;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
 /**
- * Publish button class
+ * End button configuration provider
  */
 class EndButton implements ButtonProviderInterface
 {
