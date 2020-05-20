@@ -86,6 +86,10 @@
                     <label>Product attribute for getting EAN</label>
                     <source_model>Macopedia\Allegro\Model\Config\Source\ProductAttributes</source_model>
                 </field>
+                <field id="description_attribute" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product attribute for getting description</label>
+                    <source_model>Macopedia\Allegro\Model\Config\Source\ProductAttributes</source_model>
+                </field>
             </group>
             <group id="delivery" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Delivery</label>

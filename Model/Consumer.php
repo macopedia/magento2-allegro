@@ -8,9 +8,12 @@ use Macopedia\Allegro\Api\Data\PublicationCommandInterface;
 use Macopedia\Allegro\Api\Data\PublicationCommandInterfaceFactory;
 use Macopedia\Allegro\Api\OfferRepositoryInterface;
 use Macopedia\Allegro\Api\PublicationCommandRepositoryInterface;
+use Macopedia\Allegro\Api\QuantityCommandInterface;
 use Macopedia\Allegro\Logger\Logger;
 use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\Credentials;
+use Magento\CatalogInventory\Model\Indexer\Stock\Processor;
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku;
 
 /**
@@ -19,11 +22,11 @@ use Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku;
 class Consumer implements ConsumerInterface
 {
     /**
-     * @var \Macopedia\Allegro\Api\QuantityCommandInterface
+     * @var QuantityCommandInterface
      */
     protected $quantityCommand;
     /**
-     * @var \Magento\CatalogInventory\Model\Indexer\Stock\Processor
+     * @var Processor
      */
     protected $indexerProcessor;
     /** @var Logger */
@@ -59,9 +62,9 @@ class Consumer implements ConsumerInterface
      * @param OfferRepositoryInterface $offerRepository
      * @param PublicationCommandRepositoryInterface $publicationCommandRepository
      * @param PublicationCommandInterfaceFactory $publicationCommandFactory
-     * @param \Macopedia\Allegro\Api\QuantityCommandInterface $quantityCommand
+     * @param QuantityCommandInterface $quantityCommand
      * @param Configuration $config
-     * @param \Magento\CatalogInventory\Model\Indexer\Stock\Processor $indexerProcessor
+     * @param Processor $indexerProcessor
      */
     public function __construct(
         Logger $logger,
@@ -71,20 +74,20 @@ class Consumer implements ConsumerInterface
         OfferRepositoryInterface $offerRepository,
         PublicationCommandRepositoryInterface $publicationCommandRepository,
         PublicationCommandInterfaceFactory $publicationCommandFactory,
-        \Macopedia\Allegro\Api\QuantityCommandInterface $quantityCommand,
+        QuantityCommandInterface $quantityCommand,
         Configuration $config,
-        \Magento\CatalogInventory\Model\Indexer\Stock\Processor $indexerProcessor
+        Processor $indexerProcessor
     ) {
-        $this->logger                       = $logger;
-        $this->productRepository            = $productRepository;
-        $this->getSalableQuantityDataBySku  = $getSalableQuantityDataBySku;
-        $this->credentials                  = $credentials;
-        $this->offerRepository              = $offerRepository;
+        $this->logger = $logger;
+        $this->productRepository = $productRepository;
+        $this->getSalableQuantityDataBySku = $getSalableQuantityDataBySku;
+        $this->credentials = $credentials;
+        $this->offerRepository = $offerRepository;
         $this->publicationCommandRepository = $publicationCommandRepository;
-        $this->publicationCommandFactory    = $publicationCommandFactory;
-        $this->config                       = $config;
-        $this->quantityCommand              = $quantityCommand;
-        $this->indexerProcessor             = $indexerProcessor;
+        $this->publicationCommandFactory = $publicationCommandFactory;
+        $this->config = $config;
+        $this->quantityCommand = $quantityCommand;
+        $this->indexerProcessor = $indexerProcessor;
     }
 
     /**
@@ -115,31 +118,36 @@ class Consumer implements ConsumerInterface
                 } catch (\Exception $exception) {
                     $this->logger->error($exception->getMessage(), $exception->getTrace());
                 }
+
+                $offer = $this->offerRepository->get($allegroOfferId);
                 $productStock = $this->getSalableQuantityDataBySku->execute($product->getSku());
-                if (isset($productStock[0]) && isset($productStock[0]['qty'])) {
-                    $qty = $productStock[0]['qty'];
-                    if ($qty > 0) {
-                        $this->quantityCommand->change($allegroOfferId, $qty);
+                if (!isset($productStock[0]['qty'])) {
+                    return;
+                }
+
+                $qty = $productStock[0]['qty'];
+                if ($qty > 0) {
+                    $this->quantityCommand->change($allegroOfferId, $qty);
+                    if (!$offer->isDraft()) {
                         $this->savePublicationCommand(
                             $allegroOfferId,
                             PublicationCommandInterface::ACTION_ACTIVATE
                         );
-
-                    } else {
-                        $this->savePublicationCommand(
-                            $allegroOfferId,
-                            PublicationCommandInterface::ACTION_END
-                        );
-
                     }
-
-                    $this->logger->info(
-                        sprintf(
-                            'Quantity of offer with external id %s has been successfully updated',
-                            $allegroOfferId
-                        )
+                } else {
+                    $this->savePublicationCommand(
+                        $allegroOfferId,
+                        PublicationCommandInterface::ACTION_END
                     );
+
                 }
+
+                $this->logger->info(
+                    sprintf(
+                        'Quantity of offer with external id %s has been successfully updated',
+                        $allegroOfferId
+                    )
+                );
             }
 
         } catch (\Exception $e) {
@@ -152,11 +160,10 @@ class Consumer implements ConsumerInterface
      * @param string $offerId
      * @param string $action
      * @throws ClientException
-     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws CouldNotSaveException
      */
     private function savePublicationCommand(string $offerId, string $action)
     {
-        /** @var PublicationCommandInterface $publicationCommand */
         $publicationCommand = $this->publicationCommandFactory->create();
         $publicationCommand->setOfferId($offerId);
         $publicationCommand->setAction($action);

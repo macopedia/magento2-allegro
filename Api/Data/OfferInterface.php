@@ -202,6 +202,11 @@ interface OfferInterface
     /**
      * @return bool
      */
+    public function isDraft(): bool;
+
+    /**
+     * @return bool
+     */
     public function isValid(): bool;
 
     /**

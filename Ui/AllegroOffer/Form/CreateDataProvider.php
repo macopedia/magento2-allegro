@@ -15,7 +15,6 @@ use Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku;
 
 class CreateDataProvider extends DataProvider
 {
-
     /** @var GetSalableQuantityDataBySku */
     protected $getSalableQuantityDataBySku;
 
@@ -31,6 +30,8 @@ class CreateDataProvider extends DataProvider
      * @param string $primaryFieldName
      * @param string $requestFieldName
      * @param GetSalableQuantityDataBySku $getSalableQuantityDataBySku
+     * @param Registry $registry
+     * @param Configuration $config
      * @param ReportingInterface $reporting
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param RequestInterface $request
@@ -72,7 +73,6 @@ class CreateDataProvider extends DataProvider
      * Get data
      *
      * @return array
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getData()
     {
@@ -94,13 +94,16 @@ class CreateDataProvider extends DataProvider
         }
 
         $eanAttributeCode = $this->config->getEanAttributeCode();
+        $descriptionAttributeCode = $this->config->getDescriptionAttributeCode();
 
         $this->_loadedData[$product->getId()] = [
             'allegro' => [
                 'product' => $product->getId(),
                 'ean' => $eanAttributeCode ? $product->getData($eanAttributeCode) : '',
                 'name' => $product->getName(),
-                'description' => $product->getDescription(),
+                'description' => $descriptionAttributeCode
+                    ? $product->getData($descriptionAttributeCode)
+                    : $product->getDescription(),
                 'price' => $product->getPrice(),
                 'images' => isset($images['items']) ? $images['items'] : [],
                 'qty' => $stock[0]['qty']

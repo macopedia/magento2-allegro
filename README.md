@@ -146,8 +146,8 @@ Za pomocą wtyczki możemy wystawiać produkty z Magento na Allegro. Aby to zrob
 2. Dodać informacje o [zwrotach](https://allegro.pl/dla-sprzedajacych/warunki-oferty-zwroty-a124GwdXZFA), [reklamacji](https://allegro.pl/dla-sprzedajacych/warunki-oferty-reklamacje-vKgeWL5GnHA) oraz [gwarancji](https://allegro.pl/dla-sprzedajacych/warunki-oferty-gwarancje-9dXYn0VeXHM) na Allegro (wymagane tylko dla konta firmowego)
 3. Uzupełnić informacje o loklizacji (Sklepy->Konfiguracja->Allegro->Konfiguracja->Pochodzenie)
     ![origin_configuration](README/originConfiguration.png)
-4. (opcjonalnie) Wybrać atrybut produktu, z którego ma być pobierany kod EAN  (Sklepy->Konfiguracja->Allegro->Konfiguracja->Tworzenie oferty)
-    ![ean_select](README/allegroEanSelect.png)
+4. (opcjonalnie) Wybrać atrybuty produktów, z których ma być pobierany kod EAN oraz opis (Sklepy->Konfiguracja->Allegro->Konfiguracja->Tworzenie oferty)
+    ![ean_select](README/allegroOfferCreateConfiguration.png)
 
 Po wprowadzeniu wymaganych danych można zacząć wystawiać oferty z poziomu Magento.
 Należy wybrać produkt, który chcemy wstawić, wejść na jego stronę i wybrać zdjęcie do oferty Allegro. Żeby, to zrobić wystarczy kliknąć zdjęcie, zaznaczyć rolę 'Allegro', a następnie zapisać produkt.
