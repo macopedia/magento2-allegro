@@ -356,6 +356,14 @@ class Offer extends DataObject implements OfferInterface
     /**
      * @return bool
      */
+    public function isDraft(): bool
+    {
+        return $this->getPublicationStatus() == self::PUBLICATION_STATUS_INACTIVE;
+    }
+
+    /**
+     * @return bool
+     */
     public function isValid(): bool
     {
         return count($this->getValidationErrors()) < 1;
