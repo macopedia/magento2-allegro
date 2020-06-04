@@ -76,6 +76,7 @@ class Client
         try {
             $json = $this->sendHttpRequest($token, $request);
         } catch (GuzzleException $e) {
+            $this->logger->exception($e);
             throw new ClientResponseException(__('Error while receiving response from Allegro API'), $e, $e->getCode());
         }
         $response = $this->json->unserialize($json);
@@ -131,14 +132,19 @@ class Client
      */
     private function sendHttpRequest(TokenInterface $token, Request $request)
     {
+        $method = $request->getMethod();
+        $uri = $request->getUri();
+        $body = $request->getBody();
+
+        $params = [];
         $params['headers'] = $this->prepareHeaders($token, $request);
 
-        $content = preg_match('/image\/.*jpeg/', $request->getContentType())
-            ? 'body'
-            : 'json';
+        $content = preg_match('/application\/.*json/', $request->getContentType())
+            ? 'json'
+            : 'body';
 
-        if ($request->getMethod() !== MagentoRequest::HTTP_METHOD_GET) {
-            $params[$content] = $request->getBody();
+        if ($method !== MagentoRequest::HTTP_METHOD_GET) {
+            $params[$content] = $body;
         }
         $client = $this->clientFactory->create([
             'config' =>
@@ -148,17 +154,30 @@ class Client
                 ],
         ]);
 
-        $response = $client->request($request->getMethod(), $request->getUri(), $params);
-
         if (!$this->config->isDebugModeEnabled()) {
-            return $response->getBody()->getContents();
+            return $this->getResponse($client, $method, $uri, $params);
         }
 
         $requestId = uniqid('', true);
-        $this->logger->debug('ALLEGRO API HTTP REQUEST ' . $requestId . ': ' . $request->getMethod() . ' ' . $request->getUri() . $this->json->serialize($request->getMethod()));//phpcs:ignore
-        $response = $response->getBody()->getContents();
+        $body = $content == 'body' ? $body : $this->json->serialize($body);
+        $this->logger->debug('ALLEGRO API HTTP REQUEST ' . $requestId . ': ' . $method . ' ' . $uri . $body);
+        $response = $this->getResponse($client, $method, $uri, $params);
         $this->logger->debug('ALLEGRO API HTTP RESPONSE ' . $requestId . ': ' . $response);
 
         return $response;
+    }
+
+    /**
+     * @param GuzzleClient $client
+     * @param string $method
+     * @param string $uri
+     * @param array $params
+     * @return string
+     * @throws GuzzleException
+     */
+    public function getResponse(GuzzleClient $client, string $method, string $uri, array $params)
+    {
+        $response = $client->request($method, $uri, $params);
+        return $response->getBody()->getContents();
     }
 }
