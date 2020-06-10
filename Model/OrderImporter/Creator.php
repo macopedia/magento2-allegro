@@ -58,9 +58,6 @@ class Creator
     /** @var StoreManagerInterface */
     private $storeManager;
 
-    /** @var Customer */
-    private $customer;
-
     /** @var ScopeConfigInterface */
     private $scopeConfig;
 
@@ -85,7 +82,6 @@ class Creator
      * @param CartExtensionFactory $cartExtensionFactory
      * @param ProductRepositoryInterface $productRepository
      * @param StoreManagerInterface $storeManager
-     * @param Customer $customer
      * @param ScopeConfigInterface $scopeConfig
      * @param QuoteManagement $quoteManagement
      * @param Registry $registry
@@ -101,7 +97,6 @@ class Creator
         CartExtensionFactory $cartExtensionFactory,
         ProductRepositoryInterface $productRepository,
         StoreManagerInterface $storeManager,
-        Customer $customer,
         ScopeConfigInterface $scopeConfig,
         QuoteManagement $quoteManagement,
         Registry $registry
@@ -116,7 +111,6 @@ class Creator
         $this->cartExtensionFactory = $cartExtensionFactory;
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
-        $this->customer = $customer;
         $this->scopeConfig = $scopeConfig;
         $this->quoteManagement = $quoteManagement;
         $this->registry = $registry;
@@ -177,8 +171,6 @@ class Creator
     /**
      * @param Quote $quote
      * @param CheckoutFormInterface $checkoutForm
-     * @throws NoSuchEntityException
-     * @throws LocalizedException
      */
     private function processCustomer(Quote $quote, CheckoutFormInterface $checkoutForm)
     {
@@ -193,12 +185,10 @@ class Creator
             );
         }
 
-        $customer = $this->customer->get(
-            $checkoutForm->getBuyer(),
-            $store = $this->getStore(),
-            $checkoutForm->getInvoice()->getAddress()->getCompany()->getVatId()
-        );
-        $quote->assignCustomer($customer);
+        $quote->setCustomerFirstname($checkoutForm->getBuyer()->getFirstName());
+        $quote->setCustomerLastname($checkoutForm->getBuyer()->getLastName());
+        $quote->setCustomerEmail($checkoutForm->getBuyer()->getEmail());
+        $quote->setCustomerIsGuest(true);
     }
 
     /**
