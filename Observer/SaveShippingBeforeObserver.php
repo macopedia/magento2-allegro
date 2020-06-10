@@ -9,8 +9,8 @@ use Macopedia\Allegro\Model\ResourceModel\Order\CheckoutForm;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\MessageQueue\ConnectionLostException;
 use Magento\Sales\Model\Order\Shipment;
+use Macopedia\Allegro\Model\OrderOrigin;
 
 /**
  * Checks if an order is paid before sending a shipment to Allegro
@@ -24,35 +24,37 @@ class SaveShippingBeforeObserver implements ObserverInterface
     private $credentials;
 
     /** @var ManagerInterface */
-    protected $managerInterface;
+    private $managerInterface;
 
     /** @var CheckoutForm */
-    protected $checkoutForm;
+    private $checkoutForm;
+
+    /** @var OrderOrigin */
+    private $orderOrigin;
 
     /**
      * @param Logger $logger
      * @param Credentials $credentials
      * @param ManagerInterface $managerInterface
      * @param CheckoutForm $checkoutForm
+     * @param OrderOrigin $orderOrigin
      */
     public function __construct(
         Logger $logger,
         Credentials $credentials,
         ManagerInterface $managerInterface,
-        CheckoutForm $checkoutForm
+        CheckoutForm $checkoutForm,
+        OrderOrigin $orderOrigin
     ) {
         $this->logger = $logger;
         $this->credentials = $credentials;
         $this->managerInterface = $managerInterface;
         $this->checkoutForm = $checkoutForm;
+        $this->orderOrigin = $orderOrigin;
     }
 
     /**
      * @param Observer $observer
-     * @throws ClientException
-     * @throws ConnectionLostException
-     * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
-     * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
      */
     public function execute(Observer $observer)
     {
@@ -61,13 +63,13 @@ class SaveShippingBeforeObserver implements ObserverInterface
             /** @var Shipment $shipment */
             $shipment = $observer->getEvent()->getShipment();
 
-            // TODO use ExtensionAttributesInterface
-            $orderFrom = $shipment->getOrder()->getData('order_from');
-            $orderId = $shipment->getOrder()->getData('external_id');
+            $order = $shipment->getOrder();
 
-            if ($orderFrom != 'Allegro') {
+            if (!$this->orderOrigin->isOrderFromAllegro($order)) {
                 return;
             }
+
+            $orderId = $order->getExtensionAttributes()->getExternalId();
 
             try {
 
