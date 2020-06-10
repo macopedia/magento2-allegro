@@ -4,6 +4,7 @@ namespace Macopedia\Allegro\Observer;
 
 use Macopedia\Allegro\Logger\Logger;
 use Macopedia\Allegro\Model\Configuration;
+use Macopedia\Allegro\Model\OrderImporter\OriginOfOrder;
 use Macopedia\Allegro\Model\ResourceModel\Order\CheckoutForm;
 use Magento\Catalog\Model\ResourceModel\Product;
 use Magento\Framework\Event\Observer;
@@ -45,23 +46,29 @@ class SaveShippingAfterObserver implements ObserverInterface
     /** @var Configuration */
     private $config;
 
+    /** @var OriginOfOrder */
+    private $orderOrigin;
+
     /**
      * SaveShippingAfterObserver constructor.
      * @param Product $productResource
      * @param CheckoutForm $checkoutFrom
      * @param Logger $logger
      * @param Configuration $config
+     * @param OriginOfOrder $orderOrigin
      */
     public function __construct(
         Product $productResource,
         CheckoutForm $checkoutFrom,
         Logger $logger,
-        Configuration $config
+        Configuration $config,
+        OriginOfOrder $orderOrigin
     ) {
         $this->productResource = $productResource;
         $this->checkoutFrom = $checkoutFrom;
         $this->logger = $logger;
         $this->config = $config;
+        $this->orderOrigin = $orderOrigin;
     }
 
     /**
@@ -77,13 +84,13 @@ class SaveShippingAfterObserver implements ObserverInterface
         /** @var Shipment $shipment */
         $shipment = $observer->getEvent()->getShipment();
 
-        // TODO use ExtensionAttributesInterface
-        $orderId = $shipment->getOrder()->getData('external_id');
-        $orderFrom = $shipment->getOrder()->getData('order_from');
+        $order = $shipment->getOrder();
 
-        if ($orderFrom != 'Allegro') {
+        if (!$this->orderOrigin->isOrderFromAllegro($order)) {
             return;
         }
+
+        $orderId = $order->getExtensionAttributes()->getExternalId();
 
         $shipmentData = ['lineItems' => []];
         foreach ($shipment->getItems() as $item) {
