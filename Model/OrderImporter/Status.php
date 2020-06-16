@@ -19,7 +19,8 @@ class Status
     const STATE_KEY = 'state';
     const PAID_KEY = 'paid';
     const STATUS_STATE_SEPARATOR = ':';
-    const ALLEGRO_READY_FOR_PROCESSING = "READY_FOR_PROCESSING";
+    const ALLEGRO_READY_FOR_PROCESSING = 'READY_FOR_PROCESSING';
+    const ALLEGRO_CANCELLED = 'CANCELLED';
 
     /** @var ScopeConfigInterface */
     private $scopeConfig;
