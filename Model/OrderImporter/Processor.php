@@ -100,14 +100,16 @@ class Processor
         try {
             $connection->beginTransaction();
 
-            if ($checkoutForm->getStatus() !== 'READY_FOR_PROCESSING') {
-                $this->allegroReservation->placeReservation($checkoutForm);
-            } else {
+            if ($checkoutForm->getStatus() === Status::ALLEGRO_READY_FOR_PROCESSING) {
                 if (!$this->tryToGetOrder($checkoutForm->getId())) {
                     $this->allegroReservation->compensateReservation($checkoutForm);
                     $this->tryCreateOrder($checkoutForm);
                     $this->removeErrorLogIfExist($checkoutForm);
                 }
+            } elseif ($checkoutForm->getStatus() === Status::ALLEGRO_CANCELLED) {
+                $this->allegroReservation->compensateReservation($checkoutForm);
+            } else {
+                $this->allegroReservation->placeReservation($checkoutForm);
             }
 
             $connection->commit();
