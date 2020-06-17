@@ -60,7 +60,7 @@ class UpgradeData implements UpgradeDataInterface
             }
 
             $this->resource->getConnection()
-                ->insert($this->resource->getTableName('queue'), ['name' => 'allegro.api']);
+                ->insertOnDuplicate($this->resource->getTableName('queue'), ['name' => 'allegro.api']);
 
             $attribute = 'allegro_offer_id';
             $eavSetup = $this->createEavSetup($setup);
