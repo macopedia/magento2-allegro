@@ -17,6 +17,7 @@
 
     <settings>
         <buttons>
+            <button name="back" class="Macopedia\Allegro\Block\Adminhtml\Offer\BackButton"/>
             <button name="save" class="Macopedia\Allegro\Block\Adminhtml\Offer\SaveButton"/>
         </buttons>
         <namespace>allegro_offer_form_create</namespace>

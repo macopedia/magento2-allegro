@@ -70,6 +70,19 @@ class CreateDataProvider extends DataProvider
     }
 
     /**
+     * @param Product $product
+     * @return string
+     */
+    protected function getAllegroImage(Product $product)
+    {
+        if ($product->getAllegroImage() && $product->getAllegroImage() !== 'no_selection') {
+            return $product->getAllegroImage();
+        }
+
+        return $product->getImage();
+    }
+
+    /**
      * Get data
      *
      * @return array
@@ -86,7 +99,7 @@ class CreateDataProvider extends DataProvider
         $product = $this->registry->registry('product');
         $stock = $this->getSalableQuantityDataBySku->execute($product->getSku());
         $images = $product->getMediaGalleryImages()->toArray();
-        $allegroImage = $product->getAllegroImage();
+        $allegroImage =  $this->getAllegroImage($product);
         foreach ($images['items'] as $key => $image) {
             if ($image['file'] !== $allegroImage) {
                 unset($images['items'][$key]);

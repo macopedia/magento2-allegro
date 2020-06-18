@@ -15,6 +15,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
 
     const ID_FIELD_NAME = 'id';
     const NAME_FIELD_NAME = 'name';
+    const UNIT_FIELD_NAME = 'unit';
     const REQUIRED_FIELD_NAME = 'required';
     const VALUES_COUNT_FIELD_NAME = 'values_count';
     const TYPE_FIELD_NAME = 'type';
@@ -67,6 +68,15 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
+     * @param string $type
+     * @return void
+     */
+    public function setUnit(?string $type)
+    {
+        $this->setData(self::UNIT_FIELD_NAME, $type);
+    }
+
+    /**
      * @param bool $required
      * @return void
      */
@@ -115,6 +125,14 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     public function getType(): ?string
     {
         return $this->getData(self::TYPE_FIELD_NAME);
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnit(): ?string
+    {
+        return $this->getData(self::UNIT_FIELD_NAME);
     }
 
     /**
@@ -198,6 +216,9 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
         }
         if (isset($rawData['type'])) {
             $this->setType($rawData['type']);
+        }
+        if (isset($rawData['unit'])) {
+            $this->setUnit($rawData['unit']);
         }
 
         $this->setRequired($rawData['required'] ?? false);

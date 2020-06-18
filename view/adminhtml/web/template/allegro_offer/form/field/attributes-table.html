@@ -21,6 +21,7 @@
                         <div>
                             <label data-bind="attr: { for: $parent.uid + definition.id }">
                                 <span data-bind="text: definition.name"></span>
+                                <span if="unit" data-bind="text: ' ( ' + unit + ' ) '"></span>
                             </label>
                         </div>
                         <div>

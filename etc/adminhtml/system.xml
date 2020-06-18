@@ -22,12 +22,24 @@
                     <depends>
                         <field id="sandbox">0</field>
                     </depends>
+                    <comment><![CDATA[
+                    Register App in <a target="_blank" href="https://apps.developer.allegro.pl/">https://apps.developer.allegro.pl/</a>
+                    ]]></comment>
                 </field>
                 <field id="sandbox_authentication_url" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Sandbox Authentication Url</label>
                     <depends>
                         <field id="sandbox">1</field>
                     </depends>
+                    <comment><![CDATA[
+                    Register App in <a target="_blank" href="https://apps.developer.allegro.pl.allegrosandbox.pl/">https://apps.developer.allegro.pl.allegrosandbox.pl/</a>
+                    ]]></comment>
+                </field>
+                <field id="callback_url" translate="label comment" type="label" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use following callback</label>
+                    <comment>
+                        <model>\Macopedia\Allegro\Model\Config\CommentText\CallbackUrl</model>
+                    </comment>
                 </field>
             </group>
             <group id="credentials" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">

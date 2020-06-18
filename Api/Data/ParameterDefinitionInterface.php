@@ -26,6 +26,12 @@ interface ParameterDefinitionInterface
     public function setName(string $label);
 
     /**
+     * @param string $unit
+     * @return void
+     */
+    public function setUnit(?string $unit);
+
+    /**
      * @param string $type
      * @return void
      */
@@ -63,6 +69,11 @@ interface ParameterDefinitionInterface
      * @return string
      */
     public function getType(): ?string;
+
+    /**
+     * @return string
+     */
+    public function getUnit(): ?string;
 
     /**
      * @return bool

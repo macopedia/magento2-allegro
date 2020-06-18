@@ -2,12 +2,13 @@
 
 namespace Macopedia\Allegro\Block\Adminhtml\Offer;
 
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
 /**
- * Save button configuration provider
+ * Back button configuration provider
  */
-class SaveButton implements ButtonProviderInterface
+class BackButton implements ButtonProviderInterface
 {
     /**
      * Url Builder
@@ -43,13 +44,29 @@ class SaveButton implements ButtonProviderInterface
     public function getButtonData()
     {
         return [
-            'label' => __('Save'),
-            'class' => 'save primary',
-            'data_attribute' => [
-                'mage-init' => ['button' => ['event' => 'save']],
-                'form-role' => 'save',
-            ],
+            'label' => __('Back'),
+            'class' => 'action- scalable back',
+            'on_click' => $this->getOnclick(),
             'sort_order' => 10,
         ];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getOnClick()
+    {
+        return sprintf(
+            "location.href = '%s';",
+            $this->urlBuilder->getUrl('catalog/product/edit', ['id' => $this->getProduct()->getId()])
+        );
+    }
+
+    /**
+     * @return ProductInterface
+     */
+    private function getProduct()
+    {
+        return $this->registry->registry('product');
     }
 }

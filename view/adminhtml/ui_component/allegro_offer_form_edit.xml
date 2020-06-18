@@ -17,6 +17,7 @@
 
     <settings>
         <buttons>
+            <button name="back" class="Macopedia\Allegro\Block\Adminhtml\Offer\BackButton"/>
             <button name="save" class="Macopedia\Allegro\Block\Adminhtml\Offer\SaveButton"/>
             <button name="publish" class="Macopedia\Allegro\Block\Adminhtml\Offer\PublishButton"/>
             <button name="end" class="Macopedia\Allegro\Block\Adminhtml\Offer\EndButton"/>
