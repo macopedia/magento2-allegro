@@ -54,7 +54,8 @@ abstract class AbstractOrderImporter
     {
         try {
             $checkoutForm = $this->checkoutFormRepository->get($checkoutFormId);
-            if ($this->processor->processOrder($checkoutForm)) {
+            if ($this->processor->validateCheckoutFormBoughtAtDate($checkoutForm)) {
+                $this->processor->processOrder($checkoutForm);
                 $this->successIds[] = $checkoutFormId;
             } else {
                 $this->skippedIds[] = $checkoutFormId;
