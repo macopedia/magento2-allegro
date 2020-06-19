@@ -69,7 +69,7 @@ class SaveShippingBeforeObserver implements ObserverInterface
                 return;
             }
 
-            $orderId = $order->getExtensionAttributes()->getExternalId();
+            $orderId = $order->getExternalId() ?: $order->getExtensionAttributes()->getExternalId();
 
             try {
 

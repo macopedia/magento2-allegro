@@ -90,7 +90,7 @@ class SaveShippingAfterObserver implements ObserverInterface
             return;
         }
 
-        $orderId = $order->getExtensionAttributes()->getExternalId();
+        $orderId = $order->getExternalId() ?: $order->getExtensionAttributes()->getExternalId();
 
         $shipmentData = ['lineItems' => []];
         foreach ($shipment->getItems() as $item) {
