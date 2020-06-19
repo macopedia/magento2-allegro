@@ -52,7 +52,7 @@ class Shipping
         $methodName = $checkoutForm->getDelivery()->getMethod()->getId();
 
         if ($methodName == '') {
-            return $this->getDefaultShippingMethodCode();
+            return $this->getDefaultMethodCode();
         }
 
         if (!isset($this->shippingCodes[$methodName])) {
@@ -60,14 +60,6 @@ class Shipping
         }
 
         return $this->shippingCodes[$methodName];
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultShippingMethodCode()
-    {
-        return self::DEFAULT_SHIPPING_METHOD;
     }
 
     /**

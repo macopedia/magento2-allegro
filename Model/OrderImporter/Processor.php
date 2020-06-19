@@ -87,15 +87,10 @@ class Processor
 
     /**
      * @param CheckoutFormInterface $checkoutForm
-     * @return bool
      * @throws \Exception
      */
-    public function processOrder(CheckoutFormInterface $checkoutForm): bool
+    public function processOrder(CheckoutFormInterface $checkoutForm): void
     {
-        if (!$this->validateCheckoutFormBoughtAtDate($checkoutForm)) {
-            return false;
-        }
-
         $connection = $this->resource->getConnection();
         try {
             $connection->beginTransaction();
@@ -113,8 +108,6 @@ class Processor
             }
 
             $connection->commit();
-            return true;
-
         } catch (\Exception $e) {
             $connection->rollBack();
             $this->addOrderWithErrorToTable($checkoutForm, $e);
@@ -218,7 +211,7 @@ class Processor
      * @param CheckoutFormInterface $checkoutForm
      * @return bool
      */
-    private function validateCheckoutFormBoughtAtDate(CheckoutFormInterface $checkoutForm): bool
+    public function validateCheckoutFormBoughtAtDate(CheckoutFormInterface $checkoutForm): bool
     {
         foreach ($checkoutForm->getLineItems() as $lineItem) {
             if ($lineItem->getBoughtAt() < $this->configuration->getInitializationTime()) {
