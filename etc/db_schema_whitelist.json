@@ -3,21 +3,24 @@
         "column": {
             "order_from": true,
             "external_id": true,
-            "external_guid": true
+            "external_guid": true,
+            "allegro_buyer_login": true
         }
     },
     "sales_order_grid": {
         "column": {
             "order_from": true,
             "external_id": true,
-            "external_guid": true
+            "external_guid": true,
+            "allegro_buyer_login": true
         }
     },
     "quote": {
         "column": {
             "order_from": true,
             "external_id": true,
-            "external_guid": true
+            "external_guid": true,
+            "allegro_buyer_login": true
         }
     },
     "sales_order_item": {

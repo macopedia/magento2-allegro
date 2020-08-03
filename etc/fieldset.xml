@@ -8,6 +8,9 @@
             <field name="order_from">
                 <aspect name="to_order" />
             </field>
+            <field name="allegro_buyer_login">
+                <aspect name="to_order" />
+            </field>
         </fieldset>
     </scope>
 </config>

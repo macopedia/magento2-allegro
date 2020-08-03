@@ -39,6 +39,7 @@ class CopyFieldsFromQuoteToOrderObserver implements ObserverInterface
         if ($cartExtensions) {
             $order->setData('external_id', $cartExtensions->getExternalId());
             $order->setData('order_from', $cartExtensions->getOrderFrom());
+            $order->setData('allegro_buyer_login', $cartExtensions->getAllegroBuyerLogin());
         }
 
         $this->objectCopyService->copyFieldsetToTarget('sales_convert_quote', 'to_order', $quote, $order);

@@ -92,6 +92,7 @@
             <argument name="columns" xsi:type="array">
                 <item name="external_id" xsi:type="string">sales_order.external_id</item>
                 <item name="order_from" xsi:type="string">sales_order.order_from</item>
+                <item name="allegro_buyer_login" xsi:type="string">sales_order.allegro_buyer_login</item>
             </argument>
         </arguments>
     </virtualType>
