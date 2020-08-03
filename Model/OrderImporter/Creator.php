@@ -137,6 +137,7 @@ class Creator
         }
         $cartExtension->setExternalId($checkoutForm->getId());
         $cartExtension->setOrderFrom(OriginOfOrder::ALLEGRO);
+        $cartExtension->setAllegroBuyerLogin($checkoutForm->getBuyer()->getLogin());
         $quote->setExtensionAttributes($cartExtension);
 
         $quote->setAllegroShippingPrice($checkoutForm->getDelivery()->getCost()->getAmount());

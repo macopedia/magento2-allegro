@@ -4,18 +4,21 @@
         <column xsi:type="varchar" length="255" name="order_from" nullable="true" comment="Where the order comes from"/>
         <column xsi:type="varchar" length="255" name="external_id" nullable="true" comment="External order ID"/>
         <column xsi:type="varchar" length="255" name="external_guid" nullable="true" comment="External order GUID"/>
+        <column xsi:type="varchar" length="255" name="allegro_buyer_login" nullable="true" comment="Allegro buyer login"/>
     </table>
 
     <table name="sales_order_grid">
         <column xsi:type="varchar" length="255" name="order_from" nullable="true" comment="Where the order comes from"/>
         <column xsi:type="varchar" length="255" name="external_id" nullable="true" comment="External order ID"/>
         <column xsi:type="varchar" length="255" name="external_guid" nullable="true" comment="External order GUID"/>
+        <column xsi:type="varchar" length="255" name="allegro_buyer_login" nullable="true" comment="Allegro buyer login"/>
     </table>
 
     <table name="quote">
         <column xsi:type="varchar" length="255" name="order_from" nullable="true" comment="Where the order comes from"/>
         <column xsi:type="varchar" length="255" name="external_id" nullable="true" comment="External order ID"/>
         <column xsi:type="varchar" length="255" name="external_guid" nullable="true" comment="External order GUID"/>
+        <column xsi:type="varchar" length="255" name="allegro_buyer_login" nullable="true" comment="Allegro buyer login"/>
     </table>
 
     <table name="sales_order_item">

@@ -4,11 +4,13 @@
     <extension_attributes for="Magento\Quote\Api\Data\CartInterface">
         <attribute code="order_from" type="string"/>
         <attribute code="external_id" type="string"/>
+        <attribute code="allegro_buyer_login" type="string"/>
     </extension_attributes>
 
     <extension_attributes for="Magento\Sales\Api\Data\OrderInterface">
         <attribute code="order_from" type="string"/>
         <attribute code="external_id" type="string"/>
+        <attribute code="allegro_buyer_login" type="string"/>
     </extension_attributes>
 
     <extension_attributes for="Magento\Sales\Api\Data\OrderInterface">

@@ -11,6 +11,7 @@ class Buyer extends DataObject implements BuyerInterface
     const FIRST_NAME_FIELD_NAME = 'first_name';
     const LAST_NAME_FIELD_NAME = 'last_name';
     const EMAIL_FIELD_NAME = 'email';
+    const LOGIN_FIELD_NAME = 'login';
 
     /**
      * @param string $firstName
@@ -34,6 +35,14 @@ class Buyer extends DataObject implements BuyerInterface
     public function setEmail(string $email)
     {
         $this->setData(self::EMAIL_FIELD_NAME, $email);
+    }
+
+    /**
+     * @param string $login
+     */
+    public function setLogin(string $login)
+    {
+        $this->setData(self::LOGIN_FIELD_NAME, $login);
     }
 
     /**
@@ -61,6 +70,14 @@ class Buyer extends DataObject implements BuyerInterface
     }
 
     /**
+     * @return string|null
+     */
+    public function getLogin(): ?string
+    {
+        return $this->getData(self::LOGIN_FIELD_NAME);
+    }
+
+    /**
      * @param array $rawData
      */
     public function setRawData(array $rawData)
@@ -73,6 +90,10 @@ class Buyer extends DataObject implements BuyerInterface
         }
         if (isset($rawData['email'])) {
             $this->setEmail($rawData['email']);
+        }
+
+        if (isset($rawData['login'])) {
+            $this->setLogin($rawData['login']);
         }
     }
 }

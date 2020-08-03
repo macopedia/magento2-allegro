@@ -18,6 +18,8 @@ class OriginOrderData extends Template
      * @var Registry
      */
     private $registry;
+
+    /* @var \Magento\Sales\Model\Order */
     private $order;
 
     /**
@@ -53,5 +55,13 @@ class OriginOrderData extends Template
     {
         // TODO use ExtensionAttributesInterface
         return $this->order->getData('external_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBuyerLogin()
+    {
+        return $this->order->getData('allegro_buyer_login');
     }
 }
