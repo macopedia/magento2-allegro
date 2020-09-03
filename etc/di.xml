@@ -130,4 +130,11 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="Macopedia\Allegro\Model\ResourceModel\Reservation\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">allegro_reservations</argument>
+            <argument name="resourceModel" xsi:type="string">Macopedia\Allegro\Model\ResourceModel\Reservation</argument>
+        </arguments>
+    </virtualType>
+
 </config>
