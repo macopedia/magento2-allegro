@@ -33,9 +33,39 @@
         <filters name="listing_filters" />
         <paging name="listing_paging"/>
         <exportButton name="export_button"/>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="*/*/delete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete reservations</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure to delete selected reservations?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
     </listingToolbar>
     <columns name="reservations_columns">
-        <column name="entity_id" sortOrder="10">
+        <selectionsColumn name="ids" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">55</item>
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="entity_id" sortOrder="20">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
@@ -44,7 +74,7 @@
                 </item>
             </argument>
         </column>
-        <column name="reservation_id" sortOrder="20">
+        <column name="reservation_id" sortOrder="30">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
@@ -53,7 +83,7 @@
                 </item>
             </argument>
         </column>
-        <column name="checkout_form_id" sortOrder="30">
+        <column name="checkout_form_id" sortOrder="40">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -61,7 +91,7 @@
                 </item>
             </argument>
         </column>
-        <column name="sku" sortOrder="40">
+        <column name="sku" sortOrder="50">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -69,7 +99,7 @@
                 </item>
             </argument>
         </column>
-        <column name="quantity" sortOrder="50">
+        <column name="quantity" sortOrder="60">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Quantity</item>

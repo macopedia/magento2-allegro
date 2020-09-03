@@ -33,7 +33,7 @@ class Delete extends Action
     private $orderLogRepository;
 
     /**
-     * Import constructor.
+     * Delete constructor.
      * @param Action\Context $context
      * @param Logger $logger
      * @param Filter $filter
@@ -75,7 +75,10 @@ class Delete extends Action
             $checkoutFormId = $item->getCheckoutFormId();
             try {
                 $this->orderLogRepository->deleteByCheckoutFormId($checkoutFormId);
-                $this->logger->info("Order log with id '{$checkoutFormId}' has been successfully deleted");
+                $this->logger->info(__(
+                    "Order log with checkout form ID: %1 has been successfully deleted",
+                    $checkoutFormId
+                ));
                 $this->messageManager->addSuccessMessage(__(
                     "Order log with checkout form ID: %1 has been successfully deleted",
                     $checkoutFormId
