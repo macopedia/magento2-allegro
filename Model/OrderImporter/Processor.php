@@ -99,7 +99,6 @@ class Processor
                 if (!$this->tryToGetOrder($checkoutForm->getId())) {
                     $this->allegroReservation->compensateReservation($checkoutForm);
                     $this->tryCreateOrder($checkoutForm);
-                    $this->removeErrorLogIfExist($checkoutForm);
                 }
             } elseif ($checkoutForm->getStatus() === Status::ALLEGRO_CANCELLED) {
                 $this->allegroReservation->compensateReservation($checkoutForm);
@@ -107,6 +106,7 @@ class Processor
                 $this->allegroReservation->placeReservation($checkoutForm);
             }
 
+            $this->removeErrorLogIfExist($checkoutForm);
             $connection->commit();
         } catch (\Exception $e) {
             $connection->rollBack();
