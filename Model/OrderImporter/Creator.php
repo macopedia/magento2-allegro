@@ -220,7 +220,15 @@ class Creator
             $lineItemsIds[$product->getSku()] = $lineItem->getId();
             $product->setPrice($lineItem->getPrice()->getAmount());
             $product->setSpecialPrice(null);
-            $quote->addProduct($product, $lineItem->getQty());
+            try {
+                $quote->addProduct($product, $lineItem->getQty());
+            } catch (LocalizedException $e) {
+                throw new CreatorItemsException(
+                    "Error while trying to add product with sku {$product->getSku()} to quote",
+                    1602070926,
+                    $e
+                );
+            }
         }
         return $lineItemsIds;
     }
