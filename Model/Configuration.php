@@ -14,8 +14,11 @@ class Configuration
     const DEBUG_MODE_ENABLED_CONFIG_PATH = 'allegro/debug_mode/debug_mode_enabled';
     const EAN_ATTRIBUTE_CONFIG_PATH = 'allegro/offer_create/ean_attribute';
     const DESCRIPTION_ATTRIBUTE_CONFIG_PATH = 'allegro/offer_create/description_attribute';
+    const PRICE_ATTRIBUTE_CONFIG_PATH = 'allegro/offer_create/price_attribute';
     const STORE_ID_CONFIG_PATH = 'allegro/order/store';
     const RESERVATIONS_ENABLED_CONFIG_PATH = 'allegro/order/reservations_enabled';
+    const PRICE_POLICY_ENABLED_CONFIG_PATH = 'allegro/price_policy/price_policy_enabled';
+    const PERCENT_INCREASE_CONFIG_PATH = 'allegro/price_policy/percent_increase';
     const LAST_EVENT_ID_FLAG_NAME = 'allegro_order_last_event_id';
     const LAST_USER_ID_FLAG_NAME = 'allegro_credentials_last_user_id';
     const INITIALIZATION_TIME_FLAG_NAME = 'allegro_initialization_time';
@@ -88,6 +91,30 @@ class Configuration
     }
 
     /**
+     * @param string $scopeType
+     * @param string|null $scopeCode
+     * @return bool
+     */
+    public function isPricePolicyEnabled(
+        string $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+        ?string $scopeCode = null
+    ): bool {
+        return $this->scopeConfig->isSetFlag(self::PRICE_POLICY_ENABLED_CONFIG_PATH, $scopeType, $scopeCode);
+    }
+
+    /**
+     * @param string $scopeType
+     * @param string|null $scopeCode
+     * @return string|null
+     */
+    public function getPricePercentIncrease(
+        string $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+        ?string $scopeCode = null
+    ): ?string {
+        return $this->scopeConfig->getValue(self::PERCENT_INCREASE_CONFIG_PATH, $scopeType, $scopeCode);
+    }
+
+    /**
      * @return string|null
      */
     public function getLastEventId(): ?string
@@ -125,6 +152,18 @@ class Configuration
         ?string $scopeCode = null
     ): ?string {
         return $this->scopeConfig->getValue(self::DESCRIPTION_ATTRIBUTE_CONFIG_PATH, $scopeType, $scopeCode);
+    }
+
+    /**
+     * @param string $scopeType
+     * @param string|null $scopeCode
+     * @return string|null
+     */
+    public function getPriceAttributeCode(
+        string $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+        ?string $scopeCode = null
+    ): ?string {
+        return $this->scopeConfig->getValue(self::PRICE_ATTRIBUTE_CONFIG_PATH, $scopeType, $scopeCode);
     }
 
     /**

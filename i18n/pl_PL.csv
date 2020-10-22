@@ -171,3 +171,8 @@
 "Order log with checkout form ID: %1 has been successfully deleted","Zamówienie o ID: %1 zostało pomyślnie usunięte"
 "Reservation with ID: %1 has been successfully deleted","Rezerwacja o ID: %1 została pomyślnie usunięta"
 "Something went wrong while trying to delete reservation with ID: %1","Coś poszło nie tak podczas próby usunięcia rezerwacji o ID: %1"
+"Price policy","Polityka cenowa"
+"Price policy enabled","Polityka cenowa włączona"
+"Prices higher on Allegro by the given percentage","Ceny na Allegro wyższe o dany procent"
+"Product attribute for getting price","Atrybut produktu do pobrania ceny"
+"Attributes are taken from the default scope","Atrybuty są pobierane z domyślnego widoku sklepu"

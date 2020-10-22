@@ -10,6 +10,7 @@ use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider;
+use Macopedia\Allegro\Model\AllegroPrice;
 
 use Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku;
 
@@ -24,6 +25,9 @@ class CreateDataProvider extends DataProvider
     /** @var Configuration */
     protected $config;
 
+    /** @var AllegroPrice */
+    protected $allegroPrice;
+
     /**
      * CreateDataProvider constructor.
      * @param string $name
@@ -36,6 +40,7 @@ class CreateDataProvider extends DataProvider
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param RequestInterface $request
      * @param FilterBuilder $filterBuilder
+     * @param AllegroPrice $allegroPrice
      * @param array $meta
      * @param array $data
      */
@@ -50,6 +55,7 @@ class CreateDataProvider extends DataProvider
         SearchCriteriaBuilder $searchCriteriaBuilder,
         RequestInterface $request,
         FilterBuilder $filterBuilder,
+        AllegroPrice $allegroPrice,
         array $meta = [],
         array $data = []
     ) {
@@ -67,6 +73,7 @@ class CreateDataProvider extends DataProvider
         $this->getSalableQuantityDataBySku = $getSalableQuantityDataBySku;
         $this->registry = $registry;
         $this->config = $config;
+        $this->allegroPrice = $allegroPrice;
     }
 
     /**
@@ -100,6 +107,7 @@ class CreateDataProvider extends DataProvider
         $stock = $this->getSalableQuantityDataBySku->execute($product->getSku());
         $images = $product->getMediaGalleryImages()->toArray();
         $allegroImage =  $this->getAllegroImage($product);
+        $price = $this->allegroPrice->get($product);
         foreach ($images['items'] as $key => $image) {
             if ($image['file'] !== $allegroImage) {
                 unset($images['items'][$key]);
@@ -117,7 +125,7 @@ class CreateDataProvider extends DataProvider
                 'description' => $descriptionAttributeCode
                     ? $product->getData($descriptionAttributeCode)
                     : $product->getDescription(),
-                'price' => $product->getPrice(),
+                'price' => $price,
                 'images' => isset($images['items']) ? $images['items'] : [],
                 'qty' => $stock[0]['qty']
             ]
