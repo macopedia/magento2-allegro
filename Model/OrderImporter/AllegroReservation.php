@@ -7,8 +7,13 @@ namespace Macopedia\Allegro\Model\OrderImporter;
 use Macopedia\Allegro\Api\Data\AllegroReservationsInterface;
 use Macopedia\Allegro\Api\Data\CheckoutForm\LineItemInterface;
 use Macopedia\Allegro\Api\Data\CheckoutFormInterface;
+use Macopedia\Allegro\Logger\Logger;
+use Macopedia\Allegro\Model\Api\ClientException;
+use Macopedia\Allegro\Model\CheckoutFormRepository;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\InventorySalesApi\Api\Data\SalesChannelInterface;
 use Magento\InventorySalesApi\Api\Data\SalesChannelInterfaceFactory;
 use Magento\InventorySalesApi\Api\Data\SalesEventInterface;
@@ -64,6 +69,15 @@ class AllegroReservation implements AllegroReservationsInterface
     /** @var Configuration */
     private $configuration;
 
+    /** @var SearchCriteriaBuilder  */
+    private $searchCriteriaBuilder;
+
+    /** @var CheckoutFormRepository */
+    private $checkoutFormRepository;
+
+    /** @var Logger */
+    private $logger;
+
     /**
      * AllegroReservation constructor.
      * @param ProductRepositoryInterface $productRepository
@@ -75,6 +89,9 @@ class AllegroReservation implements AllegroReservationsInterface
      * @param ReservationRepository $reservationRepository
      * @param ResourceConnection $resource
      * @param Configuration $configuration
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CheckoutFormRepository $checkoutFormRepository
+     * @param Logger $logger
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -85,7 +102,10 @@ class AllegroReservation implements AllegroReservationsInterface
         StoreManagerInterface $storeManager,
         ReservationRepository $reservationRepository,
         ResourceConnection $resource,
-        Configuration $configuration
+        Configuration $configuration,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        CheckoutFormRepository $checkoutFormRepository,
+        Logger $logger
     ) {
         $this->productRepository = $productRepository;
         $this->itemsToSellFactory = $itemsToSellFactory;
@@ -96,6 +116,9 @@ class AllegroReservation implements AllegroReservationsInterface
         $this->reservationRepository = $reservationRepository;
         $this->resource = $resource;
         $this->configuration = $configuration;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->checkoutFormRepository = $checkoutFormRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -143,6 +166,28 @@ class AllegroReservation implements AllegroReservationsInterface
                 1589540303,
                 $e
             );
+        }
+    }
+
+    public function cleanOldReservations()
+    {
+        $tenDaysAgo = (new \DateTime())->modify('-10 day');
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('created_at', $tenDaysAgo->format('Y-m-d 12:00:00'), 'lteq')
+            ->create();
+
+        $reservations = $this->reservationRepository->getList($searchCriteria);
+        foreach ($reservations as $reservation) {
+            $checkoutFormId = $reservation->getCheckoutFormId();
+            try {
+                $checkoutForm = $this->checkoutFormRepository->get($checkoutFormId);
+                $this->compensateReservation($checkoutForm);
+            } catch (\Exception $e) {
+                $this->logger->exception(
+                    $e,
+                    "Error occurred when trying to delete reservation for checkout form with id {$checkoutFormId}"
+                );
+            }
         }
     }
 
