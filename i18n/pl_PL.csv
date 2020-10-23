@@ -171,3 +171,4 @@
 "Order log with checkout form ID: %1 has been successfully deleted","Zamówienie o ID: %1 zostało pomyślnie usunięte"
 "Reservation with ID: %1 has been successfully deleted","Rezerwacja o ID: %1 została pomyślnie usunięta"
 "Something went wrong while trying to delete reservation with ID: %1","Coś poszło nie tak podczas próby usunięcia rezerwacji o ID: %1"
+"Creation date","Data utworzenia"

@@ -18,6 +18,7 @@ class Reservation extends AbstractModel implements ReservationInterface
     const RESERVATION_ID_FIELD = 'reservation_id';
     const CHECKOUT_FORM_ID_FIELD = 'checkout_form_id';
     const SKU_FIELD = 'sku';
+    const CREATED_AT_FIELD = 'created_at';
     /**#@-*/
 
     /**
@@ -63,6 +64,14 @@ class Reservation extends AbstractModel implements ReservationInterface
     /**
      * @inheritDoc
      */
+    public function getCreatedAt(): string
+    {
+        return $this->getData(self::CREATED_AT_FIELD);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function setReservationId(int $reservationId): void
     {
         $this->setData(self::RESERVATION_ID_FIELD, $reservationId);
@@ -82,5 +91,13 @@ class Reservation extends AbstractModel implements ReservationInterface
     public function setSku(string $sku): void
     {
         $this->setData(self::SKU_FIELD, $sku);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setCreatedAt(string $date): void
+    {
+        $this->setData(self::CREATED_AT_FIELD, $date);
     }
 }

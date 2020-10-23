@@ -6,6 +6,7 @@ namespace Macopedia\Allegro\Preference\Model\ResourceModel;
 
 use Macopedia\Allegro\Logger\Logger;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\InventoryReservationsApi\Model\ReservationInterface;
 use Magento\InventoryReservations\Model\ResourceModel\SaveMultiple as MagentoSaveMultiple;
 use Macopedia\Allegro\Api\ReservationRepositoryInterface;
@@ -36,6 +37,9 @@ class SaveMultiple extends MagentoSaveMultiple
     /** @var Logger */
     private $logger;
 
+    /** @var DateTime */
+    private $date;
+
     /**
      * SaveMultiple constructor.
      * @param ResourceConnection $resourceConnection
@@ -43,13 +47,15 @@ class SaveMultiple extends MagentoSaveMultiple
      * @param ReservationInterfaceFactory $reservationInterfaceFactory
      * @param SerializerInterface $serializer
      * @param Logger $logger
+     * @param DateTime $date
      */
     public function __construct(
         ResourceConnection $resourceConnection,
         ReservationRepositoryInterface $reservationRepository,
         ReservationInterfaceFactory $reservationInterfaceFactory,
         SerializerInterface $serializer,
-        Logger $logger
+        Logger $logger,
+        DateTime $date
     ) {
         parent::__construct($resourceConnection);
         $this->resourceConnection = $resourceConnection;
@@ -57,6 +63,7 @@ class SaveMultiple extends MagentoSaveMultiple
         $this->reservationInterfaceFactory = $reservationInterfaceFactory;
         $this->serializer = $serializer;
         $this->logger = $logger;
+        $this->date = $date;
     }
 
     /**
@@ -85,6 +92,7 @@ class SaveMultiple extends MagentoSaveMultiple
                     $allegroReservation->setReservationId($reservationId);
                     $allegroReservation->setCheckoutFormId($metadata['object_id']);
                     $allegroReservation->setSku($reservation->getSku());
+                    $allegroReservation->setCreatedAt($this->date->gmtDate());
                     $this->reservationRepository->save($allegroReservation);
                 } else {
                     if ($metadata['event_type'] === self::ALLEGRO_EVENT_RESERVATION_COMPENSATED) {

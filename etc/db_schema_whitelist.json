@@ -64,7 +64,8 @@
             "entity_id": true,
             "reservation_id": true,
             "checkout_form_id": true,
-            "sku": true
+            "sku": true,
+            "created_at": true
         },
         "constraint": {
             "FK_0DF36C9A02B0CEA1AF96F370F2C37537": true,
