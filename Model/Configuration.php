@@ -16,6 +16,7 @@ class Configuration
     const DESCRIPTION_ATTRIBUTE_CONFIG_PATH = 'allegro/offer_create/description_attribute';
     const STORE_ID_CONFIG_PATH = 'allegro/order/store';
     const RESERVATIONS_ENABLED_CONFIG_PATH = 'allegro/order/reservations_enabled';
+    const RESERVATIONS_CRON_ENABLED_CONFIG_PATH = 'allegro/order/reservations_cron_enabled';
     const LAST_EVENT_ID_FLAG_NAME = 'allegro_order_last_event_id';
     const LAST_USER_ID_FLAG_NAME = 'allegro_credentials_last_user_id';
     const INITIALIZATION_TIME_FLAG_NAME = 'allegro_initialization_time';
@@ -85,6 +86,18 @@ class Configuration
         ?string $scopeCode = null
     ): bool {
         return $this->scopeConfig->isSetFlag(self::RESERVATIONS_ENABLED_CONFIG_PATH, $scopeType, $scopeCode);
+    }
+
+    /**
+     * @param string $scopeType
+     * @param string|null $scopeCode
+     * @return bool
+     */
+    public function isReservationsCronEnabled(
+        string $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+        ?string $scopeCode = null
+    ): bool {
+        return $this->scopeConfig->isSetFlag(self::RESERVATIONS_CRON_ENABLED_CONFIG_PATH, $scopeType, $scopeCode);
     }
 
     /**
