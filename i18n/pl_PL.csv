@@ -172,3 +172,5 @@
 "Reservation with ID: %1 has been successfully deleted","Rezerwacja o ID: %1 została pomyślnie usunięta"
 "Something went wrong while trying to delete reservation with ID: %1","Coś poszło nie tak podczas próby usunięcia rezerwacji o ID: %1"
 "Creation date","Data utworzenia"
+"Cron for cleaning old reservations enabled","Cron do czyszczenia starych rezerwacji jest włączony"
+"Cron deletes reservations older than 10 days","Cron usuwa rezerwacje starsze niż 10 dni"

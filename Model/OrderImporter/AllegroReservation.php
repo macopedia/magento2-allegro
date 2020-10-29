@@ -173,7 +173,7 @@ class AllegroReservation implements AllegroReservationsInterface
     {
         $tenDaysAgo = (new \DateTime())->modify('-10 day');
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('created_at', $tenDaysAgo->format('Y-m-d 12:00:00'), 'lteq')
+            ->addFilter('created_at', $tenDaysAgo, 'lteq')
             ->create();
 
         $reservations = $this->reservationRepository->getList($searchCriteria);
