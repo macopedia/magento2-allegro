@@ -21,8 +21,12 @@
             <debug_mode>
                 <debug_mode_enabled>0</debug_mode_enabled>
             </debug_mode>
+            <price_policy>
+                <percent_increase>0</percent_increase>
+            </price_policy>
             <offer_create>
                 <ean_attribute>sku</ean_attribute>
+                <price_attribute>price</price_attribute>
             </offer_create>
         </allegro>
     </default>

@@ -44,7 +44,7 @@ class Offers extends AbstractResource
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
      */
-    public function get($offerId)
+    public function get(string $offerId)
     {
         return $this->requestGet('/sale/offers/' . $offerId);
     }
@@ -57,7 +57,7 @@ class Offers extends AbstractResource
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
      */
-    public function putOffer($offerId, $params)
+    public function putOffer(string $offerId, array $params)
     {
         return $this->requestPut('/sale/offers/' . $offerId, $params);
     }
@@ -69,7 +69,7 @@ class Offers extends AbstractResource
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
      */
-    public function postOffer($params)
+    public function postOffer(array $params)
     {
         return $this->requestPost('/sale/offers', $params);
     }
@@ -81,7 +81,7 @@ class Offers extends AbstractResource
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
      */
-    public function changeOfferStatus($params)
+    public function changeOfferStatus(array $params)
     {
         $commandId = $this->guid->getGuid();
         return $this->requestPut('/sale/offer-publication-commands/' . $commandId, $params);
@@ -106,7 +106,7 @@ class Offers extends AbstractResource
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
      * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
      */
-    public function changeQuantity($allegroOfferId, $qty)
+    public function changeQuantity(string $allegroOfferId, int $qty)
     {
         $params = [
             'modification'  => [
@@ -126,5 +126,38 @@ class Offers extends AbstractResource
         ];
 
         return $this->requestPut('/sale/offer-quantity-change-commands/' . $this->guid->getGuid(), $params);
+    }
+
+    /**
+     * @param string $allegroOfferId
+     * @param float $price
+     * @return array
+     * @throws ClientException
+     * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
+     * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
+     */
+    public function changePrice(string $allegroOfferId, float $price)
+    {
+        $params = [
+            'modification'  => [
+                'type' => 'FIXED_PRICE',
+                'price' => [
+                    'amount' => $price,
+                    'currency' => 'PLN',
+                ],
+            ],
+            'offerCriteria' => [
+                [
+                    'offers' => [
+                        [
+                            'id' => $allegroOfferId,
+                        ],
+                    ],
+                    'type'   => 'CONTAINS_OFFERS',
+                ],
+            ],
+        ];
+
+        return $this->requestPut('/sale/offer-price-change-commands/' . $this->guid->getGuid(), $params);
     }
 }

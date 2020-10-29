@@ -7,11 +7,13 @@ use Macopedia\Allegro\Api\ConsumerInterface;
 use Macopedia\Allegro\Api\Data\PublicationCommandInterface;
 use Macopedia\Allegro\Api\Data\PublicationCommandInterfaceFactory;
 use Macopedia\Allegro\Api\OfferRepositoryInterface;
+use Macopedia\Allegro\Api\PriceCommandInterface;
 use Macopedia\Allegro\Api\PublicationCommandRepositoryInterface;
 use Macopedia\Allegro\Api\QuantityCommandInterface;
 use Macopedia\Allegro\Logger\Logger;
 use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\Credentials;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\CatalogInventory\Model\Indexer\Stock\Processor;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku;
@@ -53,6 +55,12 @@ class Consumer implements ConsumerInterface
     /** @var Configuration */
     private $config;
 
+    /** @var PriceCommandInterface */
+    private $priceCommand;
+
+    /** @var AllegroPrice */
+    protected $allegroPrice;
+
     /**
      * Consumer constructor.
      * @param Logger $logger
@@ -65,6 +73,8 @@ class Consumer implements ConsumerInterface
      * @param QuantityCommandInterface $quantityCommand
      * @param Configuration $config
      * @param Processor $indexerProcessor
+     * @param PriceCommandInterface $priceCommand
+     * @param AllegroPrice $allegroPrice
      */
     public function __construct(
         Logger $logger,
@@ -76,7 +86,9 @@ class Consumer implements ConsumerInterface
         PublicationCommandInterfaceFactory $publicationCommandFactory,
         QuantityCommandInterface $quantityCommand,
         Configuration $config,
-        Processor $indexerProcessor
+        Processor $indexerProcessor,
+        PriceCommandInterface $priceCommand,
+        AllegroPrice $allegroPrice
     ) {
         $this->logger = $logger;
         $this->productRepository = $productRepository;
@@ -88,6 +100,8 @@ class Consumer implements ConsumerInterface
         $this->config = $config;
         $this->quantityCommand = $quantityCommand;
         $this->indexerProcessor = $indexerProcessor;
+        $this->priceCommand = $priceCommand;
+        $this->allegroPrice = $allegroPrice;
     }
 
     /**
@@ -119,6 +133,8 @@ class Consumer implements ConsumerInterface
                     $this->logger->error($exception->getMessage(), $exception->getTrace());
                 }
 
+                $this->updateOfferPrice($product, $allegroOfferId);
+
                 $offer = $this->offerRepository->get($allegroOfferId);
                 $productStock = $this->getSalableQuantityDataBySku->execute($product->getSku());
                 if (!isset($productStock[0]['qty'])) {
@@ -144,7 +160,7 @@ class Consumer implements ConsumerInterface
 
                 $this->logger->info(
                     sprintf(
-                        'Quantity of offer with external id %s has been successfully updated',
+                        'Quantity and price of offer with external id %s have been successfully updated',
                         $allegroOfferId
                     )
                 );
@@ -169,5 +185,24 @@ class Consumer implements ConsumerInterface
         $publicationCommand->setAction($action);
 
         $this->publicationCommandRepository->save($publicationCommand);
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param string $offerId
+     * @throws AllegroPriceGettingException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    private function updateOfferPrice(ProductInterface $product, string $offerId)
+    {
+        if (!$this->config->isPricePolicyEnabled()) {
+            return;
+        }
+
+        $price = $this->allegroPrice->getByProductId($product->getId());
+
+        if ($price > 0) {
+            $this->priceCommand->change($offerId, $price);
+        }
     }
 }
