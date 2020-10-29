@@ -27,6 +27,11 @@ interface ReservationInterface
     public function getSku(): string;
 
     /**
+     * @return string
+     */
+    public function getCreatedAt(): string;
+
+    /**
      * @param int $reservationId
      * @return void
      */
@@ -40,6 +45,13 @@ interface ReservationInterface
 
     /**
      * @param string $sku
+     * @return void
      */
     public function setSku(string $sku): void;
+
+    /**
+     * @param string $date
+     * @return void
+     */
+    public function setCreatedAt(string $date) : void;
 }

@@ -10,5 +10,8 @@
         <job instance="Macopedia\Allegro\Cron\RefreshToken" method="execute" name="macopedia_allegro_refresh_token">
             <schedule>0 */6 * * *</schedule>
         </job>
+        <job instance="Macopedia\Allegro\Cron\CleanReservations" method="execute" name="macopedia_allegro_clean_reservations">
+            <schedule>0 12 * * *</schedule>
+        </job>
     </group>
 </config>
