@@ -177,3 +177,5 @@
 "Product attribute for getting price","Atrybut produktu do pobrania ceny"
 "Attributes are taken from the default scope","Atrybuty są pobierane z domyślnego widoku sklepu"
 "Creation date","Data utworzenia"
+"Cron for cleaning old reservations enabled","Cron do czyszczenia starych rezerwacji jest włączony"
+"Cron deletes reservations older than 10 days","Cron usuwa rezerwacje starsze niż 10 dni"

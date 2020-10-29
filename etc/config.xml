@@ -15,6 +15,7 @@
                 <stock_synchronization_enabled>1</stock_synchronization_enabled>
                 <tracking_number_sending_enabled>1</tracking_number_sending_enabled>
                 <reservations_enabled>1</reservations_enabled>
+                <reservations_cron_enabled>0</reservations_cron_enabled>
                 <overpayment_status>Pending:allegro_overpayment</overpayment_status>
                 <underpayment_status>Pending:allegro_underpayment</underpayment_status>
             </order>

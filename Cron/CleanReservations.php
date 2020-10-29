@@ -13,7 +13,7 @@ use Macopedia\Allegro\Model\OrderImporter\AllegroReservation;
  */
 class CleanReservations
 {
-    const RESERVATIONS_CONFIG_KEY = 'allegro/order/reservations_enabled';
+    const RESERVATIONS_CRON_CONFIG_KEY = 'allegro/order/reservations_cron_enabled';
 
     /** @var Logger */
     private $logger;
@@ -41,7 +41,7 @@ class CleanReservations
 
     public function execute()
     {
-        if ($this->scopeConfig->getValue(self::RESERVATIONS_CONFIG_KEY)) {
+        if ($this->scopeConfig->getValue(self::RESERVATIONS_CRON_CONFIG_KEY)) {
             $this->logger->addInfo("Cronjob clean reservations is executed.");
             $this->allegroReservation->cleanOldReservations();
         }
