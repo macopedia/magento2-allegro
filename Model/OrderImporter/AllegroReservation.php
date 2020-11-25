@@ -8,12 +8,9 @@ use Macopedia\Allegro\Api\Data\AllegroReservationsInterface;
 use Macopedia\Allegro\Api\Data\CheckoutForm\LineItemInterface;
 use Macopedia\Allegro\Api\Data\CheckoutFormInterface;
 use Macopedia\Allegro\Logger\Logger;
-use Macopedia\Allegro\Model\Api\ClientException;
-use Macopedia\Allegro\Model\CheckoutFormRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\InventorySalesApi\Api\Data\SalesChannelInterface;
 use Magento\InventorySalesApi\Api\Data\SalesChannelInterfaceFactory;
 use Magento\InventorySalesApi\Api\Data\SalesEventInterface;
@@ -72,9 +69,6 @@ class AllegroReservation implements AllegroReservationsInterface
     /** @var SearchCriteriaBuilder  */
     private $searchCriteriaBuilder;
 
-    /** @var CheckoutFormRepository */
-    private $checkoutFormRepository;
-
     /** @var Logger */
     private $logger;
 
@@ -90,7 +84,6 @@ class AllegroReservation implements AllegroReservationsInterface
      * @param ResourceConnection $resource
      * @param Configuration $configuration
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param CheckoutFormRepository $checkoutFormRepository
      * @param Logger $logger
      */
     public function __construct(
@@ -104,7 +97,6 @@ class AllegroReservation implements AllegroReservationsInterface
         ResourceConnection $resource,
         Configuration $configuration,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        CheckoutFormRepository $checkoutFormRepository,
         Logger $logger
     ) {
         $this->productRepository = $productRepository;
@@ -117,7 +109,6 @@ class AllegroReservation implements AllegroReservationsInterface
         $this->resource = $resource;
         $this->configuration = $configuration;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->checkoutFormRepository = $checkoutFormRepository;
         $this->logger = $logger;
     }
 
@@ -132,7 +123,7 @@ class AllegroReservation implements AllegroReservationsInterface
                 return;
             }
             $this->placeReservationsForSalesEvent->execute(
-                $this->getItemsToSell($checkoutForm, false),
+                $this->getItemsToReserve($checkoutForm),
                 $this->getSalesChannel(),
                 $this->getSalesEvent(self::ALLEGRO_EVENT_RESERVATION_PLACED, $checkoutForm->getId())
             );
@@ -146,23 +137,23 @@ class AllegroReservation implements AllegroReservationsInterface
     }
 
     /**
-     * @param CheckoutFormInterface $checkoutForm
-     * @throws \Exception
+     * @param string $checkoutFormId
+     * @throws ReservationPlacingException
      */
-    public function compensateReservation(CheckoutFormInterface $checkoutForm): void
+    public function compensateReservation(string $checkoutFormId): void
     {
         try {
             if (!$this->configuration->areReservationsEnabled()) {
                 return;
             }
             $this->placeReservationsForSalesEvent->execute(
-                $this->getItemsToSell($checkoutForm, true),
+                $this->getItemsToCompensate($checkoutFormId),
                 $this->getSalesChannel(),
-                $this->getSalesEvent(self::ALLEGRO_EVENT_RESERVATION_COMPENSATED, $checkoutForm->getId())
+                $this->getSalesEvent(self::ALLEGRO_EVENT_RESERVATION_COMPENSATED, $checkoutFormId)
             );
         } catch (\Exception $e) {
             throw new ReservationPlacingException(
-                "Error while compensating reservation for order with id [{$checkoutForm->getId()}]",
+                "Error while compensating reservation for order with id [{$checkoutFormId}]",
                 1589540303,
                 $e
             );
@@ -180,8 +171,7 @@ class AllegroReservation implements AllegroReservationsInterface
         foreach ($reservations as $reservation) {
             $checkoutFormId = $reservation->getCheckoutFormId();
             try {
-                $checkoutForm = $this->checkoutFormRepository->get($checkoutFormId);
-                $this->compensateReservation($checkoutForm);
+                $this->compensateReservation($checkoutFormId);
             } catch (\Exception $e) {
                 $this->logger->exception(
                     $e,
@@ -237,6 +227,23 @@ class AllegroReservation implements AllegroReservationsInterface
     private function getProductsSku(string $checkoutFormId): array
     {
         $reservations = $this->reservationRepository->getByCheckoutFormId($checkoutFormId);
+        $productsSku = [];
+
+        foreach ($reservations as $reservation) {
+            array_push($productsSku, $reservation->getSku());
+        }
+
+        return $productsSku;
+    }
+
+    /**
+     * @param string $checkoutFormId
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    private function getProductsData(string $checkoutFormId): array
+    {
+        $reservations = $this->reservationRepository->getByCheckoutFormId($checkoutFormId);
 
         $connection = $this->resource->getConnection();
 
@@ -250,22 +257,22 @@ class AllegroReservation implements AllegroReservationsInterface
 
         $query = $connection
             ->select()
-            ->from($originalReservations, ['sku'])
+            ->from($originalReservations)
+            ->columns(['sku', 'quantity'])
             ->where('reservation_id IN (?)', $reservationsIds);
 
-        return $connection->fetchCol($query);
+        return $connection->fetchAll($query);
     }
 
     /**
      * @param CheckoutFormInterface $checkoutForm
-     * @param bool $compensate
      * @return array
      * @throws CreatorItemsException
      * @throws NoSuchEntityException
      */
-    private function getItemsToSell(CheckoutFormInterface $checkoutForm, bool $compensate = false): array
+    private function getItemsToReserve(CheckoutFormInterface $checkoutForm): array
     {
-        $itemsToSell = [];
+        $itemsToReserve = [];
         $productsSku = $this->getProductsSku($checkoutForm->getId());
 
         /** @var LineItemInterface $lineItem */
@@ -278,14 +285,34 @@ class AllegroReservation implements AllegroReservationsInterface
                 throw new CreatorItemsException("Product for requested offer id {$offerId} does not exist");
             }
 
-            if (in_array($sku, $productsSku) === $compensate) {
-                $itemsToSell[] = $this->itemsToSellFactory->create([
+            if (!in_array($sku, $productsSku)) {
+                $itemsToReserve[] = $this->itemsToSellFactory->create([
                     'sku' => $sku,
-                    'qty' => $compensate ? (float)$lineItem->getQty() : -(float)$lineItem->getQty()
+                    'qty' => -(float)$lineItem->getQty()
                 ]);
             }
         }
 
-        return $itemsToSell;
+        return $itemsToReserve;
+    }
+
+    /**
+     * @param string $checkoutFormId
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    private function getItemsToCompensate(string $checkoutFormId)
+    {
+        $products = $this->getProductsData($checkoutFormId);
+        $itemsToCompensate = [];
+
+        foreach ($products as $product) {
+            $itemsToCompensate[] = $this->itemsToSellFactory->create([
+                'sku' => $product['sku'],
+                'qty' => -(float)$product['quantity']
+            ]);
+        }
+
+        return $itemsToCompensate;
     }
 }

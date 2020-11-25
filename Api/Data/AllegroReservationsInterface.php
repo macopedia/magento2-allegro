@@ -12,9 +12,9 @@ interface AllegroReservationsInterface
     public function placeReservation(CheckoutFormInterface $checkoutForm): void;
 
     /**
-     * @param CheckoutFormInterface $checkoutForm
+     * @param string $checkoutFormId
      * @return void
      * @throws \Exception
      */
-    public function compensateReservation(CheckoutFormInterface $checkoutForm): void;
+    public function compensateReservation(string $checkoutFormId): void;
 }
