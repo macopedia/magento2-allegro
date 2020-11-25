@@ -3,7 +3,6 @@
 
 namespace Macopedia\Allegro\Model;
 
-
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Config;
@@ -73,7 +72,7 @@ class AllegroPrice
         ];
 
         $price = $connection->fetchOne($select, $bind);
-        if (is_null($price)) {
+        if (!$price) {
             throw new AllegroPriceGettingException(
                 "Error while trying to get Allegro price for product with id {$productId}",
                 1603885321
@@ -88,7 +87,7 @@ class AllegroPrice
      */
     protected function getPriceAttributeCode()
     {
-        return $this->config->getPriceAttributeCode();;
+        return $this->config->getPriceAttributeCode();
     }
 
     /**

@@ -16,7 +16,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Ui\Component\MassAction\Filter;
 use Macopedia\Allegro\Model\ResourceModel\Reservation\CollectionFactory;
 use Macopedia\Allegro\Model\OrderImporter\AllegroReservation;
-use Macopedia\Allegro\Model\CheckoutFormRepository;
 
 /**
  * Delete controller class
@@ -35,9 +34,6 @@ class Delete extends Action
     /** @var AllegroReservation */
     private $allegroReservation;
 
-    /** @var CheckoutFormRepository */
-    private $checkoutFormRepository;
-
     /**
      * Delete constructor.
      * @param Action\Context $context
@@ -45,22 +41,19 @@ class Delete extends Action
      * @param Filter $filter
      * @param CollectionFactory $collectionFactory
      * @param AllegroReservation $allegroReservation
-     * @param CheckoutFormRepository $checkoutFormRepository
      */
     public function __construct(
         Action\Context $context,
         Logger $logger,
         Filter $filter,
         CollectionFactory $collectionFactory,
-        AllegroReservation $allegroReservation,
-        CheckoutFormRepository $checkoutFormRepository
+        AllegroReservation $allegroReservation
     ) {
         parent::__construct($context);
         $this->logger = $logger;
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         $this->allegroReservation = $allegroReservation;
-        $this->checkoutFormRepository = $checkoutFormRepository;
     }
 
     /**
@@ -83,8 +76,7 @@ class Delete extends Action
             $checkoutFormId = $item->getCheckoutFormId();
             $reservationId = $item->getReservationId();
             try {
-                $checkoutForm = $this->checkoutFormRepository->get($checkoutFormId);
-                $this->allegroReservation->compensateReservation($checkoutForm);
+                $this->allegroReservation->compensateReservation($checkoutFormId);
                 $this->logger->info(__("Reservation with ID: %1 has been successfully deleted", $reservationId));
                 $this->messageManager->addSuccessMessage(__(
                     "Reservation with ID: %1 has been successfully deleted",

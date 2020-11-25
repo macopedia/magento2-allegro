@@ -97,11 +97,11 @@ class Processor
 
             if ($checkoutForm->getStatus() === Status::ALLEGRO_READY_FOR_PROCESSING) {
                 if (!$this->tryToGetOrder($checkoutForm->getId())) {
-                    $this->allegroReservation->compensateReservation($checkoutForm);
+                    $this->allegroReservation->compensateReservation($checkoutForm->getId());
                     $this->tryCreateOrder($checkoutForm);
                 }
             } elseif ($checkoutForm->getStatus() === Status::ALLEGRO_CANCELLED) {
-                $this->allegroReservation->compensateReservation($checkoutForm);
+                $this->allegroReservation->compensateReservation($checkoutForm->getId());
             } else {
                 $this->allegroReservation->placeReservation($checkoutForm);
             }
