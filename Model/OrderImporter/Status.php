@@ -50,10 +50,10 @@ class Status
         }
 
         if ($paidAmountValue > $totalPaidValue) {
-            return [self::PENDING_STATUS, $this->getOverpaymentStatus()];
+            return $this->getOverpaymentStatus();
         }
 
-        return [self::PENDING_STATUS, $this->getUnderpaymentStatus()];
+        return $this->getUnderpaymentStatus();
     }
 
     /**
@@ -80,11 +80,11 @@ class Status
     {
         $value = $this->scopeConfig->getValue($key);
         if (!$value) {
-            return [self::STATUS_KEY => self::PENDING_STATUS, self::STATE_KEY => Order::STATE_NEW];
+            return $this->arrayResponse(self::PENDING_STATUS, Order::STATE_NEW);
         }
         list($status, $state) = explode(self::STATUS_STATE_SEPARATOR, $value);
 
-        return [self::STATUS_KEY => $status, self::STATE_KEY => $state];
+        return $this->arrayResponse($status, $state);
     }
 
     /**
