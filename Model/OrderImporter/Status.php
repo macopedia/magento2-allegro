@@ -14,7 +14,7 @@ class Status
     const PENDING_STATUS = 'pending';
     const PROCESSING_STATUS = 'processing';
     const OVERPAYMENT_STATUS_CONFIG_KEY = 'allegro/order/overpayment_status';
-    const UNDERPAYMENT_STATUS_CONFIG_KEY = 'allegro/order/overpayment_status';
+    const UNDERPAYMENT_STATUS_CONFIG_KEY = 'allegro/order/underpayment_status';
     const STATUS_KEY = 'status';
     const STATE_KEY = 'state';
     const PAID_KEY = 'paid';
@@ -40,7 +40,7 @@ class Status
     public function get(CheckoutFormInterface $checkoutForm)
     {
         $paidAmountValue = $checkoutForm->getPayment()->getPaidAmount()->getAmount();
-        if ($paidAmountValue == 0.) {
+        if ($paidAmountValue == 0) {
             return $this->arrayResponse(self::PENDING_STATUS, Order::STATE_NEW);
         }
 

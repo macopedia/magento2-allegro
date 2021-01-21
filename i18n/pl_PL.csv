@@ -179,3 +179,5 @@
 "Creation date","Data utworzenia"
 "Cron for cleaning old reservations enabled","Cron do czyszczenia starych rezerwacji jest włączony"
 "Cron deletes reservations older than 10 days","Cron usuwa rezerwacje starsze niż 10 dni"
+"Allegro underpayment","Allegro niedopłata"
+"Allegro overpayment","Allegro nadpłata"

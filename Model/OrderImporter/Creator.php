@@ -323,11 +323,9 @@ class Creator
     {
         $status = $this->status->get($checkoutForm);
 
-        if ($status[Status::STATE_KEY] != Order::STATE_NEW) {
-            $order
-                ->setStatus($status[Status::STATUS_KEY])
-                ->setState($status[Status::STATE_KEY]);
-        }
+        $order
+            ->setStatus($status[Status::STATUS_KEY])
+            ->setState($status[Status::STATE_KEY]);
 
         if ($status[Status::PAID_KEY]) {
             $this->invoice->create($order);

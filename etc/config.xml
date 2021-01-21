@@ -16,8 +16,8 @@
                 <tracking_number_sending_enabled>1</tracking_number_sending_enabled>
                 <reservations_enabled>1</reservations_enabled>
                 <reservations_cron_enabled>0</reservations_cron_enabled>
-                <overpayment_status>Pending:allegro_overpayment</overpayment_status>
-                <underpayment_status>Pending:allegro_underpayment</underpayment_status>
+                <overpayment_status>allegro_overpayment:new</overpayment_status>
+                <underpayment_status>allegro_underpayment:new</underpayment_status>
             </order>
             <debug_mode>
                 <debug_mode_enabled>0</debug_mode_enabled>
@@ -27,6 +27,7 @@
             </price_policy>
             <offer_create>
                 <ean_attribute>sku</ean_attribute>
+                <description_attribute>description</description_attribute>
                 <price_attribute>price</price_attribute>
             </offer_create>
         </allegro>
