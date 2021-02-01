@@ -81,7 +81,13 @@ produktu i przesyła go do Allegro w celu aktualizacji.
 
 ![stock_inventory_synchronization](README/stockInventorySynchronizationDiagram.png)
 
-Synchronizację stanów magazynowych można włączać lub wyłączać w konfiguracji wtyczki.
+Synchronizację stanów magazynowych można włączyć w konfiguracji wtyczki.
+
+## Synchronizacja cen
+Wtyczka oferuję również możliwość synchronizacji cen produktów Magento z cenami ofert na Allegro. Każdorazowa zmiana ceny produktu jest przesyłana do odpowiedniej oferty na Allegro. Można ustawić, aby ceny były wyższe na Allegro niż w Magento o odpowiedni procent (procent jest jednakowy dla każdej oferty).
+
+Synchronizację cen można włączyć w konfiguracji wtyczki.
+![price_policy_configuration](README/allegroPricePolicyConfiguration.png)
 
 ## Integracja zamówień
 Po nawiązaniu połączenia sklepu z aplikacją Allegro możemy włączyć w konfiguracji import zamówień.
@@ -146,7 +152,7 @@ Za pomocą wtyczki możemy wystawiać produkty z Magento na Allegro. Aby to zrob
 2. Dodać informacje o [zwrotach](https://allegro.pl/dla-sprzedajacych/warunki-oferty-zwroty-a124GwdXZFA), [reklamacji](https://allegro.pl/dla-sprzedajacych/warunki-oferty-reklamacje-vKgeWL5GnHA) oraz [gwarancji](https://allegro.pl/dla-sprzedajacych/warunki-oferty-gwarancje-9dXYn0VeXHM) na Allegro (wymagane tylko dla konta firmowego)
 3. Uzupełnić informacje o loklizacji (Sklepy->Konfiguracja->Allegro->Konfiguracja->Pochodzenie)
     ![origin_configuration](README/originConfiguration.png)
-4. (opcjonalnie) Wybrać atrybuty produktów, z których ma być pobierany kod EAN oraz opis (Sklepy->Konfiguracja->Allegro->Konfiguracja->Tworzenie oferty)
+4. (opcjonalnie) Wybrać atrybuty produktów, z których mają być pobierane kod EAN, opis oraz cena (Sklepy->Konfiguracja->Allegro->Konfiguracja->Tworzenie oferty)
     ![ean_select](README/allegroOfferCreateConfiguration.png)
 
 Po wprowadzeniu wymaganych danych można zacząć wystawiać oferty z poziomu Magento.

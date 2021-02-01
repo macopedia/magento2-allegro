@@ -35,8 +35,8 @@ class State implements OptionSourceInterface
         $options = [];
         foreach ($collection as $item) {
             $options[] = [
-                'value' => __($item->getData('label')) . Status::STATUS_STATE_SEPARATOR . $item->getState(),
-                'label' => $item->getState()
+                'value' => $item->getStatus() . Status::STATUS_STATE_SEPARATOR . $item->getState(),
+                'label' => __($item->getLabel())
             ];
         }
 
