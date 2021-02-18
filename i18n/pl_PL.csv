@@ -181,3 +181,5 @@
 "Cron deletes reservations older than 10 days","Cron usuwa rezerwacje starsze niż 10 dni"
 "Allegro underpayment","Allegro niedopłata"
 "Allegro overpayment","Allegro nadpłata"
+"Cron removes Allegro offer ID from product when offer no longer exists","Cron usuwa z produktu ID oferty na Allegro jeśli oferta już nie istnieje"
+"Cron for cleaning old offers mapping enabled","Cron do czyszczenia starych mapowań ofert"

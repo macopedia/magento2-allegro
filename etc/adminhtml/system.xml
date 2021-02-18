@@ -72,12 +72,17 @@
                     <label>Reservations enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="reservations_cron_enabled" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="reservations_cron_enabled" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <depends>
                         <field id="reservations_enabled">1</field>
                     </depends>
                     <label>Cron for cleaning old reservations enabled</label>
                     <comment>Cron deletes reservations older than 10 days</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="offers_mapping_cron_enabled" translate="label comment" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cron for cleaning old offers mapping enabled</label>
+                    <comment>Cron removes Allegro offer ID from product when offer no longer exists</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="store" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">

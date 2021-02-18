@@ -84,6 +84,7 @@
                 <item name="OrdersImport" xsi:type="object">Macopedia\Allegro\Console\Command\ImportOrders</item>
                 <item name="OrderImport" xsi:type="object">Macopedia\Allegro\Console\Command\ImportOrder</item>
                 <item name="OrdersWithErrorsImport" xsi:type="object">Macopedia\Allegro\Console\Command\ImportOrdersWithErrors</item>
+                <item name="CleanOffersMapping" xsi:type="object">Macopedia\Allegro\Console\Command\CleanOffersMapping</item>
             </argument>
         </arguments>
     </type>
