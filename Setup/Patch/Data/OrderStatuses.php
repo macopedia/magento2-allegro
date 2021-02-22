@@ -3,7 +3,6 @@
 
 namespace Macopedia\Allegro\Setup\Patch\Data;
 
-
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 
@@ -21,7 +20,8 @@ class OrderStatuses implements DataPatchInterface
      * OrderStatuses constructor.
      * @param ModuleDataSetupInterface $moduleDataSetup
      */
-    public function __construct(ModuleDataSetupInterface $moduleDataSetup) {
+    public function __construct(ModuleDataSetupInterface $moduleDataSetup)
+    {
         $this->moduleDataSetup = $moduleDataSetup;
     }
 
