@@ -8,6 +8,7 @@ use Macopedia\Allegro\Api\CheckoutFormRepositoryInterface;
 use Macopedia\Allegro\Logger\Logger;
 use Macopedia\Allegro\Model\OrderImporter\Info;
 use Macopedia\Allegro\Model\OrderImporter\Processor;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 abstract class AbstractOrderImporter
 {
@@ -53,7 +54,12 @@ abstract class AbstractOrderImporter
     protected function tryToProcessOrder($checkoutFormId)
     {
         try {
-            $checkoutForm = $this->checkoutFormRepository->get($checkoutFormId);
+            try {
+                $checkoutForm = $this->checkoutFormRepository->get($checkoutFormId);
+            } catch (Api\ClientException | NoSuchEntityException $e) {
+                $this->processor->addOrderWithErrorToTable($checkoutFormId, $e);
+                throw $e;
+            }
             if ($this->processor->validateCheckoutFormBoughtAtDate($checkoutForm)) {
                 $this->processor->processOrder($checkoutForm);
                 $this->successIds[] = $checkoutFormId;

@@ -92,16 +92,17 @@ class Processor
     public function processOrder(CheckoutFormInterface $checkoutForm): void
     {
         $connection = $this->resource->getConnection();
+        $checkoutFormId = $checkoutForm->getId();
         try {
             $connection->beginTransaction();
 
             if ($checkoutForm->getStatus() === Status::ALLEGRO_READY_FOR_PROCESSING) {
-                if (!$this->tryToGetOrder($checkoutForm->getId())) {
-                    $this->allegroReservation->compensateReservation($checkoutForm->getId());
+                if (!$this->tryToGetOrder($checkoutFormId)) {
+                    $this->allegroReservation->compensateReservation($checkoutFormId);
                     $this->tryCreateOrder($checkoutForm);
                 }
             } elseif ($checkoutForm->getStatus() === Status::ALLEGRO_CANCELLED) {
-                $this->allegroReservation->compensateReservation($checkoutForm->getId());
+                $this->allegroReservation->compensateReservation($checkoutFormId);
             } else {
                 $this->allegroReservation->placeReservation($checkoutForm);
             }
@@ -110,7 +111,7 @@ class Processor
             $connection->commit();
         } catch (\Exception $e) {
             $connection->rollBack();
-            $this->addOrderWithErrorToTable($checkoutForm, $e);
+            $this->addOrderWithErrorToTable($checkoutFormId, $e);
             throw $e;
         }
     }
@@ -129,14 +130,12 @@ class Processor
     }
 
     /**
-     * @param CheckoutFormInterface $checkoutForm
+     * @param string $checkoutFormId
      * @param \Exception $e
-     * @throws \Exception
+     * @throws OrderProcessingException
      */
-    private function addOrderWithErrorToTable(CheckoutFormInterface $checkoutForm, \Exception $e): void
+    public function addOrderWithErrorToTable(string $checkoutFormId, \Exception $e): void
     {
-        $checkoutFormId = $checkoutForm->getId();
-
         $date = $this->date->gmtDate();
 
         try {
