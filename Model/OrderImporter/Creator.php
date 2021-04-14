@@ -8,6 +8,7 @@ use Macopedia\Allegro\Api\Data\CheckoutForm\LineItemInterface;
 use Macopedia\Allegro\Api\Data\CheckoutFormInterface;
 use Macopedia\Allegro\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\DataObject\Factory;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -70,6 +71,9 @@ class Creator
     /** @var CartExtensionFactory */
     private $cartExtensionFactory;
 
+    /** @var Factory */
+    private $objectFactory;
+
     /**
      * Creator constructor.
      * @param Shipping $shipping
@@ -85,6 +89,7 @@ class Creator
      * @param ScopeConfigInterface $scopeConfig
      * @param QuoteManagement $quoteManagement
      * @param Registry $registry
+     * @param Factory $objectFactory
      */
     public function __construct(
         Shipping $shipping,
@@ -99,7 +104,8 @@ class Creator
         StoreManagerInterface $storeManager,
         ScopeConfigInterface $scopeConfig,
         QuoteManagement $quoteManagement,
-        Registry $registry
+        Registry $registry,
+        Factory $objectFactory
     ) {
         $this->shipping = $shipping;
         $this->payment = $payment;
@@ -114,6 +120,7 @@ class Creator
         $this->scopeConfig = $scopeConfig;
         $this->quoteManagement = $quoteManagement;
         $this->registry = $registry;
+        $this->objectFactory = $objectFactory;
     }
 
     /**
@@ -218,10 +225,12 @@ class Creator
             }
 
             $lineItemsIds[$product->getSku()] = $lineItem->getId();
-            $product->setPrice($lineItem->getPrice()->getAmount());
+            $price = $lineItem->getPrice()->getAmount();
+            $product->setPrice($price);
+            $request = $this->objectFactory->create(['qty' => $lineItem->getQty(), 'custom_price' => $price]);
             $product->setSpecialPrice(null);
             try {
-                $quote->addProduct($product, $lineItem->getQty());
+                $quote->addProduct($product, $request);
             } catch (LocalizedException $e) {
                 throw new CreatorItemsException(
                     "Error while trying to add product with sku {$product->getSku()} to quote",
