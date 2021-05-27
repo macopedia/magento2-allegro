@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Macopedia\Allegro\Cron;
 
 use Macopedia\Allegro\Logger\Logger;
-use Macopedia\Allegro\Model\Api\ClientException;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Macopedia\Allegro\Model\OffersMapping;
 
@@ -43,7 +42,7 @@ class CleanOffersMapping
             $this->logger->addInfo("Cronjob clean offers mapping is executed.");
             try {
                 $this->offersMapping->clean();
-            } catch (ClientException $e) {
+            } catch (\Exception $e) {
                 $this->logger->error('Error while trying to clean old offers mapping: ' . $e->getMessage());
             }
         }

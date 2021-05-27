@@ -6,6 +6,7 @@ use Macopedia\Allegro\Api\Data\TokenInterface;
 use Macopedia\Allegro\Model\Api\Auth\Data\TokenSerializer;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\FlagManager;
 
 /**
@@ -110,10 +111,9 @@ class Credentials
         if (!$tokenString) {
             throw new ClientException(__('Allegro account is not connected. Connect to Allegro account and try again'));
         }
-
         try {
             return $this->tokenSerializer->decode($tokenString);
-        } catch (TokenSerializer\TokenSerializerException $e) {
+        } catch (Auth\Data\TokenSerializerException $e) {
             throw new ClientException(__('Something went wrong while decoding Allegro Api token'));
         }
     }

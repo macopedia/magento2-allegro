@@ -181,6 +181,8 @@ Oferta wystawiana jest ze zdjęciami pobranymi z produktu.
 Po uzupełnieniu wszystkich pół i kliknięciu "Zapisz" - zostanie wystawiony szkic oferty na Allegro i zostaniemy przekierowani na stronę edycji oferty. Teraz wystarczy kliknąć "Opublikuj", aby oferta stała się aktywna. W każdej chwili możemy edytować ofertę, zakończyć ją, a potem następnie aktywować. Produkt jest już teraz powiązany z ofertą na Allegro.
 ![publish_offer](README/publishButton.png)
 
+W konfiguracji jest opcja włączenia zadania cron, które będzie usuwać z produktu ID oferty, która już nie istnieje na Allegro (Sklepy->Konfiguracja->Allegro->Konfiguracja->Import zamówień->Cron do czyszczenia starych rezerwacji jest włączony).
+
 ## DEBUG MODE
 Wtyczka oferuje możliwość logowania wszystkich danych przesyłanych do i z API Allegro. Włączyć ją można na stronie konfiguracji (sklepy->Konfiguracja->Allegro->Konfiguracja->Debug mode)
 ![debug_mode](README/allegroDebugMode.png)
