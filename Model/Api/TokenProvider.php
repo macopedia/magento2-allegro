@@ -3,7 +3,6 @@
 namespace Macopedia\Allegro\Model\Api;
 
 use Macopedia\Allegro\Api\Data\TokenInterface;
-use Macopedia\Allegro\Logger\Logger;
 
 /**
  * Class to get current access token received from Allegro API
@@ -16,22 +15,16 @@ class TokenProvider
     /** @var Credentials */
     private $credentials;
 
-    /** @var Logger */
-    private $logger;
-
     /**
      * @param Auth $auth
      * @param Credentials $credentials
-     * @param Logger $logger
      */
     public function __construct(
         Auth $auth,
-        Credentials $credentials,
-        Logger $logger
+        Credentials $credentials
     ) {
         $this->auth = $auth;
         $this->credentials = $credentials;
-        $this->logger = $logger;
     }
 
     /**

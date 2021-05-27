@@ -7,18 +7,13 @@ use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\TokenProvider;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class responsible for authentication with Allegro API
  */
 class Authenticate extends Field
 {
-    /** @var ScopeConfigInterface */
-    private $scopeConfig;
-
     /** @var TokenProvider */
     private $tokenProvider;
 
@@ -27,19 +22,16 @@ class Authenticate extends Field
 
     /**
      * @param Context $context
-     * @param ScopeConfigInterface $scopeConfig
      * @param TokenProvider $tokenProvider
      * @param Auth $auth
      * @param array $data
      */
     public function __construct(
         Context $context,
-        ScopeConfigInterface $scopeConfig,
         TokenProvider $tokenProvider,
         Auth $auth,
         array $data = []
     ) {
-        $this->scopeConfig = $scopeConfig;
         $this->tokenProvider = $tokenProvider;
         $this->auth = $auth;
         parent::__construct($context, $data);
