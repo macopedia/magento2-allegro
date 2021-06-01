@@ -15,21 +15,19 @@ class ImportOrders extends AbstractImportOrders
 {
 
     /** @var OrderImporterFactory */
-    private $orderImporterFactory;
+    protected $orderImporterFactory;
 
     /**
      * ImportOrders constructor.
      * @param OrderImporterFactory $orderImporterFactory
      * @param State $state
-     * @param null $name
      */
     public function __construct(
         OrderImporterFactory $orderImporterFactory,
-        State $state,
-        $name = null
+        State $state
     ) {
         $this->orderImporterFactory = $orderImporterFactory;
-        parent::__construct($state, $name);
+        parent::__construct($state);
     }
 
     /**
