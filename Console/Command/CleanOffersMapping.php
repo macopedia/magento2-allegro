@@ -27,14 +27,12 @@ class CleanOffersMapping extends Command
      * CleanOffersMapping constructor.
      * @param State $state
      * @param OffersMapping $offersMapping
-     * @param string|null $name
      */
     public function __construct(
         State $state,
-        OffersMapping $offersMapping,
-        string $name = null
+        OffersMapping $offersMapping
     ) {
-        parent::__construct($name);
+        parent::__construct();
         $this->state = $state;
         $this->offersMapping = $offersMapping;
     }

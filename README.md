@@ -200,6 +200,9 @@ Import wszystkich zamówień:
 Import zamówień z błędami:
 ``macopedia:allegro:orders-with-errors-import``
 
+Usunięcie mapowań produktów z nieistniejącymi ofertami:
+``macopedia:allegro:clean-offers-mapping``
+
 ## Konfiguracja MYSQL MQ
 
 konfiguracja w pliku config.php

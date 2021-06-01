@@ -15,21 +15,19 @@ class ImportOrdersWithErrors extends AbstractImportOrders
 {
 
     /** @var OrderWithErrorImporterFactory */
-    private $orderImporterFactory;
+    protected $orderImporterFactory;
 
     /**
      * ImportOrdersWithErrors constructor.
      * @param OrderWithErrorImporterFactory $orderImporterFactory
      * @param State $state
-     * @param null $name
      */
     public function __construct(
         OrderWithErrorImporterFactory $orderImporterFactory,
-        State $state,
-        $name = null
+        State $state
     ) {
         $this->orderImporterFactory = $orderImporterFactory;
-        parent::__construct($state, $name);
+        parent::__construct($state);
     }
 
     /**

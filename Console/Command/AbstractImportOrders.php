@@ -15,19 +15,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class AbstractImportOrders extends Command
 {
     /** @var State */
-    private $state;
+    protected $state;
 
     /**
      * AbstractImportOrders constructor.
      * @param State $state
-     * @param string|null $name
      */
-    public function __construct(
-        State $state,
-        string $name = null
-    ) {
+    public function __construct(State $state)
+    {
         $this->state = $state;
-        parent::__construct($name);
+        parent::__construct();
     }
 
     /**
