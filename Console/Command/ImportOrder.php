@@ -12,7 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Macopedia\Allegro\Model\OrderImporter\Processor\Proxy;
+use Macopedia\Allegro\Model\OrderImporter\Processor;
 
 /**
  * ImportOrder command class
@@ -21,7 +21,7 @@ class ImportOrder extends Command
 {
     const NAME = 'checkoutFormId';
 
-    /** @var Proxy */
+    /** @var Processor */
     protected $processor;
 
     /** @var CheckoutFormRepositoryInterface */
@@ -32,12 +32,12 @@ class ImportOrder extends Command
 
     /**
      * ImportOrder constructor.
-     * @param Proxy $processor
+     * @param Processor $processor
      * @param CheckoutFormRepositoryInterface $checkoutFormRepository
      * @param State $state
      */
     public function __construct(
-        Proxy $processor,
+        Processor $processor,
         CheckoutFormRepositoryInterface $checkoutFormRepository,
         State $state
     ) {
