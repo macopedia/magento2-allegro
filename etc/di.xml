@@ -139,4 +139,10 @@
         </arguments>
     </virtualType>
 
+    <type name="Macopedia\Allegro\Console\Command\ImportOrder">
+        <arguments>
+            <argument name="processor" xsi:type="object">Macopedia\Allegro\Model\OrderImporter\Processor\Proxy</argument>
+        </arguments>
+    </type>
+
 </config>
