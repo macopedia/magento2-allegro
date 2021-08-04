@@ -10,7 +10,6 @@ use Magento\Payment\Api\Data\PaymentAdditionalInfoInterfaceFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderSearchResultInterfaceFactory as SearchResultFactory;
 use Magento\Sales\Model\ResourceModel\Metadata;
-use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Tax\Api\OrderTaxManagementInterface;
 use Magento\Sales\Api\Data\OrderExtensionFactory;
 use Macopedia\Allegro\Model\ResourceModel\Order as ResourceModel;
@@ -55,10 +54,7 @@ class OrderRepository extends \Magento\Sales\Model\OrderRepository implements Or
     }
 
     /**
-     * @param string $externalId
-     * @return OrderInterface
-     * @throws NoSuchEntityException
-     * @throws \Magento\Framework\Exception\InputException
+     * {@inheritDoc}
      */
     public function getByExternalId(string $externalId): OrderInterface
     {

@@ -40,7 +40,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @param string $id
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -48,7 +48,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @param float $qty
+     * {@inheritDoc}
      */
     public function setQty(float $qty)
     {
@@ -56,7 +56,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @param AmountInterface $price
+     * {@inheritDoc}
      */
     public function setPrice(AmountInterface $price)
     {
@@ -64,7 +64,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @param string $offerId
+     * {@inheritDoc}
      */
     public function setOfferId(string $offerId)
     {
@@ -72,7 +72,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @param int $time
+     * {@inheritDoc}
      */
     public function setBoughtAt(int $time)
     {
@@ -80,7 +80,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -88,7 +88,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @return float|null
+     * {@inheritDoc}
      */
     public function getQty(): ?float
     {
@@ -96,7 +96,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @return AmountInterface
+     * {@inheritDoc}
      */
     public function getPrice(): AmountInterface
     {
@@ -104,7 +104,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getOfferId(): ?string
     {
@@ -112,7 +112,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @return int
+     * {@inheritDoc}
      */
     public function getBoughtAt(): int
     {
@@ -120,7 +120,7 @@ class LineItem extends DataObject implements LineItemInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

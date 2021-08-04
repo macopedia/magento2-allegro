@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data;
 
 interface DeliveryMethodInterface
 {
-
     /**
      * @param string $id
      * @return void
@@ -24,17 +23,17 @@ interface DeliveryMethodInterface
     public function setPaymentPolicy(string $paymentPolicy);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPaymentPolicy(): ?string;
 

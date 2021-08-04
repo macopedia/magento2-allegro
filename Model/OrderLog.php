@@ -25,7 +25,7 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @param string $checkoutFormId
+     * {@inheritDoc}
      */
     public function setCheckoutFormId(string $checkoutFormId): void
     {
@@ -33,7 +33,7 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @param string $date
+     * {@inheritDoc}
      */
     public function setDateOfFirstTry(string $date): void
     {
@@ -41,7 +41,7 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @param string $date
+     * {@inheritDoc}
      */
     public function setDateOfLastTry(string $date): void
     {
@@ -49,7 +49,7 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @param string $reason
+     * {@inheritDoc}
      */
     public function setReason(string $reason): void
     {
@@ -57,7 +57,7 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @param int $tries
+     * {@inheritDoc}
      */
     public function setNumberOfTries(int $tries): void
     {
@@ -65,7 +65,7 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getCheckoutFormId(): ?string
     {
@@ -73,7 +73,7 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getDateOfFirstTry(): ?string
     {
@@ -81,7 +81,7 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getDateOfLastTry(): ?string
     {
@@ -89,7 +89,7 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getReason(): ?string
     {
@@ -97,7 +97,7 @@ class OrderLog extends AbstractModel implements OrderLogInterface
     }
 
     /**
-     * @return int
+     * {@inheritDoc}
      */
     public function getNumberOfTries(): int
     {

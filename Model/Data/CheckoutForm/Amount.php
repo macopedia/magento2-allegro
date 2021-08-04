@@ -7,12 +7,10 @@ use Magento\Framework\DataObject;
 
 class Amount extends DataObject implements AmountInterface
 {
-
     const AMOUNT_FIELD_NAME = 'amount';
 
     /**
-     * @param float $amount
-     * @return void
+     * {@inheritDoc}
      */
     public function setAmount(float $amount)
     {
@@ -20,7 +18,7 @@ class Amount extends DataObject implements AmountInterface
     }
 
     /**
-     * @return float
+     * {@inheritDoc}
      */
     public function getAmount(): ?float
     {
@@ -28,7 +26,7 @@ class Amount extends DataObject implements AmountInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

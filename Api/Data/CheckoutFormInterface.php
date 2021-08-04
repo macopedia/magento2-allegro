@@ -11,7 +11,6 @@ use Macopedia\Allegro\Api\Data\CheckoutForm\SummaryInterface;
 
 interface CheckoutFormInterface
 {
-
     /**
      * @param string $id
      * @return void
@@ -67,7 +66,7 @@ interface CheckoutFormInterface
     public function setMessageToSeller(string $messageToSeller);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string;
 
@@ -82,7 +81,7 @@ interface CheckoutFormInterface
     public function getPayment(): PaymentInterface;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getStatus(): ?string;
 
@@ -107,7 +106,7 @@ interface CheckoutFormInterface
     public function getSummary(): SummaryInterface;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMessageToSeller(): ?string;
 

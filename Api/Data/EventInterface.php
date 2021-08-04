@@ -2,11 +2,8 @@
 
 namespace Macopedia\Allegro\Api\Data;
 
-use Macopedia\Allegro\Api\Data\Event\OrderInterface;
-
 interface EventInterface
 {
-
     const TYPE_BOUGHT = 'BOUGHT';
     const TYPE_FILLED_IN = 'FILLED_IN';
     const TYPE_READY_FOR_PROCESSING = 'READY_FOR_PROCESSING';
@@ -30,17 +27,17 @@ interface EventInterface
     public function setCheckoutFormId(string $checkoutFormId);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getType(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCheckoutFormId(): ?string;
 

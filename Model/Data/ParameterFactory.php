@@ -6,7 +6,6 @@ use Macopedia\Allegro\Api\Data\Parameter\RangeInterface;
 use Macopedia\Allegro\Api\Data\Parameter\ValuesIdsInterface;
 use Macopedia\Allegro\Api\Data\Parameter\ValuesInterface;
 use Macopedia\Allegro\Api\Data\ParameterDefinitionInterface;
-use Macopedia\Allegro\Api\Data\ParameterInterface;
 use Macopedia\Allegro\Api\Data\ParameterInterfaceFactoryInterface;
 use Magento\Framework\ObjectManagerInterface;
 
@@ -26,11 +25,9 @@ class ParameterFactory implements ParameterInterfaceFactoryInterface
     }
 
     /**
-     * @param string $type
-     * @return RangeInterface|ValuesIdsInterface|ValuesInterface
-     * @throws ParameterFactoryException
+     * {@inheritDoc}
      */
-    public function create(string $type): ParameterInterface
+    public function create(string $type): RangeInterface|ValuesIdsInterface|ValuesInterface
     {
         if (!isset(self::TYPES[$type])) {
             throw new ParameterFactoryException(__('Requested parameter type does not exist'));
@@ -40,11 +37,9 @@ class ParameterFactory implements ParameterInterfaceFactoryInterface
     }
 
     /**
-     * @param ParameterDefinitionInterface $parameterDefinition
-     * @return RangeInterface|ValuesIdsInterface|ValuesInterface
-     * @throws ParameterFactoryException
+     * {@inheritDoc}
      */
-    public function createFromDefinition(ParameterDefinitionInterface $parameterDefinition): ParameterInterface
+    public function createFromDefinition(ParameterDefinitionInterface $parameterDefinition): RangeInterface|ValuesIdsInterface|ValuesInterface
     {
         $parameter = $this->create($parameterDefinition->getFrontendType());
         $parameter->setId($parameterDefinition->getId());

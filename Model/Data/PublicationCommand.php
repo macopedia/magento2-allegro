@@ -12,8 +12,7 @@ class PublicationCommand extends DataObject implements PublicationCommandInterfa
     const ACTION_FIELD_NAME = 'action';
 
     /**
-     * @param string $offerId
-     * @return void
+     * {@inheritDoc}
      */
     public function setOfferId(string $offerId)
     {
@@ -21,8 +20,7 @@ class PublicationCommand extends DataObject implements PublicationCommandInterfa
     }
 
     /**
-     * @param string $action
-     * @return void
+     * {@inheritDoc}
      */
     public function setAction(string $action)
     {
@@ -30,7 +28,7 @@ class PublicationCommand extends DataObject implements PublicationCommandInterfa
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getOfferId(): ?string
     {
@@ -38,7 +36,7 @@ class PublicationCommand extends DataObject implements PublicationCommandInterfa
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getAction(): ?string
     {
@@ -46,7 +44,7 @@ class PublicationCommand extends DataObject implements PublicationCommandInterfa
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getRawData(): array
     {

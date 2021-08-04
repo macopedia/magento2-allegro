@@ -15,8 +15,7 @@ class Token extends DataObject implements TokenInterface
     const EXPIRATION_TIME_FIELD_NAME = 'expiration_time';
 
     /**
-     * @param string $accessToken
-     * @return void
+     * {@inheritDoc}
      */
     public function setAccessToken(string $accessToken)
     {
@@ -24,8 +23,7 @@ class Token extends DataObject implements TokenInterface
     }
 
     /**
-     * @param string $refreshToken
-     * @return void
+     * {@inheritDoc}
      */
     public function setRefreshToken(string $refreshToken)
     {
@@ -33,8 +31,7 @@ class Token extends DataObject implements TokenInterface
     }
 
     /**
-     * @param int $expirationTime
-     * @return void
+     * {@inheritDoc}
      */
     public function setExpirationTime(int $expirationTime)
     {
@@ -42,7 +39,7 @@ class Token extends DataObject implements TokenInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getAccessToken()
     {
@@ -50,7 +47,7 @@ class Token extends DataObject implements TokenInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getRefreshToken()
     {
@@ -58,7 +55,7 @@ class Token extends DataObject implements TokenInterface
     }
 
     /**
-     * @return int
+     * {@inheritDoc}
      */
     public function getExpirationTime()
     {
@@ -66,8 +63,7 @@ class Token extends DataObject implements TokenInterface
     }
 
     /**
-     * @return bool
-     * @throws \Exception
+     * {@inheritDoc}
      */
     public function isExpired()
     {

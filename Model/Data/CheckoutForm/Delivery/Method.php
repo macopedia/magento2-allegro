@@ -7,12 +7,10 @@ use Magento\Framework\DataObject;
 
 class Method extends DataObject implements MethodInterface
 {
-
     const ID_FIELD_NAME = 'id';
 
     /**
-     * @param string $id
-     * @return void
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -20,7 +18,7 @@ class Method extends DataObject implements MethodInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -28,8 +26,7 @@ class Method extends DataObject implements MethodInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

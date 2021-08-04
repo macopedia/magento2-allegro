@@ -11,7 +11,7 @@ interface MessageInterface
     public function setProductId(int $productId);
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getProductId(): ?int;
 }

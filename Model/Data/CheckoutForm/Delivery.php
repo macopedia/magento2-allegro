@@ -15,7 +15,6 @@ use Magento\Framework\DataObject;
 
 class Delivery extends DataObject implements DeliveryInterface
 {
-
     const METHOD_FIELD_NAME = 'method';
     const ADDRESS_FIELD_NAME = 'address';
     const COST_FIELD_NAME = 'cost';
@@ -37,14 +36,18 @@ class Delivery extends DataObject implements DeliveryInterface
      * Delivery constructor.
      * @param MethodInterfaceFactory $methodFactory
      * @param AddressInterfaceFactory $addressFactory
-     * @param CostInterface $costFactory
+     * @param CostInterfaceFactory $costFactory
+     * @param PickupPointInterfaceFactory $pickupPointFactory
+     * @param array $data
      */
     public function __construct(
         MethodInterfaceFactory $methodFactory,
         AddressInterfaceFactory $addressFactory,
         CostInterfaceFactory $costFactory,
-        PickupPointInterfaceFactory $pickupPointFactory
+        PickupPointInterfaceFactory $pickupPointFactory,
+        array $data = []
     ) {
+        parent::__construct($data);
         $this->methodFactory = $methodFactory;
         $this->addressFactory = $addressFactory;
         $this->costFactory = $costFactory;
@@ -52,8 +55,7 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
-     * @param MethodInterface $method
-     * @return void
+     * {@inheritDoc}
      */
     public function setMethod(MethodInterface $method)
     {
@@ -61,8 +63,7 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
-     * @param AddressInterface $address
-     * @return void
+     * {@inheritDoc}
      */
     public function setAddress(AddressInterface $address)
     {
@@ -70,7 +71,7 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
-     * @param CostInterface $cost
+     * {@inheritDoc}
      */
     public function setCost(CostInterface $cost)
     {
@@ -78,7 +79,7 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
-     * @param PickupPointInterface $pickupPoint
+     * {@inheritDoc}
      */
     public function setPickupPoint(PickupPointInterface $pickupPoint)
     {
@@ -86,7 +87,7 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
-     * @return MethodInterface
+     * {@inheritDoc}
      */
     public function getMethod(): MethodInterface
     {
@@ -94,7 +95,7 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
-     * @return AddressInterface
+     * {@inheritDoc}
      */
     public function getAddress(): AddressInterface
     {
@@ -102,7 +103,7 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
-     * @return CostInterface
+     * {@inheritDoc}
      */
     public function getCost(): CostInterface
     {
@@ -110,7 +111,7 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
-     * @return PickupPointInterface
+     * {@inheritDoc}
      */
     public function getPickupPoint(): PickupPointInterface
     {
@@ -118,8 +119,7 @@ class Delivery extends DataObject implements DeliveryInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {
@@ -143,7 +143,7 @@ class Delivery extends DataObject implements DeliveryInterface
 
     /**
      * @param array $data
-     * @return MethodInterface
+     * @return AddressInterface
      */
     private function mapAddressData(array $data): AddressInterface
     {

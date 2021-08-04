@@ -9,7 +9,6 @@ use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\PickupPointInterface;
 
 interface DeliveryInterface
 {
-
     /**
      * @param MethodInterface $method
      * @return void
@@ -30,7 +29,7 @@ interface DeliveryInterface
 
     /**
      * @param PickupPointInterface $pickupPoint
-     * @return mixed
+     * @return void
      */
     public function setPickupPoint(PickupPointInterface $pickupPoint);
 

@@ -2,13 +2,8 @@
 
 namespace Macopedia\Allegro\Model;
 
-use Macopedia\Allegro\Api\Data\PublicationCommandInterface;
-use Macopedia\Allegro\Api\PublicationCommandRepositoryInterface;
 use Macopedia\Allegro\Api\QuantityCommandInterface;
-use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\ResourceModel\Sale\Offers;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Macopedia\Allegro\Model\Api\ClientException;
 
 class QuantityCommand implements QuantityCommandInterface
 {
@@ -26,12 +21,7 @@ class QuantityCommand implements QuantityCommandInterface
     }
 
     /**
-     * @param $offerId
-     * @param $qty
-     * @return array
-     * @throws Api\ClientResponseErrorException
-     * @throws ClientException
-     * @throws ClientResponseException
+     * {@inheritDoc}
      */
     public function change($offerId, $qty)
     {

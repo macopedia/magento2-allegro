@@ -12,8 +12,7 @@ class Image extends DataObject implements ImageInterface
     const STATUS_FIELD_NAME = 'status';
 
     /**
-     * @param string $url
-     * @return void
+     * {@inheritDoc}
      */
     public function setUrl(string $url)
     {
@@ -21,8 +20,7 @@ class Image extends DataObject implements ImageInterface
     }
 
     /**
-     * @param int $status
-     * @return void
+     * {@inheritDoc}
      */
     public function setStatus(int $status)
     {
@@ -30,7 +28,7 @@ class Image extends DataObject implements ImageInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getUrl(): ?string
     {
@@ -38,7 +36,7 @@ class Image extends DataObject implements ImageInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getStatus(): ?int
     {
@@ -46,8 +44,7 @@ class Image extends DataObject implements ImageInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {
@@ -56,7 +53,7 @@ class Image extends DataObject implements ImageInterface
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getRawData(): array
     {
@@ -75,7 +72,7 @@ class Image extends DataObject implements ImageInterface
      * @param string $path
      * @return Image
      */
-    public function setPath($path)
+    public function setPath(string $path)
     {
         return $this->setData(self::PATH, $path);
     }

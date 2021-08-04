@@ -18,11 +18,11 @@ interface ParameterInterfaceFactoryInterface
      * @param string $type
      * @return RangeInterface|ValuesIdsInterface|ValuesInterface
      */
-    public function create(string $type): ParameterInterface;
+    public function create(string $type): RangeInterface|ValuesIdsInterface|ValuesInterface;
 
     /**
      * @param ParameterDefinitionInterface $parameterDefinition
      * @return RangeInterface|ValuesIdsInterface|ValuesInterface
      */
-    public function createFromDefinition(ParameterDefinitionInterface $parameterDefinition): ParameterInterface;
+    public function createFromDefinition(ParameterDefinitionInterface $parameterDefinition): RangeInterface|ValuesIdsInterface|ValuesInterface;
 }

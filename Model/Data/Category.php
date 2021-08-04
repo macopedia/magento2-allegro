@@ -8,15 +8,13 @@ use Magento\Framework\DataObject;
 
 class Category extends DataObject implements CategoryInterface
 {
-
     const ID_FIELD_NAME = 'id';
     const NAME_FIELD_NAME = 'name';
     const LEAF_FIELD_NAME = 'leaf';
     const PARENT_FIELD_NAME = 'parent';
 
     /**
-     * @param string $id
-     * @return void
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -24,8 +22,7 @@ class Category extends DataObject implements CategoryInterface
     }
 
     /**
-     * @param string $name
-     * @return void
+     * {@inheritDoc}
      */
     public function setName(string $name)
     {
@@ -33,7 +30,7 @@ class Category extends DataObject implements CategoryInterface
     }
 
     /**
-     * @param bool $leaf
+     * {@inheritDoc}
      */
     public function setLeaf(bool $leaf)
     {
@@ -41,7 +38,7 @@ class Category extends DataObject implements CategoryInterface
     }
 
     /**
-     * @param string $parent
+     * {@inheritDoc}
      */
     public function setParent(string $parent)
     {
@@ -49,7 +46,7 @@ class Category extends DataObject implements CategoryInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -57,7 +54,7 @@ class Category extends DataObject implements CategoryInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getName(): ?string
     {
@@ -65,7 +62,7 @@ class Category extends DataObject implements CategoryInterface
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function getLeaf(): bool
     {
@@ -73,7 +70,7 @@ class Category extends DataObject implements CategoryInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getParent(): ?string
     {
@@ -81,8 +78,7 @@ class Category extends DataObject implements CategoryInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

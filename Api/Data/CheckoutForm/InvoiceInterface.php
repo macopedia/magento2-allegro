@@ -6,7 +6,6 @@ use Macopedia\Allegro\Api\Data\CheckoutForm\Invoice\AddressInterface;
 
 interface InvoiceInterface
 {
-
     /**
      * @param AddressInterface $address
      * @return void

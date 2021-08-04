@@ -9,7 +9,6 @@ use Magento\Framework\DataObject;
 
 class Summary extends DataObject implements SummaryInterface
 {
-
     const TOTAL_TO_PAY_FIELD_NAME = 'total_to_pay';
 
     /** @var AmountInterfaceFactory */
@@ -18,14 +17,18 @@ class Summary extends DataObject implements SummaryInterface
     /**
      * Summary constructor.
      * @param AmountInterfaceFactory $amountFactory
+     * @param array $data
      */
-    public function __construct(AmountInterfaceFactory $amountFactory)
-    {
+    public function __construct(
+        AmountInterfaceFactory $amountFactory,
+        array $data = []
+    ) {
+        parent::__construct($data);
         $this->amountFactory = $amountFactory;
     }
 
     /**
-     * @param AmountInterface $totalToPay
+     * {@inheritDoc}
      */
     public function setTotalToPay(AmountInterface $totalToPay)
     {
@@ -33,7 +36,7 @@ class Summary extends DataObject implements SummaryInterface
     }
 
     /**
-     * @return AmountInterface
+     * {@inheritDoc}
      */
     public function getTotalToPay(): AmountInterface
     {
@@ -41,7 +44,7 @@ class Summary extends DataObject implements SummaryInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {
@@ -50,7 +53,7 @@ class Summary extends DataObject implements SummaryInterface
 
     /**
      * @param array $data
-     * @return AmountInterface|null
+     * @return AmountInterface
      */
     private function mapAmountData(array $data): AmountInterface
     {

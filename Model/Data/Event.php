@@ -13,16 +13,15 @@ class Event extends DataObject implements EventInterface
     const CHECKOUT_FORM_ID_FIELD_NAME = 'checkout_form_id';
 
     /**
-     * @param string $id
-     * @return void
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
         $this->setData(self::ID_FIELD_NAME, $id);
     }
+
     /**
-     * @param string $type
-     * @return void
+     * {@inheritDoc}
      */
     public function setType(string $type)
     {
@@ -30,8 +29,7 @@ class Event extends DataObject implements EventInterface
     }
 
     /**
-     * @param string $checkoutFormId
-     * @return void
+     * {@inheritDoc}
      */
     public function setCheckoutFormId(string $checkoutFormId)
     {
@@ -39,7 +37,7 @@ class Event extends DataObject implements EventInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getId(): string
     {
@@ -47,7 +45,7 @@ class Event extends DataObject implements EventInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getType(): string
     {
@@ -55,7 +53,7 @@ class Event extends DataObject implements EventInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getCheckoutFormId(): string
     {
@@ -63,8 +61,7 @@ class Event extends DataObject implements EventInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

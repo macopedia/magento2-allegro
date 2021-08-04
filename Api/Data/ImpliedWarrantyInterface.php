@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data;
 
 interface ImpliedWarrantyInterface
 {
-
     /**
      * @param string $id
      * @return void

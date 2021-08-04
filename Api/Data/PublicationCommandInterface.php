@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data;
 
 interface PublicationCommandInterface
 {
-
     const ACTION_ACTIVATE = 'ACTIVATE';
     const ACTION_END = 'END';
 
@@ -21,12 +20,12 @@ interface PublicationCommandInterface
     public function setAction(string $action);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getAction(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getOfferId(): ?string;
 

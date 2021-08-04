@@ -11,7 +11,7 @@ interface ProductRepositoryInterface extends \Magento\Catalog\Api\ProductReposit
     /**
      * @param int $allegroOfferId
      * @param bool $editMode
-     * @param int $storeId
+     * @param int|null $storeId
      * @param bool $forceReload
      * @return ProductInterface
      * @throws NoSuchEntityException

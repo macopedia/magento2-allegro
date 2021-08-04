@@ -7,14 +7,13 @@ use Magento\Framework\DataObject;
 
 class Location extends DataObject implements LocationInterface
 {
-
     const COUNTRY_CODE_FIELD_NAME = 'country_code';
     const PROVINCE_FIELD_NAME = 'province';
     const CITY_FIELD_NAME = 'city';
     const POST_CODE_FIELD_NAME = 'post_code';
 
     /**
-     * @param string $countryCode
+     * {@inheritDoc}
      */
     public function setCountryCode(string $countryCode)
     {
@@ -22,7 +21,7 @@ class Location extends DataObject implements LocationInterface
     }
 
     /**
-     * @param string $province
+     * {@inheritDoc}
      */
     public function setProvince(string $province)
     {
@@ -30,7 +29,7 @@ class Location extends DataObject implements LocationInterface
     }
 
     /**
-     * @param string $city
+     * {@inheritDoc}
      */
     public function setCity(string $city)
     {
@@ -38,7 +37,7 @@ class Location extends DataObject implements LocationInterface
     }
 
     /**
-     * @param string $postCode
+     * {@inheritDoc}
      */
     public function setPostCode(string $postCode)
     {
@@ -46,7 +45,7 @@ class Location extends DataObject implements LocationInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getCountryCode(): ?string
     {
@@ -54,7 +53,7 @@ class Location extends DataObject implements LocationInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getProvince(): ?string
     {
@@ -62,7 +61,7 @@ class Location extends DataObject implements LocationInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getCity(): ?string
     {
@@ -70,7 +69,7 @@ class Location extends DataObject implements LocationInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getPostCode(): ?string
     {
@@ -78,7 +77,7 @@ class Location extends DataObject implements LocationInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {
@@ -97,7 +96,7 @@ class Location extends DataObject implements LocationInterface
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getRawData(): array
     {

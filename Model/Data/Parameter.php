@@ -12,8 +12,7 @@ abstract class Parameter extends DataObject implements ParameterInterface
     const ID_FIELD_NAME = 'id';
 
     /**
-     * @param int $id
-     * @return void
+     * {@inheritDoc}
      */
     public function setId(int $id)
     {
@@ -21,7 +20,7 @@ abstract class Parameter extends DataObject implements ParameterInterface
     }
 
     /**
-     * @return int
+     * {@inheritDoc}
      */
     public function getId(): ?int
     {
@@ -29,7 +28,7 @@ abstract class Parameter extends DataObject implements ParameterInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

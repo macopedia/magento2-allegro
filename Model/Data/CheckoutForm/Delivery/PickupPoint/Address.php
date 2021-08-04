@@ -7,13 +7,12 @@ use Magento\Framework\DataObject;
 
 class Address extends DataObject implements AddressInterface
 {
-
     const STREET_FIELD_NAME = 'street';
     const ZIP_CODE_FIELD_NAME = 'zipcode';
     const CITY_FIELD_NAME = 'city';
 
     /**
-     * @param string $street
+     * {@inheritDoc}
      */
     public function setStreet(string $street)
     {
@@ -21,7 +20,7 @@ class Address extends DataObject implements AddressInterface
     }
 
     /**
-     * @param string $zipCode
+     * {@inheritDoc}
      */
     public function setZipCode(string $zipCode)
     {
@@ -29,7 +28,7 @@ class Address extends DataObject implements AddressInterface
     }
 
     /**
-     * @param string $city
+     * {@inheritDoc}
      */
     public function setCity(string $city)
     {
@@ -37,7 +36,7 @@ class Address extends DataObject implements AddressInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getStreet(): ?string
     {
@@ -45,7 +44,7 @@ class Address extends DataObject implements AddressInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getZipCode(): ?string
     {
@@ -53,7 +52,7 @@ class Address extends DataObject implements AddressInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getCity(): ?string
     {
@@ -61,7 +60,7 @@ class Address extends DataObject implements AddressInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

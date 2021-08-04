@@ -6,7 +6,6 @@ use Macopedia\Allegro\Api\Data\ParameterInterface;
 
 interface ValuesInterface extends ParameterInterface
 {
-
     /**
      * @param string[] $value
      * @return void

@@ -8,12 +8,11 @@ use Magento\Framework\DataObject;
 
 class DictionaryItem extends DataObject implements DictionaryItemInterface
 {
-
     const VALUE_FIELD_NAME = 'value';
     const LABEL_FIELD_NAME = 'label';
 
     /**
-     * @param string $value
+     * {@inheritDoc}
      */
     public function setValue(string $value)
     {
@@ -21,7 +20,7 @@ class DictionaryItem extends DataObject implements DictionaryItemInterface
     }
 
     /**
-     * @param string $label
+     * {@inheritDoc}
      */
     public function setLabel(string $label)
     {
@@ -29,7 +28,7 @@ class DictionaryItem extends DataObject implements DictionaryItemInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getValue(): ?string
     {
@@ -37,7 +36,7 @@ class DictionaryItem extends DataObject implements DictionaryItemInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getLabel(): ?string
     {
@@ -45,8 +44,7 @@ class DictionaryItem extends DataObject implements DictionaryItemInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

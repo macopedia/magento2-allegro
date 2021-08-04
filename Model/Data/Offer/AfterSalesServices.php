@@ -13,7 +13,7 @@ class AfterSalesServices extends DataObject implements AfterSalesServicesInterfa
     const WARRANTY_ID_FIELD_NAME = 'warranty_id';
 
     /**
-     * @param string $impliedWarrantyId
+     * {@inheritDoc}
      */
     public function setImpliedWarrantyId(string $impliedWarrantyId)
     {
@@ -21,7 +21,7 @@ class AfterSalesServices extends DataObject implements AfterSalesServicesInterfa
     }
 
     /**
-     * @param string $returnPolicy
+     * {@inheritDoc}
      */
     public function setReturnPolicyId(string $returnPolicy)
     {
@@ -29,7 +29,7 @@ class AfterSalesServices extends DataObject implements AfterSalesServicesInterfa
     }
 
     /**
-     * @param string $warrantyId
+     * {@inheritDoc}
      */
     public function setWarrantyId(string $warrantyId)
     {
@@ -37,7 +37,7 @@ class AfterSalesServices extends DataObject implements AfterSalesServicesInterfa
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getImpliedWarrantyId(): ?string
     {
@@ -45,7 +45,7 @@ class AfterSalesServices extends DataObject implements AfterSalesServicesInterfa
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getReturnPolicyId(): ?string
     {
@@ -53,7 +53,7 @@ class AfterSalesServices extends DataObject implements AfterSalesServicesInterfa
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getWarrantyId(): ?string
     {
@@ -61,7 +61,7 @@ class AfterSalesServices extends DataObject implements AfterSalesServicesInterfa
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {
@@ -77,7 +77,7 @@ class AfterSalesServices extends DataObject implements AfterSalesServicesInterfa
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getRawData(): ?array
     {

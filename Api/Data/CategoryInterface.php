@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data;
 
 interface CategoryInterface
 {
-
     /**
      * @param string $id
      * @return void
@@ -30,12 +29,12 @@ interface CategoryInterface
     public function setParent(string $parent);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string;
 
@@ -45,7 +44,7 @@ interface CategoryInterface
     public function getLeaf(): bool;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getParent(): ?string;
 

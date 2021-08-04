@@ -105,7 +105,7 @@ class Consumer implements ConsumerInterface
     }
 
     /**
-     * @param MessageInterface $message
+     * {@inheritDoc}
      */
     public function processMessage(MessageInterface $message)
     {

@@ -2,6 +2,8 @@
 
 namespace Macopedia\Allegro\Api;
 
+use Macopedia\Allegro\Api\Data\ShippingRateInterface;
+
 interface ShippingRateRepositoryInterface
 {
 
