@@ -3,6 +3,8 @@
 namespace Macopedia\Allegro\Model\ResourceModel\Order;
 
 use Macopedia\Allegro\Model\Api\ClientException;
+use Macopedia\Allegro\Model\Api\ClientResponseErrorException;
+use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\ResourceModel\AbstractResource;
 
 /**
@@ -14,8 +16,8 @@ class CheckoutForm extends AbstractResource
      * @param $checkoutFormId
      * @return array
      * @throws ClientException
-     * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
-     * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
+     * @throws ClientResponseErrorException
+     * @throws ClientResponseException
      */
     public function getCheckoutForm($checkoutFormId)
     {
@@ -27,11 +29,24 @@ class CheckoutForm extends AbstractResource
      * @param array $shippingData
      * @return array
      * @throws ClientException
-     * @throws \Macopedia\Allegro\Model\Api\ClientResponseErrorException
-     * @throws \Macopedia\Allegro\Model\Api\ClientResponseException
+     * @throws ClientResponseErrorException
+     * @throws ClientResponseException
      */
     public function shipment($checkoutFormId, array $shippingData)
     {
         return $this->requestPost('order/checkout-forms/' . $checkoutFormId . '/shipments', $shippingData);
+    }
+
+    /**
+     * @param $checkoutFormId
+     * @param string $status
+     * @return array
+     * @throws ClientException
+     * @throws ClientResponseErrorException
+     * @throws ClientResponseException
+     */
+    public function changeOrderStatus($checkoutFormId, string $status)
+    {
+        return $this->requestPut('order/checkout-forms/' . $checkoutFormId . '/fulfillment', ['status' => $status]);
     }
 }

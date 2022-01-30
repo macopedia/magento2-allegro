@@ -14,4 +14,7 @@
     <event name="sales_order_shipment_save_before">
         <observer name="macopedia_allegro_shipping_save_before" instance="Macopedia\Allegro\Observer\SaveShippingBeforeObserver" />
     </event>
+    <event name="sales_order_save_after">
+        <observer name="macopedia_allegro_order_save_after" instance="Macopedia\Allegro\Observer\SaveOrderAfterObserver" />
+    </event>
 </config>

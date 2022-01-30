@@ -25,8 +25,9 @@ Magento 2 - Allegro Integration Module source code is completely free and releas
 ## Features
 1. Aktualizacja stanów magazynowych w Magento po sprzedaży produktu w Allegro oraz w Allegro po sprzedaży w Magento
 2. Import zamówień z Allegro do Magento
-3. Publikowanie ofert na Allegro z poziomu Magento
-4. Wystawianie numerów przesyłek dla zamówień na Allegro z poziomu Magento
+3. Automatyczna aktualizacja statusów zamówień z poziomu Magento
+4. Publikowanie ofert na Allegro z poziomu Magento
+5. Wystawianie numerów przesyłek dla zamówień na Allegro z poziomu Magento
 
 ## Kolejność działań po instalacji modułu
 1. Dodać konfiguracje kolejki w [MySQL MQ](https://github.com/macopedia/magento2-allegro#konfiguracja-mysql-mq) lub [RabbitMQ](https://github.com/macopedia/magento2-allegro#konfiguracja-rabbitmq)
@@ -111,6 +112,12 @@ Znajdują się tam informacje na temat powodu błędu, ilości prób zaimportowa
 
 ![grid](README/allegroOrdersWithErrorsGrid.png)
 
+## Mapowanie statusów zamówień
+W konfiguracji wtyczki możemy definiować mapowanie statusów zamówień pomiędzy Magento i Allegro.
+![method_mapping](README/orderStatusesMapping.png)
+
+Po dodaniu odpowiedniego mapowania zmiana statusu zamówienia w Magento spowoduje również zmianę statusu na Allegro.
+
 ## Mapowanie metod dostawy i płatności
 W konfiguracji wtyczki możemy definiować mapowanie metod płatności dla zamówień przychodzących z Allegro do sklepu Magento.
 ![method_mapping](README/deliveryAndPaymentMapping.png)
@@ -118,6 +125,8 @@ W konfiguracji wtyczki możemy definiować mapowanie metod płatności dla zamó
 Dla mapowania metod dostawy mamy do dyspozycji dynamiczną listę, do której możemy dodawać kolejne pozycje, w których wybieramy w liście po lewej stronę jedną z metod dostawy dostępnych w Allegro, a w liście po prawej stronie nazwę metody dostawy dostępnej i aktywnej w konfiguracji sklepu Magento. Poniżej dynamicznej listy możemy wybrać domyślną metodę dostawy, która będzie przypisana do zamówienia w momencie, gdy z Allegro otrzymamy metodę, dla której nie zdefiniowaliśmy mapowania.
 
 Dla mapowania metod płatności mamy do dyspozycji dwie listy rozwijane, w których możemy wybrać po jednej z dostępnych i aktywnych w konfiguracji sklepu Magento metod płatności - dla zamówień przychodzących z Allegro z płatnością online i dla zamówień z płatnością przy pobraniu. 
+
+![grid](README/allegroOrdersWithErrorsGrid.png)
 
 ## Wysyłanie numerów przesyłek
 Aby klient mógł śledzić przesyłkę z jego zamówieniem należy wprowadzić w Allegro jej numer oraz informacje o przewoźniku. Dzięki wtyczce można, to zrobić z poziomu Magento:
@@ -131,20 +140,6 @@ Aby klient mógł śledzić przesyłkę z jego zamówieniem należy wprowadzić 
 ![tracking_information2](README/sendTrackingInformation2.png)
 
 Wysyłkę numerów przesyłek można włączać lub wyłączać w konfiguracji wtyczki.
-
-## Automatyczna zmiana statusu zamówienia na "Wysłane" w panelu Allegro
-
-W panelu Allegro można ustawić automatyczną zmianę statusów na "Wysłane" po wprowadzeniu listu przewozowego do danego zamówienia. Należy jednorazowo wprowadzić ręcznie numer przesyłki dla danego zamówienia lub edytować już istniejący i zaznaczyć checkbox "Automatycznie zmieniaj status wszystkich zamówień na WYSŁANE po dodaniu numeru przesyłki". 
-Aby to zrobić należy:
-1. W panelu Magento, wygenerować etykietę wysyłkową dla zamowienia zaimportowanego z Allegro
-2. Skopiować wygenerowany numer przesyłki
-3. Zalogować się do platformy Allegro i wybrać zamówienie, do którego chcemy wprowadzić numer przesyłki lub zmienić już istniejący
-4. Na liście zamówień na Allegro, przy zamówieniu do którego chcemy wprowadzić numer przesyłki, klikamy w listę rozwijaną AKCJE → wybieramy opcję NUMERY PRZESYŁEK
-5. Otworzy nam się osobne okno z opcja do wybrania przewoźnika oraz do wprowadzenia numeru przesyłki.
-6. W otwartym oknie należy zaznaczyć checkbox "Automatycznie zmieniaj status wszystkich zamówień na WYSŁANE po dodaniu numeru przesyłki" i kliknąć "ZAPISZ"
-
-Po tym ustawieniu wszystkie zamówienia, które są na Allegro, które otrzymają z Magento numer listu przewozowego, mają status "Wysłane".
-
 
 ## Publikowanie ofert
 Za pomocą wtyczki możemy wystawiać produkty z Magento na Allegro. Aby to zrobić należy:

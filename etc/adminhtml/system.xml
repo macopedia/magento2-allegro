@@ -97,6 +97,11 @@
                     <label>Status for orders with underpayment</label>
                     <source_model>Macopedia\Allegro\Model\Config\Source\State</source_model>
                 </field>
+                <field id="mapping" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order statuses mapping</label>
+                    <frontend_model>\Macopedia\Allegro\Block\Adminhtml\Config\Form\Field\OrderStatuses</frontend_model>
+                    <backend_model>Macopedia\Allegro\Model\Config\Backend\OrderStatuses</backend_model>
+                </field>
             </group>
             <group id="debug_mode" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Debug mode</label>

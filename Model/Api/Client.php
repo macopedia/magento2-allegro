@@ -178,6 +178,14 @@ class Client
     public function getResponse(GuzzleClient $client, string $method, string $uri, array $params)
     {
         $response = $client->request($method, $uri, $params);
-        return $response->getBody()->getContents();
+        $contents = $response->getBody()->getContents();
+
+        if (empty($contents)) {
+            return $this->json->serialize(
+                ['statusCode' => $response->getStatusCode(), 'reasonPhrase' => $response->getReasonPhrase()]
+            );
+        }
+
+        return $contents;
     }
 }
