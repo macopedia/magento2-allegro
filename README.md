@@ -1,7 +1,7 @@
 # Magento 2 - Allegro Integration Module
-Magento 2 Allegro Integration module. Supports Magento 2 >= v2.3
+Magento 2 Allegro Integration module. Supports Magento 2 >= v2.3. Currently is not working with current Allegro API.
 
-##
+## UWAGA
 Moduł nie jest kompatybilny z aktualną zmianą Allegro.pl w zakresie łączenia Ofert z Katalogiem Produktów:
 https://developer.allegro.pl/news/od-dzisiaj-nowe-oferty-w-wybranych-dzialach-wystawisz-dopiero-gdy-polaczysz-je-z-katalogiem-produktow-d2qzkBwy2CZ
 
