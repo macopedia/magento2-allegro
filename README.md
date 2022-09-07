@@ -1,6 +1,14 @@
 # Magento 2 - Allegro Integration Module
 Magento 2 Allegro Integration module. Supports Magento 2 >= v2.3
 
+##
+Moduł nie jest kompatybilny z aktualną zmianą Allegro.pl w zakresie łączenia Ofert z Katalogiem Produktów:
+https://developer.allegro.pl/news/od-dzisiaj-nowe-oferty-w-wybranych-dzialach-wystawisz-dopiero-gdy-polaczysz-je-z-katalogiem-produktow-d2qzkBwy2CZ
+
+Dalszy rozwój rozszerzenia oferujemy odpłatnie. Zapraszmy do kontaktu: https://macopedia.com/products/allegro
+
+Oczywiście jesteśmy otwarci na pull-request w zarkesie rozwiązanie tego problemu.
+
 ## Partners
 Our partners helps to develop this project.
 * [Macopedia.com](https://macopedia.com)
