@@ -7,7 +7,6 @@ use Macopedia\Allegro\Api\PublicationCommandRepositoryInterface;
 use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\ResourceModel\Sale\Offers;
 use Magento\Framework\Exception\CouldNotSaveException;
-use Macopedia\Allegro\Model\Api\ClientException;
 
 class PublicationCommandRepository implements PublicationCommandRepositoryInterface
 {
@@ -25,9 +24,7 @@ class PublicationCommandRepository implements PublicationCommandRepositoryInterf
     }
 
     /**
-     * @param PublicationCommandInterface $publication
-     * @throws ClientException
-     * @throws CouldNotSaveException
+     * {@inheritDoc}
      */
     public function save(PublicationCommandInterface $publication)
     {

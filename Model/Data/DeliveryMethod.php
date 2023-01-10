@@ -7,14 +7,12 @@ use Magento\Framework\DataObject;
 
 class DeliveryMethod extends DataObject implements DeliveryMethodInterface
 {
-
     const ID_FIELD_NAME = 'id';
     const NAME_FIELD_NAME = 'name';
     const PAYMENT_POLICY_FIELD_NAME = 'payment_policy';
 
     /**
-     * @param string $id
-     * @return void
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -22,8 +20,7 @@ class DeliveryMethod extends DataObject implements DeliveryMethodInterface
     }
 
     /**
-     * @param string $name
-     * @return void
+     * {@inheritDoc}
      */
     public function setName(string $name)
     {
@@ -31,8 +28,7 @@ class DeliveryMethod extends DataObject implements DeliveryMethodInterface
     }
 
     /**
-     * @param string $paymentPolicy
-     * @return void
+     * {@inheritDoc}
      */
     public function setPaymentPolicy(string $paymentPolicy)
     {
@@ -40,7 +36,7 @@ class DeliveryMethod extends DataObject implements DeliveryMethodInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -48,7 +44,7 @@ class DeliveryMethod extends DataObject implements DeliveryMethodInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getName(): ?string
     {
@@ -56,7 +52,7 @@ class DeliveryMethod extends DataObject implements DeliveryMethodInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getPaymentPolicy(): ?string
     {
@@ -64,8 +60,7 @@ class DeliveryMethod extends DataObject implements DeliveryMethodInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

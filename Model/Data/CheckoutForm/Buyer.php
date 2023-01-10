@@ -14,7 +14,7 @@ class Buyer extends DataObject implements BuyerInterface
     const LOGIN_FIELD_NAME = 'login';
 
     /**
-     * @param string $firstName
+     * {@inheritDoc}
      */
     public function setFirstName(string $firstName)
     {
@@ -22,7 +22,7 @@ class Buyer extends DataObject implements BuyerInterface
     }
 
     /**
-     * @param string $lastName
+     * {@inheritDoc}
      */
     public function setLastName(string $lastName)
     {
@@ -30,7 +30,7 @@ class Buyer extends DataObject implements BuyerInterface
     }
 
     /**
-     * @param string $email
+     * {@inheritDoc}
      */
     public function setEmail(string $email)
     {
@@ -38,7 +38,7 @@ class Buyer extends DataObject implements BuyerInterface
     }
 
     /**
-     * @param string $login
+     * {@inheritDoc}
      */
     public function setLogin(string $login)
     {
@@ -46,7 +46,7 @@ class Buyer extends DataObject implements BuyerInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getFirstName(): ?string
     {
@@ -54,7 +54,7 @@ class Buyer extends DataObject implements BuyerInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getLastName(): ?string
     {
@@ -62,7 +62,7 @@ class Buyer extends DataObject implements BuyerInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getEmail(): ?string
     {
@@ -70,7 +70,7 @@ class Buyer extends DataObject implements BuyerInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getLogin(): ?string
     {
@@ -78,7 +78,7 @@ class Buyer extends DataObject implements BuyerInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

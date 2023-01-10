@@ -11,8 +11,7 @@ class ReturnPolicy extends DataObject implements ReturnPolicyInterface
     const NAME_FIELD_NAME = 'name';
 
     /**
-     * @param string $id
-     * @return void
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -20,8 +19,7 @@ class ReturnPolicy extends DataObject implements ReturnPolicyInterface
     }
 
     /**
-     * @param string $name
-     * @return void
+     * {@inheritDoc}
      */
     public function setName(string $name)
     {
@@ -29,7 +27,7 @@ class ReturnPolicy extends DataObject implements ReturnPolicyInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -37,7 +35,7 @@ class ReturnPolicy extends DataObject implements ReturnPolicyInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getName(): ?string
     {
@@ -45,8 +43,7 @@ class ReturnPolicy extends DataObject implements ReturnPolicyInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

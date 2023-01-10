@@ -5,7 +5,6 @@ namespace Macopedia\Allegro\Model;
 use Macopedia\Allegro\Api\CategoryRepositoryInterface;
 use Macopedia\Allegro\Api\Data\CategoryInterface;
 use Macopedia\Allegro\Api\Data\CategoryInterfaceFactory;
-use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\ResourceModel\Sale\Categories;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Macopedia\Allegro\Model\Api\ClientResponseException;
@@ -24,15 +23,16 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @param Categories $categories
      * @param CategoryInterfaceFactory $categoryFactory
      */
-    public function __construct(Categories $categories, CategoryInterfaceFactory $categoryFactory)
-    {
+    public function __construct(
+        Categories $categories,
+        CategoryInterfaceFactory $categoryFactory
+    ) {
         $this->categories = $categories;
         $this->categoryFactory = $categoryFactory;
     }
 
     /**
-     * @return CategoryInterface[]
-     * @throws ClientException
+     * {@inheritDoc}
      */
     public function getRootList(): array
     {
@@ -55,9 +55,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
 
     /**
-     * @param string $parentCategoryId
-     * @return CategoryInterface[]
-     * @throws ClientException
+     * {@inheritDoc}
      */
     public function getList(string $parentCategoryId): array
     {
@@ -80,10 +78,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
 
     /**
-     * @param string $categoryId
-     * @return CategoryInterface
-     * @throws ClientException
-     * @throws NoSuchEntityException
+     * {@inheritDoc}
      */
     public function get(string $categoryId): CategoryInterface
     {
@@ -102,10 +97,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
 
     /**
-     * @param string $categoryId
-     * @return CategoryInterface[]
-     * @throws ClientException
-     * @throws NoSuchEntityException
+     * {@inheritDoc}
      */
     public function getAllParents(string $categoryId): array
     {

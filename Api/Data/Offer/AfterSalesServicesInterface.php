@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data\Offer;
 
 interface AfterSalesServicesInterface
 {
-
     /**
      * @param string $impliedWarrantyId
      * @return void
@@ -48,7 +47,7 @@ interface AfterSalesServicesInterface
     public function setRawData(array $rawData);
 
     /**
-     * @return array
+     * @return array|null
      */
     public function getRawData(): ?array;
 }

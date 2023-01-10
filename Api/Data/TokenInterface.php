@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data;
 
 interface TokenInterface
 {
-
     /**
      * @param string $accessToken
      * @return void

@@ -11,11 +11,9 @@ use Macopedia\Allegro\Model\ResourceModel\Sale\Offers;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Macopedia\Allegro\Model\Api\ClientResponseException;
-use Macopedia\Allegro\Model\Api\ClientException;
 
 class OfferRepository implements OfferRepositoryInterface
 {
-
     /** @var Offers */
     private $offers;
 
@@ -42,9 +40,7 @@ class OfferRepository implements OfferRepositoryInterface
     }
 
     /**
-     * @param OfferInterface $offer
-     * @throws ClientException
-     * @throws CouldNotSaveException
+     * {@inheritDoc}
      */
     public function save(OfferInterface $offer)
     {
@@ -77,10 +73,7 @@ class OfferRepository implements OfferRepositoryInterface
     }
 
     /**
-     * @param string $offerId
-     * @return OfferInterface
-     * @throws ClientException
-     * @throws NoSuchEntityException
+     * {@inheritDoc}
      */
     public function get(string $offerId): OfferInterface
     {

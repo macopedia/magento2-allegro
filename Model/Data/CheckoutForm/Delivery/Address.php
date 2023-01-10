@@ -10,7 +10,6 @@ use Magento\Sales\Api\Data\OrderAddressInterface;
 
 class Address extends DataObject implements AddressInterface
 {
-
     const FIRST_NAME_FIELD_NAME = 'first_name';
     const LAST_NAME_FIELD_NAME = 'last_name';
     const PHONE_NUMBER_FIELD_NAME = 'phone_number';
@@ -20,91 +19,138 @@ class Address extends DataObject implements AddressInterface
     const COUNTRY_CODE_FIELD_NAME = 'country_code';
     const COMPANY_NAME_FIELD_NAME = 'company_name';
 
+    /**
+     * {@inheritDoc}
+     */
     public function setFirstName(string $firstName)
     {
         $this->setData(self::FIRST_NAME_FIELD_NAME, $firstName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setLastName(string $lastName)
     {
         $this->setData(self::LAST_NAME_FIELD_NAME, $lastName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setPhoneNumber(string $phoneNumber)
     {
         $this->setData(self::PHONE_NUMBER_FIELD_NAME, $phoneNumber);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setZipCode(string $zipCode)
     {
         $this->setData(self::ZIP_CODE_FIELD_NAME, $zipCode);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setCity(string $city)
     {
         $this->setData(self::CITY_FIELD_NAME, $city);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setStreet(string $city)
     {
         $this->setData(self::STREET_FIELD_NAME, $city);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setCountryCode(string $countryCode)
     {
         $this->setData(self::COUNTRY_CODE_FIELD_NAME, $countryCode);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setCompanyName(string $companyName)
     {
         $this->setData(self::COMPANY_NAME_FIELD_NAME, $companyName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getFirstName(): ?string
     {
         return $this->getData(self::FIRST_NAME_FIELD_NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getLastName(): ?string
     {
         return $this->getData(self::LAST_NAME_FIELD_NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getPhoneNumber(): ?string
     {
         return $this->getData(self::PHONE_NUMBER_FIELD_NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getZipCode(): ?string
     {
         return $this->getData(self::ZIP_CODE_FIELD_NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getCity(): ?string
     {
         return $this->getData(self::CITY_FIELD_NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getStreet(): ?string
     {
         return $this->getData(self::STREET_FIELD_NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getCountryCode(): ?string
     {
         return $this->getData(self::COUNTRY_CODE_FIELD_NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getCompanyName(): ?string
     {
         return $this->getData(self::COMPANY_NAME_FIELD_NAME);
     }
 
     /**
-     * @param QuoteAddressInterface|OrderAddressInterface $address
-     * @return void
+     * {@inheritDoc}
      */
-    public function fillAddress($address)
+    public function fillAddress(OrderAddressInterface|QuoteAddressInterface $address)
     {
         $address
             ->setFirstname($this->getFirstName() ?? 'unknown')
@@ -118,8 +164,7 @@ class Address extends DataObject implements AddressInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

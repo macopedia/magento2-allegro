@@ -7,12 +7,11 @@ use Magento\Framework\DataObject;
 
 class Restriction extends DataObject implements RestrictionInterface
 {
-
     const TYPE_FIELD_NAME = 'type';
     const VALUE_FIELD_NAME = 'value';
 
     /**
-     * @param string $type
+     * {@inheritDoc}
      */
     public function setType(string $type)
     {
@@ -20,15 +19,15 @@ class Restriction extends DataObject implements RestrictionInterface
     }
 
     /**
-     * @param mixed $value
+     * {@inheritDoc}
      */
-    public function setValue($value)
+    public function setValue(mixed $value)
     {
         $this->setData(self::VALUE_FIELD_NAME, $value);
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getType(): ?string
     {
@@ -36,9 +35,9 @@ class Restriction extends DataObject implements RestrictionInterface
     }
 
     /**
-     * @return mixed
+     * {@inheritDoc}
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->getData(self::VALUE_FIELD_NAME);
     }

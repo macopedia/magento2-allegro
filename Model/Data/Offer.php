@@ -15,7 +15,6 @@ use Magento\Framework\DataObject;
 
 class Offer extends DataObject implements OfferInterface
 {
-
     const ID_FIELD_NAME = 'id';
     const EAN_FIELD_NAME = 'ean';
     const NAME_FIELD_NAME = 'name';
@@ -51,7 +50,6 @@ class Offer extends DataObject implements OfferInterface
      * @param ImageInterfaceFactory $imageFactory
      * @param LocationInterfaceFactory $locationFactory
      * @param AfterSalesServicesInterfaceFactory $afterSalesServicesFactory
-     * @throws \Macopedia\Allegro\Model\Api\ClientException
      */
     public function __construct(
         ParameterDefinitionRepositoryInterface $parameterDefinitionRepository,
@@ -67,8 +65,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param string $id
-     * @return void
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -76,7 +73,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param string $ean
+     * {@inheritDoc}
      */
     public function setEan(string $ean)
     {
@@ -84,8 +81,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param string $name
-     * @return void
+     * {@inheritDoc}
      */
     public function setName(string $name)
     {
@@ -93,8 +89,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param string $description
-     * @return void
+     * {@inheritDoc}
      */
     public function setDescription(string $description)
     {
@@ -102,8 +97,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param string $category
-     * @return void
+     * {@inheritDoc}
      */
     public function setCategory(string $category)
     {
@@ -111,8 +105,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param int $qty
-     * @return void
+     * {@inheritDoc}
      */
     public function setQty(int $qty)
     {
@@ -120,8 +113,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param float $price
-     * @return void
+     * {@inheritDoc}
      */
     public function setPrice(float $price)
     {
@@ -129,8 +121,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param ParameterInterface[] $parameters
-     * @return void
+     * {@inheritDoc}
      */
     public function setParameters(array $parameters)
     {
@@ -138,8 +129,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param ImageInterface[] $images
-     * @return void
+     * {@inheritDoc}
      */
     public function setImages(array $images)
     {
@@ -147,7 +137,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param LocationInterface $location
+     * {@inheritDoc}
      */
     public function setLocation(LocationInterface $location)
     {
@@ -155,7 +145,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param string $deliveryShippingRate
+     * {@inheritDoc}
      */
     public function setDeliveryShippingRatesId(string $deliveryShippingRate)
     {
@@ -163,7 +153,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param string $handlingTime
+     * {@inheritDoc}
      */
     public function setDeliveryHandlingTime(string $handlingTime)
     {
@@ -171,7 +161,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param string $paymentsInvoice
+     * {@inheritDoc}
      */
     public function setPaymentsInvoice(string $paymentsInvoice)
     {
@@ -179,7 +169,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param string $publicationStatus
+     * {@inheritDoc}
      */
     public function setPublicationStatus(string $publicationStatus)
     {
@@ -187,7 +177,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param string[] $validationErrors
+     * {@inheritDoc}
      */
     public function setValidationErrors(array $validationErrors)
     {
@@ -195,8 +185,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param AfterSalesServicesInterface $afterSalesServices
-     * @return void
+     * {@inheritDoc}
      */
     public function setAfterSalesServices(AfterSalesServicesInterface $afterSalesServices)
     {
@@ -204,7 +193,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -212,7 +201,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getEan(): ?string
     {
@@ -220,7 +209,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getName(): ?string
     {
@@ -228,7 +217,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getDescription(): ?string
     {
@@ -236,7 +225,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getCategory(): ?string
     {
@@ -244,7 +233,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return int
+     * {@inheritDoc}
      */
     public function getQty(): ?int
     {
@@ -252,7 +241,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return float
+     * {@inheritDoc}
      */
     public function getPrice(): ?float
     {
@@ -260,7 +249,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return ParameterInterface[]
+     * {@inheritDoc}
      */
     public function getParameters(): array
     {
@@ -268,7 +257,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return ImageInterface[]
+     * {@inheritDoc}
      */
     public function getImages(): array
     {
@@ -276,7 +265,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return LocationInterface
+     * {@inheritDoc}
      */
     public function getLocation(): LocationInterface
     {
@@ -284,7 +273,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getDeliveryShippingRatesId(): ?string
     {
@@ -292,7 +281,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getDeliveryHandlingTime(): ?string
     {
@@ -300,7 +289,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getPaymentsInvoice(): ?string
     {
@@ -308,7 +297,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getPublicationStatus(): ?string
     {
@@ -316,7 +305,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return string[]
+     * {@inheritDoc}
      */
     public function getValidationErrors(): array
     {
@@ -324,7 +313,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return AfterSalesServicesInterface
+     * {@inheritDoc}
      */
     public function getAfterSalesServices(): AfterSalesServicesInterface
     {
@@ -332,7 +321,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function canBePublished(): bool
     {
@@ -346,7 +335,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function canBeEnded(): bool
     {
@@ -354,7 +343,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function isDraft(): bool
     {
@@ -362,7 +351,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function isValid(): bool
     {
@@ -370,8 +359,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @param array $rawData
-     * @throws \Macopedia\Allegro\Model\Api\ClientException
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {
@@ -417,7 +405,7 @@ class Offer extends DataObject implements OfferInterface
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getRawData(): array
     {

@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data\CheckoutForm\Delivery;
 
 interface MethodInterface
 {
-
     /**
      * @param string $id
      * @return void
@@ -12,7 +11,7 @@ interface MethodInterface
     public function setId(string $id);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string;
 

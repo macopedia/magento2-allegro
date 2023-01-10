@@ -113,8 +113,7 @@ class AllegroReservation implements AllegroReservationsInterface
     }
 
     /**
-     * @param CheckoutFormInterface $checkoutForm
-     * @throws \Exception
+     * {@inheritDoc}
      */
     public function placeReservation(CheckoutFormInterface $checkoutForm): void
     {
@@ -137,8 +136,7 @@ class AllegroReservation implements AllegroReservationsInterface
     }
 
     /**
-     * @param string $checkoutFormId
-     * @throws ReservationPlacingException
+     * {@inheritDoc}
      */
     public function compensateReservation(string $checkoutFormId): void
     {

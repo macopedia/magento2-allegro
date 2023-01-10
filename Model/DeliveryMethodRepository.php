@@ -7,7 +7,6 @@ use Macopedia\Allegro\Api\Data\DeliveryMethodInterfaceFactory;
 use Macopedia\Allegro\Api\DeliveryMethodRepositoryInterface;
 use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\ResourceModel\Sale\DeliveryMethod;
-use Macopedia\Allegro\Model\Api\ClientException;
 
 class DeliveryMethodRepository implements DeliveryMethodRepositoryInterface
 {
@@ -32,8 +31,7 @@ class DeliveryMethodRepository implements DeliveryMethodRepositoryInterface
     }
 
     /**
-     * @return DeliveryMethodInterface[]
-     * @throws ClientException
+     * {@inheritDoc}
      */
     public function getList(): array
     {

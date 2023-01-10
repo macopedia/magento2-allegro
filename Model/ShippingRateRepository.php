@@ -5,7 +5,6 @@ namespace Macopedia\Allegro\Model;
 use Macopedia\Allegro\Api\Data\ShippingRateInterface;
 use Macopedia\Allegro\Api\Data\ShippingRateInterfaceFactory;
 use Macopedia\Allegro\Api\ShippingRateRepositoryInterface;
-use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\ResourceModel\Sale\ShippingRates;
 
@@ -20,6 +19,7 @@ class ShippingRateRepository implements ShippingRateRepositoryInterface
     /**
      * ShippingRatesRepository constructor.
      * @param ShippingRates $shippingRates
+     * @param ShippingRateInterfaceFactory $shippingRateFactory
      */
     public function __construct(
         ShippingRates $shippingRates,
@@ -30,8 +30,7 @@ class ShippingRateRepository implements ShippingRateRepositoryInterface
     }
 
     /**
-     * @return ShippingRateInterface[]
-     * @throws ClientException
+     * {@inheritDoc}
      */
     public function getList(): array
     {

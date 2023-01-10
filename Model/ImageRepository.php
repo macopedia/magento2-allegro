@@ -4,10 +4,8 @@ namespace Macopedia\Allegro\Model;
 
 use Macopedia\Allegro\Api\Data\ImageInterface;
 use Macopedia\Allegro\Api\ImageRepositoryInterface;
-use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\ResourceModel\Sale\Images;
 use Magento\Framework\Exception\CouldNotSaveException;
-use Macopedia\Allegro\Model\Api\ClientException;
 
 class ImageRepository implements ImageRepositoryInterface
 {
@@ -25,8 +23,7 @@ class ImageRepository implements ImageRepositoryInterface
     }
 
     /**
-     * @param ImageInterface $image
-     * @throws CouldNotSaveException
+     * {@inheritDoc}
      */
     public function save(ImageInterface $image)
     {

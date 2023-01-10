@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\PickupPoint;
 
 interface AddressInterface
 {
-
     /**
      * @param string $street
      * @return void

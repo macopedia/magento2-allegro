@@ -12,7 +12,7 @@ class ShippingRate extends DataObject implements ShippingRateInterface
     const NAME_FIELD_NAME = 'name';
 
     /**
-     * @param string $id
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -20,7 +20,7 @@ class ShippingRate extends DataObject implements ShippingRateInterface
     }
 
     /**
-     * @param string $name
+     * {@inheritDoc}
      */
     public function setName(string $name)
     {
@@ -28,7 +28,7 @@ class ShippingRate extends DataObject implements ShippingRateInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -36,7 +36,7 @@ class ShippingRate extends DataObject implements ShippingRateInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getName(): ?string
     {
@@ -44,7 +44,7 @@ class ShippingRate extends DataObject implements ShippingRateInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

@@ -7,12 +7,10 @@ use Macopedia\Allegro\Model\Data\Parameter;
 
 class Values extends Parameter implements ValuesInterface
 {
-
     const VALUE_FIELD_NAME = 'value';
 
     /**
-     * @param string[] $value
-     * @return void
+     * {@inheritDoc}
      */
     public function setValue(array $value)
     {
@@ -20,7 +18,7 @@ class Values extends Parameter implements ValuesInterface
     }
 
     /**
-     * @return string[]
+     * {@inheritDoc}
      */
     public function getValue(): array
     {
@@ -28,7 +26,7 @@ class Values extends Parameter implements ValuesInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {
@@ -37,7 +35,7 @@ class Values extends Parameter implements ValuesInterface
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function isValueEmpty(): bool
     {
@@ -45,7 +43,7 @@ class Values extends Parameter implements ValuesInterface
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getRawData(): array
     {

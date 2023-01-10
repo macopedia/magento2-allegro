@@ -9,7 +9,6 @@ use Magento\Framework\DataObject;
 
 class Payment extends DataObject implements PaymentInterface
 {
-
     const TYPE_FIELD_NAME = 'type';
     const PAID_AMOUNT_FIELD_NAME = 'paid_amount';
 
@@ -19,15 +18,18 @@ class Payment extends DataObject implements PaymentInterface
     /**
      * Payment constructor.
      * @param AmountInterfaceFactory $amountFactory
+     * @param array $data
      */
-    public function __construct(AmountInterfaceFactory $amountFactory)
-    {
+    public function __construct(
+        AmountInterfaceFactory $amountFactory,
+        array $data = []
+    ) {
+        parent::__construct($data);
         $this->amountFactory = $amountFactory;
     }
 
     /**
-     * @param string $type
-     * @return void
+     * {@inheritDoc}
      */
     public function setType(string $type)
     {
@@ -35,8 +37,7 @@ class Payment extends DataObject implements PaymentInterface
     }
 
     /**
-     * @param AmountInterface $paidAmount
-     * @return void
+     * {@inheritDoc}
      */
     public function setPaidAmount(AmountInterface $paidAmount)
     {
@@ -44,7 +45,7 @@ class Payment extends DataObject implements PaymentInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getType(): ?string
     {
@@ -52,7 +53,7 @@ class Payment extends DataObject implements PaymentInterface
     }
 
     /**
-     * @return AmountInterface
+     * {@inheritDoc}
      */
     public function getPaidAmount(): AmountInterface
     {
@@ -60,7 +61,7 @@ class Payment extends DataObject implements PaymentInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

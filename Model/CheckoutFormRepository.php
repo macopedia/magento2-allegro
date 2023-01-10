@@ -3,7 +3,6 @@
 namespace Macopedia\Allegro\Model;
 
 use Macopedia\Allegro\Api\CheckoutFormRepositoryInterface;
-use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\ResourceModel\Order\CheckoutForm;
 use Macopedia\Allegro\Api\Data\CheckoutFormInterface;
@@ -31,10 +30,7 @@ class CheckoutFormRepository implements CheckoutFormRepositoryInterface
     }
 
     /**
-     * @param string $checkoutFormId
-     * @return CheckoutFormInterface
-     * @throws ClientException
-     * @throws NoSuchEntityException
+     * {@inheritDoc}
      */
     public function get(string $checkoutFormId): CheckoutFormInterface
     {

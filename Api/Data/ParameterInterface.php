@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data;
 
 interface ParameterInterface
 {
-
     /**
      * @param int $id
      * @return void
@@ -12,7 +11,7 @@ interface ParameterInterface
     public function setId(int $id);
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int;
 

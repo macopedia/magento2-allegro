@@ -5,7 +5,6 @@ namespace Macopedia\Allegro\Model;
 use Macopedia\Allegro\Api\Data\ReturnPolicyInterface;
 use Macopedia\Allegro\Api\Data\ReturnPolicyInterfaceFactory;
 use Macopedia\Allegro\Api\ReturnPolicyRepositoryInterface;
-use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\ResourceModel\Sale\AfterSaleServices;
 
@@ -32,8 +31,7 @@ class ReturnPolicyRepository implements ReturnPolicyRepositoryInterface
     }
 
     /**
-     * @return ReturnPolicyInterface[]
-     * @throws ClientException
+     * {@inheritDoc}
      */
     public function getList(): array
     {

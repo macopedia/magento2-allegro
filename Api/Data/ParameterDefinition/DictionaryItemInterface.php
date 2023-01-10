@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data\ParameterDefinition;
 
 interface DictionaryItemInterface
 {
-
     /**
      * @param string $value
      * @return void
@@ -18,12 +17,12 @@ interface DictionaryItemInterface
     public function setLabel(string $label);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getValue(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getLabel(): ?string;
 

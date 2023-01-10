@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data\CheckoutForm;
 
 interface SummaryInterface
 {
-
     /**
      * @param AmountInterface $totalToPay
      * @return void

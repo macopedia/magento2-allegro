@@ -3,9 +3,7 @@
 namespace Macopedia\Allegro\Model;
 
 use Macopedia\Allegro\Api\PriceCommandInterface;
-use Macopedia\Allegro\Model\Api\ClientResponseException;
 use Macopedia\Allegro\Model\ResourceModel\Sale\Offers;
-use Macopedia\Allegro\Model\Api\ClientException;
 
 class PriceCommand implements PriceCommandInterface
 {
@@ -23,12 +21,7 @@ class PriceCommand implements PriceCommandInterface
     }
 
     /**
-     * @param string $offerId
-     * @param float $price
-     * @return array
-     * @throws Api\ClientResponseErrorException
-     * @throws ClientException
-     * @throws ClientResponseException
+     * {@inheritDoc}
      */
     public function change(string $offerId, float $price)
     {

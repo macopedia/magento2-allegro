@@ -7,7 +7,6 @@ use Macopedia\Allegro\Api\Data\Offer\LocationInterface;
 
 interface OfferInterface
 {
-
     const PUBLICATION_STATUS_ACTIVE = 'ACTIVE';
     const PUBLICATION_STATUS_ACTIVATING = 'ACTIVATING';
     const PUBLICATION_STATUS_INACTIVE = 'INACTIVE';
@@ -44,7 +43,7 @@ interface OfferInterface
     public function setCategory(string $category);
 
     /**
-     * @param \Macopedia\Allegro\Api\Data\ParameterInterface[] $parameters
+     * @param ParameterInterface[] $parameters
      * @return void
      */
     public function setParameters(array $parameters);
@@ -62,7 +61,7 @@ interface OfferInterface
     public function setQty(int $qty);
 
     /**
-     * @param \Macopedia\Allegro\Api\Data\ImageInterface[] $images
+     * @param ImageInterface[] $images
      * @return void
      */
     public function setImages(array $images);
@@ -105,7 +104,7 @@ interface OfferInterface
 
     /**
      * @param AfterSalesServicesInterface $afterSalesServices
-     * @return mixed
+     * @return void
      */
     public function setAfterSalesServices(AfterSalesServicesInterface $afterSalesServices);
 
@@ -155,7 +154,7 @@ interface OfferInterface
     public function getCategory(): ?string;
 
     /**
-     * @return \Macopedia\Allegro\Api\Data\ParameterInterface[]
+     * @return ParameterInterface[]
      */
     public function getParameters(): ?array;
 
@@ -170,7 +169,7 @@ interface OfferInterface
     public function getQty(): ?int;
 
     /**
-     * @return \Macopedia\Allegro\Api\Data\ImageInterface[]
+     * @return ImageInterface[]
      */
     public function getImages(): ?array;
 

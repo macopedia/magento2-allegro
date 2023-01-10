@@ -11,8 +11,7 @@ class Warranty extends DataObject implements WarrantyInterface
     const NAME_FIELD_NAME = 'name';
 
     /**
-     * @param string $id
-     * @return void
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -20,8 +19,7 @@ class Warranty extends DataObject implements WarrantyInterface
     }
 
     /**
-     * @param string $name
-     * @return void
+     * {@inheritDoc}
      */
     public function setName(string $name)
     {
@@ -29,7 +27,7 @@ class Warranty extends DataObject implements WarrantyInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -37,7 +35,7 @@ class Warranty extends DataObject implements WarrantyInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getName(): ?string
     {
@@ -45,8 +43,7 @@ class Warranty extends DataObject implements WarrantyInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

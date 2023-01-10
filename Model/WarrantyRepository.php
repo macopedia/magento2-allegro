@@ -32,8 +32,7 @@ class WarrantyRepository implements WarrantyRepositoryInterface
     }
 
     /**
-     * @return WarrantyInterface[]
-     * @throws ClientException
+     * {@inheritDoc}
      */
     public function getList(): array
     {

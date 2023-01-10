@@ -10,7 +10,6 @@ use Magento\Framework\DataObject;
 
 class Invoice extends DataObject implements InvoiceInterface
 {
-
     const ADDRESS_FIELD_NAME = 'address';
 
     /** @var AddressInterfaceFactory */
@@ -19,15 +18,18 @@ class Invoice extends DataObject implements InvoiceInterface
     /**
      * Delivery constructor.
      * @param AddressInterfaceFactory $addressFactory
+     * @param array $data
      */
-    public function __construct(AddressInterfaceFactory $addressFactory)
-    {
+    public function __construct(
+        AddressInterfaceFactory $addressFactory,
+        array $data = []
+    ) {
+        parent::__construct($data);
         $this->addressFactory = $addressFactory;
     }
 
     /**
-     * @param AddressInterface $address
-     * @return void
+     * {@inheritDoc}
      */
     public function setAddress(AddressInterface $address)
     {
@@ -35,7 +37,7 @@ class Invoice extends DataObject implements InvoiceInterface
     }
 
     /**
-     * @return AddressInterface
+     * {@inheritDoc}
      */
     public function getAddress(): AddressInterface
     {
@@ -43,8 +45,7 @@ class Invoice extends DataObject implements InvoiceInterface
     }
 
     /**
-     * @param array $rawData
-     * @return void
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {
@@ -53,7 +54,7 @@ class Invoice extends DataObject implements InvoiceInterface
 
     /**
      * @param array $data
-     * @return MethodInterface
+     * @return AddressInterface
      */
     private function mapAddressData(array $data): AddressInterface
     {

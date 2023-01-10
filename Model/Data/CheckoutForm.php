@@ -74,8 +74,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @param string $id
-     * @return void
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -83,8 +82,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @param BuyerInterface $buyer
-     * @return void
+     * {@inheritDoc}
      */
     public function setBuyer(BuyerInterface $buyer)
     {
@@ -92,8 +90,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @param PaymentInterface $payment
-     * @return void
+     * {@inheritDoc}
      */
     public function setPayment(PaymentInterface $payment)
     {
@@ -101,8 +98,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @param string $status
-     * @return void
+     * {@inheritDoc}
      */
     public function setStatus(string $status)
     {
@@ -110,8 +106,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @param DeliveryInterface $delivery
-     * @return void
+     * {@inheritDoc}
      */
     public function setDelivery(DeliveryInterface $delivery)
     {
@@ -119,8 +114,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @param InvoiceInterface $invoice
-     * @return void
+     * {@inheritDoc}
      */
     public function setInvoice(InvoiceInterface $invoice)
     {
@@ -128,8 +122,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @param LineItemInterface[]
-     * @return void] $lineItems
+     * {@inheritDoc}
      */
     public function setLineItems(array $lineItems)
     {
@@ -137,8 +130,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @param SummaryInterface $summary
-     * @return void
+     * {@inheritDoc}
      */
     public function setSummary(SummaryInterface $summary)
     {
@@ -146,8 +138,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @param string $messageToSeller
-     * @return void
+     * {@inheritDoc}
      */
     public function setMessageToSeller(string $messageToSeller)
     {
@@ -155,7 +146,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -163,7 +154,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @return BuyerInterface
+     * {@inheritDoc}
      */
     public function getBuyer(): BuyerInterface
     {
@@ -171,7 +162,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @return PaymentInterface
+     * {@inheritDoc}
      */
     public function getPayment(): PaymentInterface
     {
@@ -179,7 +170,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getStatus(): ?string
     {
@@ -187,7 +178,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @return DeliveryInterface
+     * {@inheritDoc}
      */
     public function getDelivery(): DeliveryInterface
     {
@@ -195,7 +186,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @return InvoiceInterface
+     * {@inheritDoc}
      */
     public function getInvoice(): InvoiceInterface
     {
@@ -203,7 +194,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @return LineItemInterface[]
+     * {@inheritDoc}
      */
     public function getLineItems(): array
     {
@@ -211,7 +202,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @return SummaryInterface
+     * {@inheritDoc}
      */
     public function getSummary(): SummaryInterface
     {
@@ -219,7 +210,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getMessageToSeller(): ?string
     {
@@ -227,7 +218,7 @@ class CheckoutForm extends DataObject implements CheckoutFormInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data\Offer;
 
 interface LocationInterface
 {
-
     /**
      * @param string $countryCode
      * @return void

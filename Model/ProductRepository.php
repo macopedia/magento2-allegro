@@ -83,12 +83,7 @@ class ProductRepository extends \Magento\Catalog\Model\ProductRepository impleme
     }
 
     /**
-     * @param int $allegroOfferId
-     * @param bool $editMode
-     * @param int $storeId
-     * @param bool $forceReload
-     * @return ProductInterface
-     * @throws NoSuchEntityException
+     * {@inheritDoc}
      */
     public function getByAllegroOfferId(
         int $allegroOfferId,

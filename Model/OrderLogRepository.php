@@ -50,8 +50,7 @@ class OrderLogRepository implements OrderLogRepositoryInterface
     }
 
     /**
-     * @param SearchCriteriaInterface $searchCriteria
-     * @return array
+     * {@inheritDoc}
      */
     public function getList(SearchCriteriaInterface $searchCriteria): array
     {
@@ -65,7 +64,7 @@ class OrderLogRepository implements OrderLogRepositoryInterface
     }
 
     /**
-     * @return int
+     * {@inheritDoc}
      */
     public function getCount(): int
     {
@@ -74,8 +73,7 @@ class OrderLogRepository implements OrderLogRepositoryInterface
     }
 
     /**
-     * @param OrderLogInterface $orderLog
-     * @throws CouldNotSaveException
+     * {@inheritDoc}
      */
     public function save(OrderLogInterface $orderLog): void
     {
@@ -90,8 +88,7 @@ class OrderLogRepository implements OrderLogRepositoryInterface
     }
 
     /**
-     * @param OrderLogInterface $orderLog
-     * @throws CouldNotDeleteException
+     * {@inheritDoc}
      */
     public function delete(OrderLogInterface $orderLog): void
     {
@@ -106,9 +103,7 @@ class OrderLogRepository implements OrderLogRepositoryInterface
     }
 
     /**
-     * @param string $checkoutFormId
-     * @return OrderLogInterface
-     * @throws NoSuchEntityException
+     * {@inheritDoc}
      */
     public function getByCheckoutFormId(string $checkoutFormId): OrderLogInterface
     {
@@ -127,8 +122,7 @@ class OrderLogRepository implements OrderLogRepositoryInterface
     }
 
     /**
-     * @param string $checkoutFormId
-     * @throws CouldNotDeleteException
+     * {@inheritDoc}
      */
     public function deleteByCheckoutFormId(string $checkoutFormId): void
     {

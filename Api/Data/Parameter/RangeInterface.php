@@ -6,7 +6,6 @@ use Macopedia\Allegro\Api\Data\ParameterInterface;
 
 interface RangeInterface extends ParameterInterface
 {
-
     /**
      * @param string $minValue
      * @return void
@@ -20,12 +19,12 @@ interface RangeInterface extends ParameterInterface
     public function setMaxValue(string $maxValue);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMinValue(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMaxValue(): ?string;
 }

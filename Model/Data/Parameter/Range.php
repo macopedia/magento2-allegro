@@ -7,13 +7,11 @@ use Macopedia\Allegro\Model\Data\Parameter;
 
 class Range extends Parameter implements RangeInterface
 {
-
     const MIN_VALUE_FIELD_NAME = 'min_value';
     const MAX_VALUE_FIELD_NAME = 'max_value';
 
     /**
-     * @param string $minValue
-     * @return void
+     * {@inheritDoc}
      */
     public function setMinValue(string $minValue)
     {
@@ -21,8 +19,7 @@ class Range extends Parameter implements RangeInterface
     }
 
     /**
-     * @param string $maxValue
-     * @return void
+     * {@inheritDoc}
      */
     public function setMaxValue(string $maxValue)
     {
@@ -30,7 +27,7 @@ class Range extends Parameter implements RangeInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getMinValue(): ?string
     {
@@ -38,7 +35,7 @@ class Range extends Parameter implements RangeInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getMaxValue(): ?string
     {
@@ -46,7 +43,7 @@ class Range extends Parameter implements RangeInterface
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function isValueEmpty(): bool
     {
@@ -55,7 +52,7 @@ class Range extends Parameter implements RangeInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {
@@ -69,7 +66,7 @@ class Range extends Parameter implements RangeInterface
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getRawData(): array
     {

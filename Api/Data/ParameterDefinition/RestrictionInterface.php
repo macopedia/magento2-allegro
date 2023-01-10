@@ -4,7 +4,6 @@ namespace Macopedia\Allegro\Api\Data\ParameterDefinition;
 
 interface RestrictionInterface
 {
-
     /**
      * @param string $type
      * @return void
@@ -15,15 +14,15 @@ interface RestrictionInterface
      * @param mixed $value
      * @return void
      */
-    public function setValue($value);
+    public function setValue(mixed $value);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getType(): ?string;
 
     /**
      * @return mixed
      */
-    public function getValue();
+    public function getValue(): mixed;
 }

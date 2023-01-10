@@ -6,7 +6,6 @@ use Macopedia\Allegro\Api\Data\EventInterface;
 use Macopedia\Allegro\Api\Data\EventInterfaceFactory;
 use Macopedia\Allegro\Api\EventRepositoryInterface;
 use Macopedia\Allegro\Model\Api\ClientResponseException;
-use Macopedia\Allegro\Model\Api\ClientException;
 use Macopedia\Allegro\Model\ResourceModel\Order\Events;
 
 class EventRepository implements EventRepositoryInterface
@@ -30,8 +29,7 @@ class EventRepository implements EventRepositoryInterface
     }
 
     /**
-     * @return EventInterface[]
-     * @throws ClientException
+     * {@inheritDoc}
      */
     public function getList(): array
     {
@@ -54,9 +52,7 @@ class EventRepository implements EventRepositoryInterface
     }
 
     /**
-     * @param string $from
-     * @return EventInterface[]
-     * @throws ClientException
+     * {@inheritDoc}
      */
     public function getListFrom(string $from): array
     {

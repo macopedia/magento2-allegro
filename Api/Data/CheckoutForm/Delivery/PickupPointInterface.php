@@ -7,7 +7,6 @@ use Magento\Sales\Api\Data\OrderInterface;
 
 interface PickupPointInterface
 {
-
     /**
      * @param string $id
      * @return void

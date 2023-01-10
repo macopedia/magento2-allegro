@@ -8,13 +8,11 @@ use Macopedia\Allegro\Api\Data\CheckoutForm\Delivery\PickupPointInterface;
 use Macopedia\Allegro\Api\Data\Sales\Order\PickupPointExtensionAttributesInterface;
 use Macopedia\Allegro\Api\Data\Sales\Order\PickupPointExtensionAttributesInterfaceFactory;
 use Magento\Framework\DataObject;
-use Magento\Sales\Api\Data\OrderAddressExtensionInterface;
 use Magento\Sales\Api\Data\OrderExtensionFactory;
 use Magento\Sales\Api\Data\OrderInterface;
 
 class PickupPoint extends DataObject implements PickupPointInterface
 {
-
     const ID_FIELD_NAME = 'id';
     const NAME_FIELD_NAME = 'name';
     const DESCRIPTION_FIELD_NAME = 'description';
@@ -32,19 +30,24 @@ class PickupPoint extends DataObject implements PickupPointInterface
     /**
      * PickupPoint constructor.
      * @param AddressInterfaceFactory $addressFactory
+     * @param OrderExtensionFactory $orderExtensionFactory
+     * @param PickupPointExtensionAttributesInterfaceFactory $pickupPointExtensionAttributesFactory
+     * @param array $data
      */
     public function __construct(
         AddressInterfaceFactory $addressFactory,
         OrderExtensionFactory $orderExtensionFactory,
-        PickupPointExtensionAttributesInterfaceFactory $pickupPointExtensionAttributesFactory
+        PickupPointExtensionAttributesInterfaceFactory $pickupPointExtensionAttributesFactory,
+        array $data = []
     ) {
+        parent::__construct($data);
         $this->addressFactory = $addressFactory;
         $this->orderExtensionFactory = $orderExtensionFactory;
         $this->pickupPointExtensionAttributesFactory = $pickupPointExtensionAttributesFactory;
     }
 
     /**
-     * @param string $id
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -52,7 +55,7 @@ class PickupPoint extends DataObject implements PickupPointInterface
     }
 
     /**
-     * @param string $name
+     * {@inheritDoc}
      */
     public function setName(string $name)
     {
@@ -60,7 +63,7 @@ class PickupPoint extends DataObject implements PickupPointInterface
     }
 
     /**
-     * @param string $description
+     * {@inheritDoc}
      */
     public function setDescription(string $description)
     {
@@ -68,7 +71,7 @@ class PickupPoint extends DataObject implements PickupPointInterface
     }
 
     /**
-     * @param AddressInterface $address
+     * {@inheritDoc}
      */
     public function setAddress(AddressInterface $address)
     {
@@ -76,7 +79,7 @@ class PickupPoint extends DataObject implements PickupPointInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -84,7 +87,7 @@ class PickupPoint extends DataObject implements PickupPointInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getName(): ?string
     {
@@ -92,7 +95,7 @@ class PickupPoint extends DataObject implements PickupPointInterface
     }
 
     /**
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getDescription(): ?string
     {
@@ -100,7 +103,7 @@ class PickupPoint extends DataObject implements PickupPointInterface
     }
 
     /**
-     * @return AddressInterface
+     * {@inheritDoc}
      */
     public function getAddress(): AddressInterface
     {
@@ -108,8 +111,7 @@ class PickupPoint extends DataObject implements PickupPointInterface
     }
 
     /**
-     * @param OrderInterface $order
-     * @return void
+     * {@inheritDoc}
      */
     public function fillOrder(OrderInterface $order)
     {
@@ -140,7 +142,7 @@ class PickupPoint extends DataObject implements PickupPointInterface
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

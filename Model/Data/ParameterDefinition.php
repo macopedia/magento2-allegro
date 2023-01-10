@@ -31,6 +31,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     /**
      * ParameterDefinition constructor.
      * @param DictionaryItemInterfaceFactory $dictionaryItemFactory
+     * @param RestrictionInterfaceFactory $restrictionFactory
      */
     public function __construct(
         DictionaryItemInterfaceFactory $dictionaryItemFactory,
@@ -41,8 +42,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param string $id
-     * @return void
+     * {@inheritDoc}
      */
     public function setId(string $id)
     {
@@ -50,8 +50,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param string $label
-     * @return void
+     * {@inheritDoc}
      */
     public function setName(string $label)
     {
@@ -59,8 +58,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param string $type
-     * @return void
+     * {@inheritDoc}
      */
     public function setType(string $type)
     {
@@ -68,8 +66,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param string $type
-     * @return void
+     * {@inheritDoc}
      */
     public function setUnit(?string $type)
     {
@@ -77,8 +74,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param bool $required
-     * @return void
+     * {@inheritDoc}
      */
     public function setRequired(bool $required)
     {
@@ -86,8 +82,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param \Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface[] $dictionary
-     * @return void
+     * {@inheritDoc}
      */
     public function setDictionary(array $dictionary)
     {
@@ -95,8 +90,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param \Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface[] $restrictions
-     * @return void
+     * {@inheritDoc}
      */
     public function setRestrictions(array $restrictions)
     {
@@ -104,7 +98,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getId(): ?string
     {
@@ -112,7 +106,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getName(): ?string
     {
@@ -120,7 +114,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getType(): ?string
     {
@@ -128,7 +122,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getUnit(): ?string
     {
@@ -136,7 +130,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function getRequired(): bool
     {
@@ -144,7 +138,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @return \Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface[]
+     * {@inheritDoc}
      */
     public function getDictionary(): array
     {
@@ -152,7 +146,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @return \Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface[]
+     * {@inheritDoc}
      */
     public function getRestrictions(): array
     {
@@ -160,8 +154,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param string $type
-     * @return bool
+     * {@inheritDoc}
      */
     public function hasRestriction(string $type): bool
     {
@@ -174,10 +167,9 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param string $type
-     * @return mixed
+     * {@inheritDoc}
      */
-    public function getRestrictionValue(string $type)
+    public function getRestrictionValue(string $type): mixed
     {
         foreach ($this->getRestrictions() as $restriction) {
             if ($restriction->getType() == $type) {
@@ -188,7 +180,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getFrontendType(): string
     {
@@ -204,7 +196,7 @@ class ParameterDefinition extends DataObject implements ParameterDefinitionInter
     }
 
     /**
-     * @param array $rawData
+     * {@inheritDoc}
      */
     public function setRawData(array $rawData)
     {

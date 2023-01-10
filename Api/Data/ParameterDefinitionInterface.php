@@ -2,6 +2,9 @@
 
 namespace Macopedia\Allegro\Api\Data;
 
+use Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface;
+use Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface;
+
 interface ParameterDefinitionInterface
 {
     const TYPE_INTEGER = 'integer';
@@ -26,7 +29,7 @@ interface ParameterDefinitionInterface
     public function setName(string $label);
 
     /**
-     * @param string $unit
+     * @param string|null $unit
      * @return void
      */
     public function setUnit(?string $unit);
@@ -38,7 +41,7 @@ interface ParameterDefinitionInterface
     public function setType(string $type);
 
     /**
-     * @param \Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface[] $dictionary
+     * @param DictionaryItemInterface[] $dictionary
      * @return void
      */
     public function setDictionary(array $dictionary);
@@ -50,48 +53,48 @@ interface ParameterDefinitionInterface
     public function setRequired(bool $required);
 
     /**
-     * @param \Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface[] $restrictions
+     * @param RestrictionInterface[] $restrictions
      * @return void
      */
     public function setRestrictions(array $restrictions);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getType(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getUnit(): ?string;
 
     /**
-     * @return bool
+     * @return bool|null
      */
     public function getRequired(): ?bool;
 
     /**
-     * @return \Macopedia\Allegro\Api\Data\ParameterDefinition\DictionaryItemInterface[]
+     * @return DictionaryItemInterface[]
      */
     public function getDictionary(): array;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getFrontendType(): ?string;
 
     /**
-     * @return \Macopedia\Allegro\Api\Data\ParameterDefinition\RestrictionInterface[]
+     * @return RestrictionInterface[]
      */
     public function getRestrictions(): array;
 
@@ -105,7 +108,7 @@ interface ParameterDefinitionInterface
      * @param string $type
      * @return mixed
      */
-    public function getRestrictionValue(string $type);
+    public function getRestrictionValue(string $type): mixed;
 
     /**
      * @param array $rawData
