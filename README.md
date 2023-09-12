@@ -6,7 +6,7 @@ Moduł nie jest kompatybilny z aktualną zmianą Allegro.pl w zakresie łączeni
 https://developer.allegro.pl/news/od-dzisiaj-nowe-oferty-w-wybranych-dzialach-wystawisz-dopiero-gdy-polaczysz-je-z-katalogiem-produktow-d2qzkBwy2CZ
 Uniemożliwia to wystawianie na dzień dzisiejszy ofert z tego modułu do Allegro. Jest to związane ze zmianą, którą wprowadził serwis Allegro.
 
-Dalszy rozwój rozszerzenia oferujemy odpłatnie. Zapraszmy do kontaktu: https://macopedia.com/products/allegro
+Dalszy rozwój rozszerzenia oferujemy odpłatnie. Zapraszmy do kontaktu: [https://macopedia.com/pl/produkty/magento-2-allegro](https://macopedia.com/pl/produkty/magento-2-allegro)
 
 Oczywiście jesteśmy otwarci na pull-request w zarkesie rozwiązanie tego problemu.
 
