@@ -2,15 +2,15 @@
 Magento 2 Allegro Integration module. Supports Magento 2 >= v2.3. Currently is not working with current Allegro API.
 
 ## UWAGA
-Moduł nie jest kompatybilny z aktualną zmianą Allegro.pl w zakresie łączenia Ofert z Katalogiem Produktów:
-https://developer.allegro.pl/news/od-dzisiaj-nowe-oferty-w-wybranych-dzialach-wystawisz-dopiero-gdy-polaczysz-je-z-katalogiem-produktow-d2qzkBwy2CZ
-Uniemożliwia to wystawianie na dzień dzisiejszy ofert z tego modułu do Allegro. Jest to związane ze zmianą, którą wprowadził serwis Allegro.
+Moduł nie jest kompatybilny z najnowszą zmianą w Allegro.pl dotyczącą łączenia ofert z Katalogiem Produktów - wpis <a href="https://developer.allegro.pl/news/od-dzisiaj-nowe-oferty-w-wybranych-dzialach-wystawisz-dopiero-gdy-polaczysz-je-z-katalogiem-produktow-d2qzkBwy2CZ">Od dzisiaj nowe oferty w wybranych działach wystawisz dopiero, gdy połączysz je z Katalogiem produktów</a>. 
+W efekcie wystawienie ofert z tego modułu na Allegro jest niemożliwe. Jest to związane ze zmianą, którą wprowadził serwis Allegro.
+
+Jesteśmy otwarci na zgłoszenia pull-request w zakresie rozwiązania tego problemu.
 
 </br>
 🚀 <strong>Dalszy rozwój rozszerzenia oferujemy odpłatnie.</strong> 
 </br> Zapraszmy do kontaktu - <a href="https://macopedia.com/pl/produkty/magento-2-allegro">Magento 2 & Allegro by Macopedia</a>
-
-</br> Oczywiście jesteśmy otwarci na pull-request w zarkesie rozwiązanie tego problemu.
+<br> </br> 
 
 ## Partners
 Our partners helps to develop this project.
