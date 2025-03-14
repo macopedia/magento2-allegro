@@ -8,7 +8,7 @@ Uniemożliwia to wystawianie na dzień dzisiejszy ofert z tego modułu do Allegr
 
 </br>
 🚀 <strong>Dalszy rozwój rozszerzenia oferujemy odpłatnie.</strong> 
-</br> Zapraszmy do kontaktu: <a href="https://macopedia.com/pl/produkty/magento-2-allegro">Magento 2 & Allegro by Macopedia</a>
+</br> Zapraszmy do kontaktu - <a href="https://macopedia.com/pl/produkty/magento-2-allegro">Magento 2 & Allegro by Macopedia</a>
 
 </br> Oczywiście jesteśmy otwarci na pull-request w zarkesie rozwiązanie tego problemu.
 
